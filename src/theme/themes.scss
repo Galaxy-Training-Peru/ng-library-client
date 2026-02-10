@@ -1,0 +1,101 @@
+@use '@angular/material' as mat;
+@use './default/theme' as *;
+@use './orange/theme' as orange-theme;
+@use './purple/theme' as purple-theme;
+
+$typography: (
+  plain-family: 'Roboto, "Helvetica Neue", Arial, sans-serif',
+  brand-family: 'Roboto, "Helvetica Neue", Arial, sans-serif',
+  regular-weight: 400,
+  medium-weight: 500,
+  bold-weight: 700,
+  use-system-variables: true,
+);
+
+@mixin light-themes() {
+  &.default-theme {
+    $theme: mat.define-theme((
+      color: (
+        primary: $primary-palette,
+        tertiary: $tertiary-palette,
+        theme-type: light,
+      ),
+      typography: $typography,
+      density: (scale: 0),
+    ));
+    @include mat.all-component-themes($theme);
+    @include high-contrast-overrides(light);
+  }
+
+  &.orange-theme {
+    $theme: mat.define-theme((
+      color: (
+        primary: orange-theme.$primary-palette,
+        tertiary: orange-theme.$tertiary-palette,
+        theme-type: light,
+      ),
+      typography: $typography,
+      density: (scale: 0),
+    ));
+    @include mat.all-component-themes($theme);
+    @include orange-theme.high-contrast-overrides(light);
+  }
+
+  &.purple-theme {
+    $theme: mat.define-theme((
+      color: (
+        primary: purple-theme.$primary-palette,
+        tertiary: purple-theme.$tertiary-palette,
+        theme-type: light,
+      ),
+      typography: $typography,
+      density: (scale: 0),
+    ));
+    @include mat.all-component-themes($theme);
+    @include purple-theme.high-contrast-overrides(light);
+  }
+}
+
+@mixin dark-themes() {
+  &.default-theme {
+    $theme: mat.define-theme((
+      color: (
+        primary: $primary-palette,
+        tertiary: $tertiary-palette,
+        theme-type: dark,
+      ),
+      typography: $typography,
+      density: (scale: 0),
+    ));
+    @include mat.all-component-themes($theme);
+    @include high-contrast-overrides(dark);
+  }
+
+  &.orange-theme {
+    $theme: mat.define-theme((
+      color: (
+        primary: orange-theme.$primary-palette,
+        tertiary: orange-theme.$tertiary-palette,
+        theme-type: dark,
+      ),
+      typography: $typography,
+      density: (scale: 0),
+    ));
+    @include mat.all-component-themes($theme);
+    @include orange-theme.high-contrast-overrides(dark);
+  }
+
+  &.purple-theme {
+    $theme: mat.define-theme((
+      color: (
+        primary: purple-theme.$primary-palette,
+        tertiary: purple-theme.$tertiary-palette,
+        theme-type: dark,
+      ),
+      typography: $typography,
+      density: (scale: 0),
+    ));
+    @include mat.all-component-themes($theme);
+    @include purple-theme.high-contrast-overrides(dark);
+  }
+}

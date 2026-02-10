@@ -1,0 +1,138 @@
+// Base styles
+@use '../theme/themes.scss' as themes;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+body {
+  @include themes.light-themes();
+
+  &.dark-theme {
+    @include themes.dark-themes();
+  }
+}
+
+// CSS Variables
+:root {
+  --lib-radius: 12px;
+  --lib-icon-height: 24px;
+  --lib-icon-width: 24px;
+  --lib-icon-font-size: 24px;
+  --lib-toolbar-height: 64px;
+  --lib-gap: 20px;
+
+  --lib-divider-soft: color-mix(in oklab, var(--mat-sys-outline-variant) 18%, var(--mat-sys-surface));
+  --lib-divider-medium: color-mix(in oklab, var(--mat-sys-outline-variant) 26%, var(--mat-sys-surface));
+
+  --lib-card-bg: var(--mat-sys-surface);
+
+  --lib-table-header-bg: var(--mat-sys-primary, var(--md-sys-color-primary));
+  --lib-table-header-fg: var(--mat-sys-on-primary, var(--md-sys-color-on-primary));
+
+  --mat-expansion-header-collapsed-state-height: 96px;
+  --mat-expansion-header-expanded-state-height: 96px;
+}
+
+// Material Design Overrides
+// mat-card {
+//   --mat-card-elevated-container-color: var(--lib-card-bg);
+// }
+
+table[mat-table] th.mat-mdc-header-cell,
+.mat-mdc-table th.mat-mdc-header-cell {
+  background-color: var(--lib-table-header-bg);
+  color: var(--lib-table-header-fg);
+}
+
+th.mat-mdc-header-cell .mat-sort-header-arrow {
+  color: var(--lib-table-header-fg);
+}
+
+th.mat-mdc-header-cell.mat-sort-header-sorted .mat-sort-header-arrow,
+th.mat-mdc-header-cell .mat-sort-header-container:hover .mat-sort-header-arrow {
+  opacity: 1;
+}
+
+.mat-mdc-menu-item.is-active:visited,
+.mat-mdc-menu-item.is-active {
+  background: var(--mat-sys-surface-container-highest);
+  color: var(--mat-sys-on-surface-container-highest);
+}
+
+// Sidenav overrides
+.sidenav-scroll-wrapper {
+  background-color: color-mix(in oklab, var(--mat-sys-primary-container) 75%, transparent);
+}
+
+.sidenav-content {
+  @media (pointer: fine) {
+    &::-webkit-scrollbar-thumb {
+      background-color: color-mix(in oklab, var(--mat-sys-secondary) 75%, transparent);
+    }
+  }
+}
+
+// Toolbar and table primary overrides
+mat-toolbar.mat-primary,
+mat-table.mat-primary {
+  --mat-toolbar-container-background-color: var(--mat-sys-primary);
+  --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
+  background-color: var(--mat-toolbar-container-background-color);
+  color: var(--mat-toolbar-container-text-color);
+}
+
+// Icon sizing in toolbar and cards
+mat-toolbar,
+mat-card {
+  .mat-mdc-button-base mat-icon {
+    width: var(--lib-icon-width);
+    height: var(--lib-icon-height);
+    font-size: var(--lib-icon-font-size);
+    line-height: var(--lib-icon-height);
+  }
+}
+
+// Toolbar icon colors
+// mat-toolbar {
+//   .mat-mdc-icon-button .mdc-button__label,
+//   .mat-mdc-icon-button .mat-icon {
+//     color: var(--mat-sys-on-primary);
+//   }
+// }
+
+// Toolbar button hover effects
+// mat-toolbar .mat-mdc-icon-button:hover,
+// mat-toolbar .mat-mdc-button:hover {
+//   background-color: color-mix(in oklab, var(--mat-sys-surface) 18%, transparent);
+// }
+
+h6 {
+  font: var(--mat-sys-title-large);
+}
+
+p {
+  margin: 0;
+  font: var(--mat-sys-body-large);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+a {
+  color: var(--mat-sys-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button {
+  font-family: inherit;
+}

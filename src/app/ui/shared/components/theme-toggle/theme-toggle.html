@@ -1,0 +1,23 @@
+<button mat-icon-button [matMenuTriggerFor]="themeMenu">
+  <mat-icon>format_color_fill</mat-icon>
+</button>
+
+<mat-menu #themeMenu="matMenu">
+  <button mat-menu-item (click)="svc.setTheme('default')">
+    <span class="lib-theme-preview lib-theme-preview-default"></span>
+    <span>Default</span>
+  </button>
+  <button mat-menu-item (click)="svc.setTheme('orange')">
+    <span class="lib-theme-preview lib-theme-preview-orange"></span>
+    <span>Orange</span>
+  </button>
+  <button mat-menu-item (click)="svc.setTheme('purple')">
+    <span class="lib-theme-preview lib-theme-preview-purple"></span>
+    <span>Purple</span>
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item (click)="svc.toggleDark()">
+    <mat-icon>{{ svc.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    <span>{{ svc.isDark() ? 'Light Mode' : 'Dark Mode' }}</span>
+  </button>
+</mat-menu>
