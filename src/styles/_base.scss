@@ -39,6 +39,9 @@ body {
 
   --mat-expansion-header-collapsed-state-height: 96px;
   --mat-expansion-header-expanded-state-height: 96px;
+
+  --mat-toolbar-standard-height: 64px;
+  --mat-toolbar-mobile-height: 64px;
 }
 
 // Material Design Overrides
@@ -67,20 +70,12 @@ th.mat-mdc-header-cell .mat-sort-header-container:hover .mat-sort-header-arrow {
   color: var(--mat-sys-on-surface-container-highest);
 }
 
-// Sidenav overrides
-.sidenav-scroll-wrapper {
-  background-color: color-mix(in oklab, var(--mat-sys-primary-container) 75%, transparent);
-}
-
-.sidenav-content {
-  @media (pointer: fine) {
-    &::-webkit-scrollbar-thumb {
-      background-color: color-mix(in oklab, var(--mat-sys-secondary) 75%, transparent);
-    }
-  }
-}
-
 // Toolbar and table primary overrides
+mat-toolbar {
+  height: var(--lib-toolbar-height) !important;
+  min-height: var(--lib-toolbar-height) !important;
+}
+
 mat-toolbar.mat-primary,
 mat-table.mat-primary {
   --mat-toolbar-container-background-color: var(--mat-sys-primary);
@@ -101,18 +96,18 @@ mat-card {
 }
 
 // Toolbar icon colors
-// mat-toolbar {
-//   .mat-mdc-icon-button .mdc-button__label,
-//   .mat-mdc-icon-button .mat-icon {
-//     color: var(--mat-sys-on-primary);
-//   }
-// }
+mat-toolbar {
+  .mat-mdc-icon-button .mdc-button__label,
+  .mat-mdc-icon-button .mat-icon {
+    color: var(--mat-sys-on-primary);
+  }
+}
 
 // Toolbar button hover effects
-// mat-toolbar .mat-mdc-icon-button:hover,
-// mat-toolbar .mat-mdc-button:hover {
-//   background-color: color-mix(in oklab, var(--mat-sys-surface) 18%, transparent);
-// }
+mat-toolbar .mat-mdc-icon-button:hover,
+mat-toolbar .mat-mdc-button:hover {
+  background-color: color-mix(in oklab, var(--mat-sys-surface) 18%, transparent);
+}
 
 h6 {
   font: var(--mat-sys-title-large);

@@ -1,0 +1,30 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [attr.role]="role()"
+               [mode]="mode()"
+               [opened]="opened()">
+
+    <mat-toolbar color="primary">
+      <button mat-button routerLink="/library">
+        <mat-icon>library_books</mat-icon>
+        LIBRARY
+      </button>
+    </mat-toolbar>
+
+    <div class="sidenav-menu">
+      <app-nav></app-nav>
+    </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+
+    <app-header [isHandset]="isHandset()" [drawer]="drawer"></app-header>
+
+    <div class="sidenav-scroll-wrapper" [class.lib-rounded-bottom-left]="isHandset()">
+      <div class="sidenav-content-internal">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

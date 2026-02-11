@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" [class.lib-rounded-top-left]="isHandset()">
+
+  @if (isHandset()) {
+  <button type="button" mat-icon-button (click)="drawer()!.toggle()" aria-label="Toggle sidenav">
+    <mat-icon>menu</mat-icon>
+  </button>
+  }
+
+  <span class="lib-spacer"></span>
+  <div class="lib-toolbar-right">
+    <app-theme-toggle></app-theme-toggle>
+  </div>
+
+</mat-toolbar>

@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
   <span>Library</span>
   <span class="lib-spacer"></span>
   <app-theme-toggle></app-theme-toggle>
@@ -7,7 +7,7 @@
 <div class="lib-container">
   <h1 class="text-center">Library</h1>
 
-  <div class="grid grid-cols-3 gap-3 mt-3">
+  <div class="home-grid mt-3">
     <mat-card>
       <mat-card-header>
         <img mat-card-avatar src="https://placehold.co/80x80/1C2C44/FFFFFF?text=A" alt="Authors avatar">
@@ -16,7 +16,7 @@
       </mat-card-header>
       <img mat-card-image src="https://placehold.co/400x200/1C2C44/FFFFFF?text=Authors" alt="Authors">
       <mat-card-actions>
-        <button mat-button color="primary">ACCESS</button>
+        <button mat-button color="primary" (click)="accessModule('authors')">ACCESS</button>
       </mat-card-actions>
     </mat-card>
 
@@ -28,7 +28,7 @@
       </mat-card-header>
       <img mat-card-image src="https://placehold.co/400x200/1C2C44/FFFFFF?text=Books" alt="Books">
       <mat-card-actions>
-        <button mat-button color="primary">ACCESS</button>
+        <button mat-button color="primary" (click)="accessModule('books')">ACCESS</button>
       </mat-card-actions>
     </mat-card>
 
@@ -40,7 +40,7 @@
       </mat-card-header>
       <img mat-card-image src="https://placehold.co/400x200/1C2C44/FFFFFF?text=Catalog" alt="Catalog">
       <mat-card-actions>
-        <button mat-button color="primary">ACCESS</button>
+        <button mat-button color="primary" (click)="accessModule('catalog')">ACCESS</button>
       </mat-card-actions>
     </mat-card>
   </div>
