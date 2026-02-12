@@ -58,7 +58,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
@@ -77,6 +78,84 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        }
+      }
+    },
+    "library-authors": {
+      "projectType": "library",
+      "root": "projects/library-authors",
+      "sourceRoot": "projects/library-authors/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/library-authors/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/library-authors/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/library-authors/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "library-books": {
+      "projectType": "library",
+      "root": "projects/library-books",
+      "sourceRoot": "projects/library-books/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/library-books/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/library-books/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/library-books/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "library-catalog": {
+      "projectType": "library",
+      "root": "projects/library-catalog",
+      "sourceRoot": "projects/library-catalog/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/library-catalog/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/library-catalog/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/library-catalog/tsconfig.spec.json"
+          }
         }
       }
     }

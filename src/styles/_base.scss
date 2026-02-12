@@ -29,6 +29,15 @@ body {
   --lib-toolbar-height: 64px;
   --lib-gap: 20px;
 
+  --mat-expansion-header-collapsed-state-height: 96px;
+  --mat-expansion-header-expanded-state-height: 96px;
+
+  --mat-toolbar-standard-height: 64px;
+  --mat-toolbar-mobile-height: 64px;
+}
+
+// Theme-dependent variables (require Material tokens from body)
+body {
   --lib-divider-soft: color-mix(in oklab, var(--mat-sys-outline-variant) 18%, var(--mat-sys-surface));
   --lib-divider-medium: color-mix(in oklab, var(--mat-sys-outline-variant) 26%, var(--mat-sys-surface));
 
@@ -36,12 +45,6 @@ body {
 
   --lib-table-header-bg: var(--mat-sys-primary, var(--md-sys-color-primary));
   --lib-table-header-fg: var(--mat-sys-on-primary, var(--md-sys-color-on-primary));
-
-  --mat-expansion-header-collapsed-state-height: 96px;
-  --mat-expansion-header-expanded-state-height: 96px;
-
-  --mat-toolbar-standard-height: 64px;
-  --mat-toolbar-mobile-height: 64px;
 }
 
 // Material Design Overrides
@@ -67,7 +70,7 @@ th.mat-mdc-header-cell .mat-sort-header-container:hover .mat-sort-header-arrow {
 .mat-mdc-menu-item.is-active:visited,
 .mat-mdc-menu-item.is-active {
   background: var(--mat-sys-surface-container-highest);
-  color: var(--mat-sys-on-surface-container-highest);
+  // color: var(--mat-sys-on-surface-container-highest);
 }
 
 // Toolbar and table primary overrides

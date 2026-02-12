@@ -1,0 +1,39 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <button mat-button disabled class="title-text-enable">
+        <mat-icon>group</mat-icon>
+        Authors
+      </button>
+    </mat-card-title>
+
+    <span class="lib-spacer"></span>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <a mat-menu-item
+         [routerLink]="['./']"
+         [routerLinkActiveOptions]="{ exact: true }"
+         routerLinkActive="is-active"
+         #rlaList="routerLinkActive"
+         [attr.aria-current]="rlaList.isActive ? 'page' : null">
+        <mat-icon>view_list</mat-icon>
+        <span>List</span>
+      </a>
+      <a mat-menu-item
+         [routerLink]="['./', 'new']"
+         routerLinkActive="is-active"
+         #rlaNew="routerLinkActive"
+         [attr.aria-current]="rlaNew.isActive ? 'page' : null">
+        <mat-icon>group_add</mat-icon>
+        <span>Add</span>
+      </a>
+    </mat-menu>
+  </mat-card-header>
+
+  <mat-card-content>
+    <router-outlet></router-outlet>
+  </mat-card-content>
+</mat-card>

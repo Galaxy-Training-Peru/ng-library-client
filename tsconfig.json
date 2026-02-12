@@ -17,7 +17,18 @@
     "module": "preserve",
     "paths": {
       "@shared/*": ["src/app/ui/shared/*"],
-      "@framework/*": ["src/app/framework/*"]
+      "@framework/*": [
+        "src/app/framework/*"
+      ],
+      "library-authors": [
+        "projects/library-authors/src/public-api.ts"
+      ],
+      "library-books": [
+        "projects/library-books/src/public-api.ts"
+      ],
+      "library-catalog": [
+        "projects/library-catalog/src/public-api.ts"
+      ]
     }
   },
   "angularCompilerOptions": {
@@ -33,6 +44,24 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/library-authors/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/library-authors/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/library-books/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/library-books/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/library-catalog/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/library-catalog/tsconfig.spec.json"
     }
   ]
 }
