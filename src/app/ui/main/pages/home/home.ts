@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ThemeToggle } from '@shared/components/theme-toggle';
+import { ConfigViewerButton } from "@shared/components";
 
 @Component({
   selector: 'app-home',
@@ -11,8 +12,9 @@ import { ThemeToggle } from '@shared/components/theme-toggle';
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
-    ThemeToggle
-  ],
+    ThemeToggle,
+    ConfigViewerButton
+],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

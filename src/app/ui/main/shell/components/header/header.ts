@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ThemeToggle } from '@shared/components/theme-toggle';
+import { ConfigViewerButton } from '@shared/components';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,8 @@ import { ThemeToggle } from '@shared/components/theme-toggle';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    ThemeToggle
+    ThemeToggle,
+    ConfigViewerButton,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss'

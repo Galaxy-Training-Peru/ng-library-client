@@ -1,0 +1,15 @@
+{
+  "LIBRARY_URL": "http://localhost:8082/api/v1",
+  "OTEL_COLLECTOR_ENDPOINT": "http://localhost:4318/v1/traces",
+  "IDP": {
+    "ISSUER": "http://localhost:8081/realms/fullstack",
+    "CLIENT_ID": "multi-stack-ng",
+    "REDIRECT_URI": "http://localhost:4200/security/auth/callback",
+    "RESPONSE_TYPE": "code",
+    "SCOPE": "openid profile email offline_access",
+    "POST_LOGOUT_REDIRECT_URI": "http://localhost:4200",
+    "STRICT_DISCOVERY_DOCUMENT_VALIDATION": false,
+    "SHOW_DEBUG_INFORMATION": true,
+    "REQUIRE_HTTPS": false
+  }
+}
