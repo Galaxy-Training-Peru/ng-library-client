@@ -1,8 +1,32 @@
 <mat-toolbar color="primary">
   <span>Library</span>
   <span class="lib-spacer"></span>
-   <app-config-viewer />
-  <app-theme-toggle></app-theme-toggle>
+  <app-config-viewer />
+  @if (security.isLoggedIn()) {
+    <app-token-info />
+  }
+  <app-theme-toggle />
+
+  @if (security.isLoggedIn()) {
+  <button mat-icon-button [matMenuTriggerFor]="accountMenu" aria-label="Account menu">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item disabled>
+      <mat-icon>face</mat-icon>
+      <span>{{ security.profile()?.displayName }}</span>
+    </button>
+    <button mat-menu-item (click)="security.logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Log out</span>
+    </button>
+  </mat-menu>
+  } @else {
+  <button mat-button (click)="security.login()">
+    <mat-icon>login</mat-icon>
+    <span>Log in</span>
+  </button>
+  }
 </mat-toolbar>
 
 <div class="lib-container">

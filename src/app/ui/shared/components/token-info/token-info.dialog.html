@@ -1,0 +1,97 @@
+<h2 mat-dialog-title>
+  <mat-icon>vpn_key</mat-icon>
+  Security / Token Info
+</h2>
+
+<mat-dialog-content>
+  @if (isAuthenticated()) {
+    <section>
+      <h3>User</h3>
+      <dl class="kv">
+        <dt>Username</dt>
+        <dd>{{ payload()?.['preferred_username'] || payload()?.['upn'] || payload()?.['name'] || '-' }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ payload()?.['email'] || '-' }}</dd>
+
+        <dt>Subject (sub)</dt>
+        <dd>{{ payload()?.['sub'] || '-' }}</dd>
+      </dl>
+    </section>
+
+    <mat-divider />
+
+    <section>
+      <h3>Token</h3>
+      <dl class="kv">
+        <dt>Issuer (iss)</dt>
+        <dd>{{ payload()?.['iss'] || '-' }}</dd>
+
+        <dt>Audience (aud)</dt>
+        <dd>{{ payload()?.['aud'] || '-' }}</dd>
+
+        <dt>Expires</dt>
+        <dd>
+          <mat-chip-set>
+            <mat-chip [highlighted]="isExpired()">
+              {{ isExpired() ? 'Expired' : 'Valid' }}
+            </mat-chip>
+          </mat-chip-set>
+          {{ expDate() | date:'medium' }}
+        </dd>
+      </dl>
+    </section>
+
+    <mat-divider />
+
+    <section>
+      <h3>Roles</h3>
+      @if (roles().length) {
+        <mat-chip-set>
+          @for (role of roles(); track role) {
+            <mat-chip>{{ role }}</mat-chip>
+          }
+        </mat-chip-set>
+      } @else {
+        <p>No roles</p>
+      }
+    </section>
+
+    <mat-divider />
+
+    <section>
+      <h3>Scopes</h3>
+      @if (scopes().length) {
+        <mat-chip-set>
+          @for (scope of scopes(); track scope) {
+            <mat-chip>{{ scope }}</mat-chip>
+          }
+        </mat-chip-set>
+      } @else {
+        <p>No scopes</p>
+      }
+    </section>
+
+    <mat-divider />
+
+    <details>
+      <summary>Full payload</summary>
+      <pre><code>{{ payload() | json }}</code></pre>
+    </details>
+
+    <details>
+      <summary>Raw token</summary>
+      <code class="raw-token">{{ token() }}</code>
+    </details>
+
+  } @else {
+    <p>Not authenticated. No token available.</p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  @if (isAuthenticated()) {
+    <button mat-button color="warn" (click)="logout()">Logout</button>
+  }
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,21 @@
+pre {
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.raw-token {
+  display: block;
+  max-height: 120px;
+  overflow: auto;
+  word-break: break-all;
+  font: var(--mat-sys-body-small);
+}
+
+details summary {
+  cursor: pointer;
+  font: var(--mat-sys-title-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+

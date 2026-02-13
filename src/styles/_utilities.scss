@@ -231,3 +231,24 @@
   background-color: var(--mat-sys-tertiary-container);
   color: var(--mat-sys-on-tertiary-container);
 }
+
+// Key-value definition list
+.kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  margin: 0;
+
+  dt {
+    font: var(--mat-sys-label-large);
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  dd {
+    margin: 0;
+    font: var(--mat-sys-body-medium);
+    color: var(--mat-sys-on-surface);
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+}

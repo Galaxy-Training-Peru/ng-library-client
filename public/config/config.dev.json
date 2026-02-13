@@ -1,12 +1,15 @@
 {
   "LIBRARY_URL": "http://localhost:8082/api/v1",
   "OTEL_COLLECTOR_ENDPOINT": "http://localhost:4318/v1/traces",
+  "SECURITY": {
+    "SECURE_API_KEYS": ["LIBRARY_URL"]
+  },
   "IDP": {
-    "ISSUER": "http://localhost:8081/realms/fullstack",
+    "ISSUER": "http://localhost:8081/realms/multi-stack",
     "CLIENT_ID": "multi-stack-ng",
     "REDIRECT_URI": "http://localhost:4200/security/auth/callback",
     "RESPONSE_TYPE": "code",
-    "SCOPE": "openid profile email offline_access",
+    "SCOPE": "openid profile email offline_access scp-multi-stack-ng",
     "POST_LOGOUT_REDIRECT_URI": "http://localhost:4200",
     "STRICT_DISCOVERY_DOCUMENT_VALIDATION": false,
     "SHOW_DEBUG_INFORMATION": true,

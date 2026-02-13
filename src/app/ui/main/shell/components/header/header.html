@@ -9,7 +9,30 @@
   <span class="lib-spacer"></span>
   <div class="lib-toolbar-right">
     <app-config-viewer />
+    @if (security.isLoggedIn()) {
+      <app-token-info />
+    }
     <app-theme-toggle />
+
+    @if (security.isLoggedIn()) {
+    <button mat-icon-button [matMenuTriggerFor]="accountMenu" aria-label="Account menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #accountMenu="matMenu">
+      <button mat-menu-item disabled>
+        <mat-icon>face</mat-icon>
+        <span>{{ security.profile()?.displayName }}</span>
+      </button>
+      <button mat-menu-item (click)="security.logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Log out</span>
+      </button>
+    </mat-menu>
+    } @else {
+    <button mat-icon-button (click)="security.login()" aria-label="Log in">
+      <mat-icon>login</mat-icon>
+    </button>
+    }
   </div>
 
 </mat-toolbar>

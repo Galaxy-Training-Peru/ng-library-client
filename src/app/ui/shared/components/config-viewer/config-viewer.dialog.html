@@ -6,29 +6,41 @@
 <mat-dialog-content>
   <section>
     <h3>Environment</h3>
-    <div>
-      <mat-chip-set>
-        <mat-chip [highlighted]="!env.production">
-          {{ env.production ? 'Production' : 'Development' }}
-        </mat-chip>
-      </mat-chip-set>
-      <span>{{ env.configFile }}</span>
-    </div>
+    <dl class="kv">
+      <dt>Mode</dt>
+      <dd>
+        <mat-chip-set>
+          <mat-chip [highlighted]="!env.production">
+            {{ env.production ? 'Production' : 'Development' }}
+          </mat-chip>
+        </mat-chip-set>
+      </dd>
+      <dt>Config file</dt>
+      <dd>{{ env.configFile }}</dd>
+    </dl>
   </section>
+
+  <mat-divider />
 
   <section>
     <h3>Loaded Configuration</h3>
 
     @if (config(); as cfg) {
       @for (entry of flatEntries; track entry.key; let last = $last) {
-        <div class="entry">
-          <dt>{{ entry.key }}</dt>
-          @if (isObject(entry.value)) {
-            <dd><pre>{{ entry.value | json }}</pre></dd>
-          } @else {
+        @if (entry.children) {
+          <h4>{{ entry.key }}</h4>
+          <dl class="kv">
+            @for (child of entry.children; track child.key) {
+              <dt>{{ child.key }}</dt>
+              <dd>{{ child.value }}</dd>
+            }
+          </dl>
+        } @else {
+          <dl class="kv">
+            <dt>{{ entry.key }}</dt>
             <dd>{{ entry.value }}</dd>
-          }
-        </div>
+          </dl>
+        }
         @if (!last) { <mat-divider /> }
       }
     } @else {
