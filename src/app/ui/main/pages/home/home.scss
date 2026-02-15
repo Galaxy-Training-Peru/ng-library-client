@@ -1,21 +1,27 @@
-// Home styles
-
-.home-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-
-  @media (max-width: 959px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 599px) {
-    grid-template-columns: 1fr;
-  }
-}
-
 :host ::ng-deep mat-card img[mat-card-image] {
   width: 100%;
   height: 200px;
   object-fit: cover;
 }
+
+.signal-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+.effect-log {
+  max-height: 120px;
+
+  .log-entry {
+    padding: 2px 0;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+}
+

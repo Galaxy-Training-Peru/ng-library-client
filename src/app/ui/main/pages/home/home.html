@@ -32,7 +32,7 @@
 <div class="lib-container">
   <h1 class="text-center">Library</h1>
 
-  <div class="home-grid mt-3">
+  <div class="grid grid-auto-fit gap-3 mt-3">
     <mat-card>
       <mat-card-header>
         <img mat-card-avatar src="https://placehold.co/80x80/1C2C44/FFFFFF?text=A" alt="Authors avatar">
@@ -68,5 +68,135 @@
         <button mat-button color="primary" (click)="accessModule('catalog')">ACCESS</button>
       </mat-card-actions>
     </mat-card>
+  </div>
+
+  <!-- Signals playground -->
+  <h2 class="mt-3">Signals Playground</h2>
+
+  <div class="grid grid-auto-fit gap-3 mt-2">
+
+    <!-- signal() -->
+    <mat-card>
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="signal-avatar">edit_note</mat-icon>
+        <mat-card-title>signal()</mat-card-title>
+        <mat-card-subtitle>Writable reactive primitive</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="flex flex-col gap-2 pt-2">
+        <div class="text-center font-bold text-3xl">{{ counter() }}</div>
+        <div class="flex gap-1 items-center justify-center flex-wrap">
+          <button mat-mini-fab (click)="counterDecrement()">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-mini-fab (click)="counterIncrement()">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-stroked-button (click)="counterSet(100)">Set 100</button>
+          <button mat-stroked-button (click)="counterReset()">Reset</button>
+        </div>
+        <mat-divider />
+        <div class="text-sm opacity-70">
+          <code class="code">counter.set(1)</code> — replaces the value<br>
+          <code class="code">counter.update(c => c + 1)</code> — derives from current
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- computed() -->
+    <mat-card>
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="signal-avatar">functions</mat-icon>
+        <mat-card-title>computed()</mat-card-title>
+        <mat-card-subtitle>Read-only derived value</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="flex flex-col gap-2 pt-2">
+        <div class="text-center font-bold text-3xl">Total: {{ total() }}</div>
+        <div class="text-center">
+          <mat-chip-set>
+            <mat-chip>Price: {{ price() }}</mat-chip>
+            <mat-chip>Qty: {{ qty() }}</mat-chip>
+          </mat-chip-set>
+        </div>
+        <div class="flex gap-1 items-center justify-center flex-wrap">
+          <button mat-stroked-button (click)="setPrice(5)">Price 5</button>
+          <button mat-stroked-button (click)="setPrice(20)">Price 20</button>
+          <button mat-mini-fab (click)="decrementQty()">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-mini-fab (click)="incrementQty()">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-stroked-button (click)="resetComputed()">Reset</button>
+        </div>
+        <mat-divider />
+        <div class="text-sm opacity-70">
+          <code class="code">computed(() => price() * qty())</code><br>
+          Read-only — cannot use .set() or .update()
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- linkedSignal() -->
+    <mat-card>
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="signal-avatar">link</mat-icon>
+        <mat-card-title>linkedSignal()</mat-card-title>
+        <mat-card-subtitle>Derived + writable</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="flex flex-col gap-2 pt-2">
+        <div class="text-center font-bold text-3xl">Score: {{ score() }}</div>
+        <div class="text-center">
+          <mat-chip-set>
+            <mat-chip [highlighted]="resetFlag()">Reset: {{ resetFlag() }}</mat-chip>
+          </mat-chip-set>
+        </div>
+        <div class="flex gap-1 items-center justify-center flex-wrap">
+          <button mat-stroked-button (click)="toggleReset()">Toggle reset</button>
+          <button mat-mini-fab (click)="incrementScore()">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-stroked-button (click)="setScore(50)">Set 50</button>
+          <button mat-stroked-button (click)="setScore(99)">Set 99</button>
+        </div>
+        <mat-divider />
+        <div class="text-sm opacity-70">
+          <code class="code">linkedSignal(() => reset() ? 0 : 10)</code><br>
+          Like computed, but you CAN call .set() / .update()
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- effect() -->
+    <mat-card>
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="signal-avatar">bolt</mat-icon>
+        <mat-card-title>effect()</mat-card-title>
+        <mat-card-subtitle>Side-effect on signal change</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="flex flex-col gap-2 pt-2">
+        <div class="text-center font-bold text-3xl">{{ effectCounter() }}</div>
+        <div class="flex gap-1 items-center justify-center flex-wrap">
+          <button mat-mini-fab (click)="incrementEffectCounter()">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-stroked-button (click)="resetEffectCounter()">Reset</button>
+          <button mat-stroked-button (click)="clearEffectLog()">Clear log</button>
+        </div>
+        <mat-divider />
+        <div class="text-sm p-2 font-mono bg-surface rounded overflow-y-auto effect-log">
+          @for (entry of effectLog(); track $index) {
+            <div class="log-entry">{{ entry }}</div>
+          } @empty {
+            <div class="text-center opacity-50">No log entries yet</div>
+          }
+        </div>
+        <mat-divider />
+        <div class="text-sm opacity-70">
+          <code class="code">effect(() => console.log(counter()))</code><br>
+          Runs automatically when dependencies change
+        </div>
+      </mat-card-content>
+    </mat-card>
+
   </div>
 </div>
