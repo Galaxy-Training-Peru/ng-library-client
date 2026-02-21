@@ -41,6 +41,7 @@
     "@eac-arch/infrastructure-config": "file:../eac-arch-infrastructure-config/dist/eac-arch-infrastructure-config",
     "@eac-arch/infrastructure-http": "file:../eac-arch-infrastructure-http/dist/eac-arch-infrastructure-http",
     "@eac-arch/infrastructure-security": "file:../eac-arch-infrastructure-security/dist/eac-arch-infrastructure-security",
+    "@eac-arch/infrastructure-state": "file:../eac-arch-infrastructure-state/dist/eac-arch-infrastructure-state",
     "@eac-arch/shared-kernel": "file:../eac-arch-shared-kernel/dist/eac-arch-shared-kernel",
     "@eac-arch/ui-kit": "file:../eac-arch-ui-kit/dist/eac-arch-ui-kit",
     "angular-oauth2-oidc": "^20.0.2",

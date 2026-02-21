@@ -8,8 +8,7 @@
     "declarationMap": true,
     "types": [],
     "paths": {
-      "library-integration": ["dist/library-integration/types/library-integration.d.ts"],
-      "@eac-arch/infrastructure-state": ["node_modules/@eac-arch/infrastructure-state/types/eac-arch-infrastructure-state.d.ts"]
+      "library-integration": ["dist/library-integration/types/library-integration.d.ts"]
     }
   },
   "include": [

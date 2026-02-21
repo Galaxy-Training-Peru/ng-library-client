@@ -41,7 +41,7 @@ export class AuthorListViewModel {
     pageIndex:       this.currentPage() ?? 0,
     pageSize:        this.pageSize()    ?? 10,
     sortFields:      this.url.params.sort() as SortField[],
-    searchText:      this.searchText()  ?? '',
+    searchText:      this.url.debounced.search() ?? '',
     literaryGenreId: this.selectedLiteraryGenreId() ?? undefined,
   }));
 

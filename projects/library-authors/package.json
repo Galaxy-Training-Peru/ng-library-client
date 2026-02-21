@@ -6,6 +6,7 @@
     "@angular/core": "^21.1.0",
     "@eac-arch/infrastructure-config": "^1.0.0",
     "@eac-arch/infrastructure-http": "^1.0.0",
+    "@eac-arch/infrastructure-state": "^1.0.0",
     "@eac-arch/shared-kernel": "^1.0.0",
     "library-integration": "*"
   },
