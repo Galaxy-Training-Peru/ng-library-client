@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^21.1.0",
-    "@angular/core": "^21.1.0"
+    "@angular/core": "^21.1.0",
+    "@eac-arch/infrastructure-config": "^1.0.0",
+    "@eac-arch/infrastructure-http": "^1.0.0",
+    "@eac-arch/shared-kernel": "^1.0.0",
+    "library-integration": "*"
   },
   "dependencies": {
     "tslib": "^2.3.0"

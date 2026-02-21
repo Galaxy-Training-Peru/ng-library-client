@@ -1,4 +1,4 @@
-export type { PaperDto } from '../../dtos/paper.dto';
+export type { PaperDto } from '../../dtos';
 export type {
   GetAllPapersOfAuthorHttpRequest,
   GetAllPapersOfAuthorHttpResponse,

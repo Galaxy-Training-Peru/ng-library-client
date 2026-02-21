@@ -6,7 +6,10 @@
     "outDir": "../../out-tsc/lib",
     "declaration": true,
     "declarationMap": true,
-    "types": []
+    "types": [],
+    "paths": {
+      "library-integration": ["dist/library-integration/types/library-integration.d.ts"]
+    }
   },
   "include": [
     "src/**/*.ts"

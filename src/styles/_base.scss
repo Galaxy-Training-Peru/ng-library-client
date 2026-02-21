@@ -67,6 +67,36 @@ th.mat-mdc-header-cell .mat-sort-header-container:hover .mat-sort-header-arrow {
   opacity: 1;
 }
 
+// Table row striping and hover
+.mat-mdc-table .mat-mdc-row:nth-child(even) {
+  background-color: color-mix(in oklab, var(--mat-sys-surface-container-low) 60%, var(--mat-sys-surface));
+}
+
+.mat-mdc-table .mat-mdc-row:hover {
+  background-color: color-mix(in oklab, var(--mat-sys-primary) 8%, var(--mat-sys-surface));
+}
+
+// Table cell vertical alignment
+.mat-mdc-table .mat-mdc-cell {
+  vertical-align: middle;
+}
+
+// Paginator styling
+.mat-mdc-paginator {
+  --mat-paginator-container-background-color: transparent;
+}
+
+// Paginator border only when preceded by a table container
+.list-table-container ~ .mat-mdc-paginator {
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+  .list-table-container ~ .mat-mdc-paginator {
+    border-top: none;
+  }
+}
+
 .mat-mdc-menu-item.is-active:visited,
 .mat-mdc-menu-item.is-active {
   background: var(--mat-sys-surface-container-highest);

@@ -1,4 +1,4 @@
-export type { AffiliationDto } from '../../dtos/affiliation.dto';
+export type { AffiliationDto } from '../../dtos';
 export type {
   GetAllAffiliationsOfAuthorHttpRequest,
   GetAllAffiliationsOfAuthorHttpResponse,

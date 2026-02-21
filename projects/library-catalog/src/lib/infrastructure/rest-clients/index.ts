@@ -1,0 +1,26 @@
+export { LiteraryGenresHttpClient } from './literary-genres-http.client';
+export { PublishersHttpClient } from './publishers-http.client';
+export type {
+  LiteraryGenreDto,
+  GetAllLiteraryGenresHttpRequest,
+  GetAllLiteraryGenresHttpResponse,
+  GetLiteraryGenreByIdHttpRequest,
+  GetLiteraryGenreByIdHttpResponse,
+  ExistsLiteraryGenreHttpRequest,
+  ExistsLiteraryGenreHttpResponse,
+  ExistsLiteraryGenreHttpData,
+  CheckLiteraryGenreNameUniquenessHttpRequest,
+  CheckLiteraryGenreNameUniquenessHttpResponse,
+  CheckLiteraryGenreNameUniquenessHttpData,
+  PublisherDto,
+  GetAllPublishersHttpRequest,
+  GetAllPublishersHttpResponse,
+  GetPublisherByIdHttpRequest,
+  GetPublisherByIdHttpResponse,
+  ExistsPublisherHttpRequest,
+  ExistsPublisherHttpResponse,
+  ExistsPublisherHttpData,
+  CheckPublisherNameUniquenessHttpRequest,
+  CheckPublisherNameUniquenessHttpResponse,
+  CheckPublisherNameUniquenessHttpData,
+} from './contracts';

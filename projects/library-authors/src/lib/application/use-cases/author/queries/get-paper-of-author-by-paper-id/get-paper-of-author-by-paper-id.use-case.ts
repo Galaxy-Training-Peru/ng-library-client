@@ -1,35 +1,32 @@
 import { inject, Injectable } from '@angular/core';
-import { defer, type Observable } from 'rxjs';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
-import { AUTHOR_QUERY_SERVICE } from '../../../contracts/persistence/queries';
-import { PAPER_QUERY_SERVICE } from '../../../contracts/persistence/queries';
+import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
+import { PAPER_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
 import type { GetPaperOfAuthorByPaperIdQuery } from './get-paper-of-author-by-paper-id.query';
 import type { GetPaperOfAuthorByPaperIdResult } from './get-paper-of-author-by-paper-id.result';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class GetPaperOfAuthorByPaperIdUseCase implements QueryUseCase<GetPaperOfAuthorByPaperIdQuery, GetPaperOfAuthorByPaperIdResult> {
 
   private readonly authorQueryService = inject(AUTHOR_QUERY_SERVICE);
   private readonly paperQueryService = inject(PAPER_QUERY_SERVICE);
 
-  execute(query: GetPaperOfAuthorByPaperIdQuery): Observable<GetPaperOfAuthorByPaperIdResult> {
-    return defer(async () => {
-      const authorExists = await this.authorQueryService.existsAuthor(query.authorId);
-      if (!authorExists) {
-        throw new Error(`Author with id '${query.authorId}' was not found`);
-      }
+  async execute(query: GetPaperOfAuthorByPaperIdQuery): Promise<GetPaperOfAuthorByPaperIdResult> {
+    const authorExists = await this.authorQueryService.existsAuthor(query.authorId);
+    if (!authorExists) {
+      throw new Error(`Author with id '${query.authorId}' was not found`);
+    }
 
-      const paper = await this.paperQueryService.getPaperOfAuthorByPaperId(
-        query.authorId,
-        query.paperId,
-        query.fields,
-      );
+    const paper = await this.paperQueryService.getPaperOfAuthorByPaperId(
+      query.authorId,
+      query.paperId,
+      query.fields,
+    );
 
-      if (!paper) {
-        throw new Error(`Paper with id '${query.paperId}' was not found`);
-      }
+    if (!paper) {
+      throw new Error(`Paper with id '${query.paperId}' was not found`);
+    }
 
-      return paper;
-    });
+    return paper;
   }
 }

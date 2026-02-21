@@ -28,6 +28,9 @@
       ],
       "library-catalog": [
         "projects/library-catalog/src/public-api.ts"
+      ],
+      "library-integration": [
+        "projects/library-integration/src/public-api.ts"
       ]
     }
   },
@@ -62,6 +65,12 @@
     },
     {
       "path": "./projects/library-catalog/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/library-integration/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/library-integration/tsconfig.spec.json"
     }
   ]
 }

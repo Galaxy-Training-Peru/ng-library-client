@@ -2,8 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PagedList } from '@eac-arch/infrastructure-http';
 import type { AffiliationModel } from '../../application/models';
-import { AffiliationsHttpClient } from '../rest-clients';
-import type { GetAllAffiliationsOfAuthorHttpRequest } from '../rest-clients';
+import { AffiliationsHttpClient, type GetAllAffiliationsOfAuthorHttpRequest } from '../rest-clients';
 
 export interface AffiliationQueryOptions {
   sort?: string;

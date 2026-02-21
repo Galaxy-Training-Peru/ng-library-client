@@ -1,0 +1,11 @@
+// Author list page
+// Layout provided by global _list-page.scss via .list-container, .list-table-container, etc.
+// Only component-specific overrides go here.
+
+:host {
+  --list-offset: 232px;
+}
+
+.invisible {
+  visibility: hidden;
+}

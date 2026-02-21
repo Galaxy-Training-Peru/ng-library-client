@@ -1,4 +1,4 @@
-export type { AuthorDto } from '../../dtos/author.dto';
+export type { AuthorDto } from '../../dtos';
 export type {
   GetAllAuthorsHttpRequest,
   GetAllAuthorsHttpResponse,

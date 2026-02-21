@@ -2,8 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PagedList } from '@eac-arch/infrastructure-http';
 import type { AwardModel } from '../../application/models';
-import { AwardsHttpClient } from '../rest-clients';
-import type { GetAllAwardsOfAuthorHttpRequest } from '../rest-clients';
+import { AwardsHttpClient, type GetAllAwardsOfAuthorHttpRequest } from '../rest-clients';
 
 export interface AwardQueryOptions {
   sort?: string;

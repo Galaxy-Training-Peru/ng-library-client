@@ -1,4 +1,4 @@
-export type { AwardDto } from '../../dtos/award.dto';
+export type { AwardDto } from '../../dtos';
 export type {
   GetAllAwardsOfAuthorHttpRequest,
   GetAllAwardsOfAuthorHttpResponse,

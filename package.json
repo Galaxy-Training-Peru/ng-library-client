@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build library-authors && ng build library-books && ng build library-catalog && ng build library-integration && ng build",
+    "build:app": "ng build",
+    "build:libs": "ng build library-authors && ng build library-books && ng build library-catalog && ng build library-integration",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:ng-library-client": "node dist/ng-library-client/server/server.mjs"
@@ -39,6 +41,8 @@
     "@eac-arch/infrastructure-config": "file:../eac-arch-infrastructure-config/dist/eac-arch-infrastructure-config",
     "@eac-arch/infrastructure-http": "file:../eac-arch-infrastructure-http/dist/eac-arch-infrastructure-http",
     "@eac-arch/infrastructure-security": "file:../eac-arch-infrastructure-security/dist/eac-arch-infrastructure-security",
+    "@eac-arch/shared-kernel": "file:../eac-arch-shared-kernel/dist/eac-arch-shared-kernel",
+    "@eac-arch/ui-kit": "file:../eac-arch-ui-kit/dist/eac-arch-ui-kit",
     "angular-oauth2-oidc": "^20.0.2",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
