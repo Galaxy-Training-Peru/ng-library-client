@@ -2,14 +2,18 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@eac-arch/infrastructure-config';
+import { PagedList } from '@eac-arch/infrastructure-http';
 import type {
   GetAllAuthorsHttpRequest,
   GetAllAuthorsHttpResponse,
   GetAuthorByIdHttpRequest,
   GetAuthorByIdHttpResponse,
-} from './contracts/author-http.contracts';
-import type { AuthorDto } from './dtos/author.dto';
-import type { PaginationMeta } from './dtos/pagination-meta';
+  ExistsAuthorHttpRequest,
+  ExistsAuthorHttpResponse,
+  CheckAuthorNameUniquenessHttpRequest,
+  CheckAuthorNameUniquenessHttpResponse,
+} from './contracts';
+import type { AuthorDto } from './dtos';
 
 // Low-level HTTP client for the Authors REST API.
 // Handles query params, X-Pagination header parsing, and raw DTO deserialization.
@@ -32,17 +36,18 @@ export class AuthorsHttpClient {
     if (request.firstName) params = params.set('firstName', request.firstName);
     if (request.lastName) params = params.set('lastName', request.lastName);
     if (request.literaryGenreId) params = params.set('literaryGenreId', request.literaryGenreId);
+    if (request.fields) params = params.set('fields', request.fields);
 
     const response = await firstValueFrom(
-      this.http.get<AuthorDto[]>(this.baseUrl, { params, observe: 'response' }),
+      this.http.get<{ data: AuthorDto[] }>(this.baseUrl, { params, observe: 'response' }),
     );
 
-    const paginationHeader = response.headers.get('X-Pagination');
-    const pagination: PaginationMeta = paginationHeader
-      ? JSON.parse(paginationHeader)
-      : { currentPage: 1, totalPages: 1, pageSize: 10, totalCount: 0, hasPrevious: false, hasNext: false };
+    const raw = response.headers.get('X-Pagination');
+    const pagination = raw ? JSON.parse(raw) : null;
 
-    return { data: response.body ?? [], pagination };
+    return pagination
+      ? PagedList.create<AuthorDto>(response.body!.data, pagination.totalCount, pagination.currentPage, pagination.pageSize)
+      : PagedList.empty<AuthorDto>();
   }
 
   async getAuthorById(request: GetAuthorByIdHttpRequest): Promise<GetAuthorByIdHttpResponse> {
@@ -50,10 +55,20 @@ export class AuthorsHttpClient {
 
     if (request.fields) params = params.set('fields', request.fields);
 
-    const data = await firstValueFrom(
-      this.http.get<AuthorDto>(`${this.baseUrl}/${request.authorId}`, { params }),
+    return firstValueFrom(
+      this.http.get<GetAuthorByIdHttpResponse>(`${this.baseUrl}/${request.authorId}`, { params }),
     );
+  }
 
-    return { data };
+  async existsAuthor(request: ExistsAuthorHttpRequest): Promise<ExistsAuthorHttpResponse> {
+    return firstValueFrom(
+      this.http.get<ExistsAuthorHttpResponse>(`${this.baseUrl}/${request.authorId}/exists`),
+    );
+  }
+
+  async checkAuthorNameUniqueness(request: CheckAuthorNameUniquenessHttpRequest): Promise<CheckAuthorNameUniquenessHttpResponse> {
+    return firstValueFrom(
+      this.http.post<CheckAuthorNameUniquenessHttpResponse>(`${this.baseUrl}/check-uniqueness`, request),
+    );
   }
 }

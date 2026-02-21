@@ -1,9 +1,9 @@
-// Mirrors the server PaginationMetadata serialized in the X-Pagination header.
+// Mirrors the server PaginationMetadata in the response body metadata.pagination.
 export interface PaginationMeta {
   readonly currentPage: number;
-  readonly totalPages: number;
   readonly pageSize: number;
   readonly totalCount: number;
-  readonly hasNext: boolean;
+  readonly totalPages: number;
   readonly hasPrevious: boolean;
+  readonly hasNext: boolean;
 }

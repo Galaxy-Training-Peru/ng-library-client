@@ -1,2 +1,1 @@
-// Providers will be exported here
-export {};
+export { provideModules } from './modules.provider';

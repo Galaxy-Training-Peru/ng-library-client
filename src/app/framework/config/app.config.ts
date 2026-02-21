@@ -4,6 +4,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideConfig } from '@eac-arch/infrastructure-config';
 import { provideSecurity, authInterceptor } from '@eac-arch/infrastructure-security';
+import { provideModules } from '../providers';
 
 import { routes } from '../../ui/main/routes/app.routes';
 
@@ -16,5 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideConfig(),
     provideSecurity(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    provideModules(),
   ],
 };

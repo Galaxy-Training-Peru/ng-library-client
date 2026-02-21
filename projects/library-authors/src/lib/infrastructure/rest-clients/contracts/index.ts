@@ -1,0 +1,53 @@
+export type { PaginationMeta, PaginationHeader, ResponseMetadata } from './common';
+export type {
+  AuthorDto,
+  GetAllAuthorsHttpRequest,
+  GetAllAuthorsHttpResponse,
+  GetAuthorByIdHttpRequest,
+  GetAuthorByIdHttpResponse,
+  ExistsAuthorHttpRequest,
+  ExistsAuthorHttpResponse,
+  ExistsAuthorHttpData,
+  CheckAuthorNameUniquenessHttpRequest,
+  CheckAuthorNameUniquenessHttpResponse,
+  CheckAuthorNameUniquenessHttpData,
+} from './author';
+export type {
+  PaperDto,
+  GetAllPapersOfAuthorHttpRequest,
+  GetAllPapersOfAuthorHttpResponse,
+  GetPaperOfAuthorByPaperIdHttpRequest,
+  GetPaperOfAuthorByPaperIdHttpResponse,
+  ExistsPaperOfAuthorHttpRequest,
+  ExistsPaperOfAuthorHttpResponse,
+  ExistsPaperOfAuthorHttpData,
+  CheckPaperTitleUniquenessOfAuthorHttpRequest,
+  CheckPaperTitleUniquenessOfAuthorHttpResponse,
+  CheckPaperTitleUniquenessOfAuthorHttpData,
+} from './paper';
+export type {
+  AwardDto,
+  GetAllAwardsOfAuthorHttpRequest,
+  GetAllAwardsOfAuthorHttpResponse,
+  GetAwardOfAuthorByAwardIdHttpRequest,
+  GetAwardOfAuthorByAwardIdHttpResponse,
+  ExistsAwardOfAuthorHttpRequest,
+  ExistsAwardOfAuthorHttpResponse,
+  ExistsAwardOfAuthorHttpData,
+  CheckAwardTitleUniquenessOfAuthorHttpRequest,
+  CheckAwardTitleUniquenessOfAuthorHttpResponse,
+  CheckAwardTitleUniquenessOfAuthorHttpData,
+} from './award';
+export type {
+  AffiliationDto,
+  GetAllAffiliationsOfAuthorHttpRequest,
+  GetAllAffiliationsOfAuthorHttpResponse,
+  GetAffiliationOfAuthorByAffiliationIdHttpRequest,
+  GetAffiliationOfAuthorByAffiliationIdHttpResponse,
+  ExistsAffiliationOfAuthorHttpRequest,
+  ExistsAffiliationOfAuthorHttpResponse,
+  ExistsAffiliationOfAuthorHttpData,
+  CheckAffiliationNameUniquenessOfAuthorHttpRequest,
+  CheckAffiliationNameUniquenessOfAuthorHttpResponse,
+  CheckAffiliationNameUniquenessOfAuthorHttpData,
+} from './affiliation';
