@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule, type Sort } from '@angular/material/sort';
@@ -38,10 +39,16 @@ import { AuthorListViewModel } from './author-list.view-model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthorListPage {
-  protected readonly vm = inject(AuthorListViewModel);
+  protected readonly vm     = inject(AuthorListViewModel);
+  private   readonly router = inject(Router);
+  private   readonly route  = inject(ActivatedRoute);
   protected readonly displayedColumns: string[] = [
     'authorId', 'fullName', 'dateOfBirth', 'dateOfDeath', 'age', 'literaryGenre', 'isDeceased', 'actions',
   ];
+
+  protected onViewDetail(authorId: string): void {
+    this.router.navigate([authorId], { relativeTo: this.route });
+  }
 
   protected onSearchInput(value: string): void {
     this.vm.searchText.set(value);

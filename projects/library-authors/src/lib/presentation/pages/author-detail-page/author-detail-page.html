@@ -1,0 +1,254 @@
+<div class="detail-page flex flex-col">
+
+  <!-- Header -->
+  <div class="flex items-center gap-1">
+    <button mat-icon-button (click)="goBack()" matTooltip="Back to authors">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h3 class="m-0">
+      @if (vm.author(); as author) {
+        {{ author.fullName }}
+      } @else if (vm.notFound()) {
+        Author not found
+      }
+    </h3>
+  </div>
+
+  <!-- Not found -->
+  @if (vm.notFound()) {
+    <div class="empty-state flex flex-col items-center text-center">
+      <mat-icon>person_off</mat-icon>
+      <p>Author not found or the service is unavailable.</p>
+      <button mat-stroked-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Back to list
+      </button>
+    </div>
+  }
+
+  <!-- Content -->
+  @if (vm.author(); as author) {
+
+    <!-- Profile fields -->
+    <div class="detail-grid">
+
+      <div class="col-span-full">
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>ID</mat-label>
+          <mat-icon matPrefix>fingerprint</mat-icon>
+          <input matInput [value]="author.authorId" disabled />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>First name</mat-label>
+        <mat-icon matPrefix>badge</mat-icon>
+        <input matInput [value]="author.firstName" disabled />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Last name</mat-label>
+        <mat-icon matPrefix>badge</mat-icon>
+        <input matInput [value]="author.lastName" disabled />
+      </mat-form-field>
+
+      <div class="col-span-full">
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Full name</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput [value]="author.fullName" disabled />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Date of birth</mat-label>
+        <mat-icon matPrefix>cake</mat-icon>
+        <input matInput [value]="author.dateOfBirth | date:'mediumDate'" disabled />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Date of death</mat-label>
+        <mat-icon matPrefix>event_busy</mat-icon>
+        <input matInput [value]="author.dateOfDeath ? (author.dateOfDeath | date:'mediumDate') : '—'" disabled />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Literary genre</mat-label>
+        <mat-icon matPrefix>category</mat-icon>
+        <input matInput [value]="author.literaryGenreName" disabled />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Age</mat-label>
+        <mat-icon matPrefix>timelapse</mat-icon>
+        <input matInput [value]="author.age" disabled />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Status</mat-label>
+        @if (author.isDeceased) {
+          <mat-icon matPrefix>church</mat-icon>
+        } @else {
+          <mat-icon matPrefix>sentiment_very_satisfied</mat-icon>
+        }
+        <input matInput [value]="author.isDeceased ? 'Deceased' : 'Alive'" disabled />
+      </mat-form-field>
+
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Related entities tabs -->
+    <mat-tab-group animationDuration="200ms" class="detail-tabs">
+
+      <!-- Awards -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">emoji_events</mat-icon>
+          Awards
+          @if (vm.awards().length) {
+            <span class="tab-badge">{{ vm.awards().length }}</span>
+          }
+        </ng-template>
+
+        <mat-accordion multi>
+          @if (!vm.awards().length) {
+            <p class="text-center">No awards registered.</p>
+          }
+          @for (award of vm.awards(); track award.awardId) {
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon>emoji_events</mat-icon>
+                  {{ award.title }}
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ award.awardedOn | date:'mediumDate' }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="detail-grid">
+                <div class="col-span-full">
+                  <mat-form-field class="w-full" appearance="fill">
+                    <mat-label>Title</mat-label>
+                    <mat-icon matPrefix>emoji_events</mat-icon>
+                    <input matInput [value]="award.title" disabled />
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="w-full" appearance="fill">
+                  <mat-label>Awarded on</mat-label>
+                  <mat-icon matPrefix>calendar_today</mat-icon>
+                  <input matInput [value]="award.awardedOn | date:'mediumDate'" disabled />
+                </mat-form-field>
+              </div>
+            </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </mat-tab>
+
+      <!-- Papers -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">article</mat-icon>
+          Papers
+          @if (vm.papers().length) {
+            <span class="tab-badge">{{ vm.papers().length }}</span>
+          }
+        </ng-template>
+
+        <mat-accordion multi>
+          @if (!vm.papers().length) {
+            <p class="text-center">No papers registered.</p>
+          }
+          @for (paper of vm.papers(); track paper.paperId) {
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon>article</mat-icon>
+                  {{ paper.title }}
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ paper.publishedOn | date:'mediumDate' }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="detail-grid">
+                <div class="col-span-full">
+                  <mat-form-field class="w-full" appearance="fill">
+                    <mat-label>Title</mat-label>
+                    <mat-icon matPrefix>article</mat-icon>
+                    <input matInput [value]="paper.title" disabled />
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="w-full" appearance="fill">
+                  <mat-label>Published on</mat-label>
+                  <mat-icon matPrefix>calendar_today</mat-icon>
+                  <input matInput [value]="paper.publishedOn | date:'mediumDate'" disabled />
+                </mat-form-field>
+                @if (paper.url) {
+                  <mat-form-field class="w-full" appearance="fill">
+                    <mat-label>URL</mat-label>
+                    <mat-icon matPrefix>link</mat-icon>
+                    <input matInput [value]="paper.url" disabled />
+                    <a matSuffix [href]="paper.url" target="_blank" rel="noopener" mat-icon-button>
+                      <mat-icon>open_in_new</mat-icon>
+                    </a>
+                  </mat-form-field>
+                }
+              </div>
+            </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </mat-tab>
+
+      <!-- Affiliations -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">business</mat-icon>
+          Affiliations
+          @if (vm.affiliations().length) {
+            <span class="tab-badge">{{ vm.affiliations().length }}</span>
+          }
+        </ng-template>
+
+        <mat-accordion multi>
+          @if (!vm.affiliations().length) {
+            <p class="text-center">No affiliations registered.</p>
+          }
+          @for (aff of vm.affiliations(); track aff.affiliationId) {
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon>business</mat-icon>
+                  {{ aff.institutionName }}
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ aff.startDate | date:'mediumDate' }} — {{ aff.endDate ? (aff.endDate | date:'mediumDate') : 'Present' }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="detail-grid">
+                <div class="col-span-full">
+                  <mat-form-field class="w-full" appearance="fill">
+                    <mat-label>Institution</mat-label>
+                    <mat-icon matPrefix>business</mat-icon>
+                    <input matInput [value]="aff.institutionName" disabled />
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="w-full" appearance="fill">
+                  <mat-label>Start date</mat-label>
+                  <mat-icon matPrefix>event</mat-icon>
+                  <input matInput [value]="aff.startDate | date:'mediumDate'" disabled />
+                </mat-form-field>
+                <mat-form-field class="w-full" appearance="fill">
+                  <mat-label>End date</mat-label>
+                  <mat-icon matPrefix>event_busy</mat-icon>
+                  <input matInput [value]="aff.endDate ? (aff.endDate | date:'mediumDate') : 'Present'" disabled />
+                </mat-form-field>
+              </div>
+            </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </mat-tab>
+
+    </mat-tab-group>
+  }
+
+</div>

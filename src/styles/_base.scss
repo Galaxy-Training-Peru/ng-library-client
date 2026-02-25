@@ -9,7 +9,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: var(--lib-font-family);
 }
 
 body {
@@ -22,7 +22,43 @@ body {
 
 // CSS Variables
 :root {
-  --lib-radius: 12px;
+  // Font
+  --lib-font-family: Roboto, 'Helvetica Neue', sans-serif;
+  --lib-font-weight-medium: 500;
+  --lib-font-weight-bold: 700;
+
+  // Spacing scale (4px base unit)
+  --lib-space-xxs:  2px;
+  --lib-space-xs:   4px;
+  --lib-space-sm:   6px;
+  --lib-space-1:    8px;
+  --lib-space-md:  12px;
+  --lib-space-2:   16px;
+  --lib-space-3:   24px;
+  --lib-space-4:   32px;
+  --lib-space-xxl: 48px;
+
+  // Component sizes
+  --lib-badge-size: 20px;
+  --lib-icon-sm:   18px;
+  // Default list container offset (toolbar + card padding + filters + paginator).
+  // Override per-component via :host { --list-offset: Xpx }
+  --lib-list-offset: calc(var(--lib-toolbar-height) + 168px);
+
+  // Breakpoints
+  --lib-max-w-sm:  640px;
+  --lib-max-w-md:  768px;
+  --lib-max-w-lg: 1024px;
+  --lib-max-w-xl: 1280px;
+  --lib-container-max-width: 1200px;
+
+  // Radii (M3 corner scale)
+  --lib-radius-xs:  4px;
+  --lib-radius-sm:  8px;
+  --lib-radius:    12px;
+  --lib-radius-lg: 16px;
+  --lib-radius-xl: 28px;
+  --lib-radius-full: 9999px;
   --lib-icon-height: 24px;
   --lib-icon-width: 24px;
   --lib-icon-font-size: 24px;
@@ -48,9 +84,15 @@ body {
 }
 
 // Material Design Overrides
-// mat-card {
-//   --mat-card-elevated-container-color: var(--lib-card-bg);
-// }
+// Disabled form fields used for read-only display — text renders in active color
+.mdc-text-field--disabled .mdc-text-field__input,
+.mdc-text-field--disabled .mdc-floating-label,
+.mat-form-field-disabled .mat-mdc-form-field-icon-prefix mat-icon,
+.mat-form-field-disabled .mat-mdc-form-field-icon-suffix mat-icon {
+  color: var(--mat-sys-on-surface) !important;
+  -webkit-text-fill-color: var(--mat-sys-on-surface) !important;
+  opacity: 1 !important;
+}
 
 table[mat-table] th.mat-mdc-header-cell,
 .mat-mdc-table th.mat-mdc-header-cell {

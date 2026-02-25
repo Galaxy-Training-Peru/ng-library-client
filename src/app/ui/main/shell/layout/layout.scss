@@ -34,6 +34,17 @@
   }
 }
 
+.sidenav-scroll-wrapper {
+  // Hide scrollbar on desktop — each shell manages its own internal scroll.
+  @media (pointer: fine) {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
 .sidenav-content {
   border-radius: 0px var(--lib-radius) 0px 0px;
 
@@ -46,7 +57,12 @@
 
 .sidenav-content-internal {
   max-height: 100%;
-  overflow-y: auto;
+  overflow: hidden;
   padding: 16px;
   box-sizing: border-box;
+
+  // On mobile (touch), allow scroll — desktop hides it at the wrapper level
+  @media (pointer: coarse) {
+    overflow-y: auto;
+  }
 }

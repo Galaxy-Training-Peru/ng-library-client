@@ -17,13 +17,8 @@
 .list-container {
   display: flex;
   flex-direction: column;
-  height: fit-content;
-  max-height: calc(100vh - var(--list-offset, 232px));
+  max-height: calc(100vh - var(--list-offset, var(--lib-list-offset)));
   position: relative;
-
-  @supports not (height: fit-content) {
-    height: auto;
-  }
 
   .list-table-container {
     flex: 1 1 auto;
@@ -40,10 +35,6 @@
 .list-filters {
   display: grid;
   grid-template-columns: 1fr;
-
-  mat-form-field {
-    width: 100%;
-  }
 }
 
 // --- Row actions ---
@@ -58,7 +49,7 @@
 
 .list-accordion-container {
   display: none;
-  margin-bottom: var(--lib-gap, 16px);
+  margin-bottom: var(--lib-gap);
 }
 
 // --- Mobile portrait: hide table, show accordion ---
@@ -89,7 +80,7 @@
   }
 
   .field {
-    margin-bottom: var(--lib-gap, 16px);
+    margin-bottom: var(--lib-gap);
   }
 
   .mobile-icon {

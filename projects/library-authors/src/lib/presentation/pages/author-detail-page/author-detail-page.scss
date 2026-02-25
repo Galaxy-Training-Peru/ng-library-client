@@ -1,0 +1,11 @@
+// Author detail page
+// Layout provided by global _detail-page.scss.
+// Only component-specific overrides go here.
+
+// Flex chain: host must be a flex item so it fills the card-content column.
+:host {
+  display: flex;
+  flex-direction: column;
+  // flex: 1 1 auto;
+  min-height: 0;
+}

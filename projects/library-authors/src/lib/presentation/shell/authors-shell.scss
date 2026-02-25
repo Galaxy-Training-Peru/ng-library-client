@@ -1,3 +1,26 @@
+// Constrain the card to the available height so it never makes the outer
+// sidenav-content-internal generate a scrollbar.
+// 32px = top (16) + bottom (16) padding of .sidenav-content-internal
+// On mobile (pointer: coarse) no max-height — the page scrolls naturally
+mat-card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  @media (pointer: fine) {
+    max-height: calc(100dvh - var(--lib-toolbar-height) - 32px);
+  }
+}
+
+mat-card ::ng-deep .mat-mdc-card-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .title-text-enable {
   color: var(--mdc-text-button-label-text-color);
 }

@@ -1,0 +1,39 @@
+// --- Layout container ---
+.detail-page {
+  overflow: hidden;
+}
+
+// --- Field grids ---
+.detail-grid,
+.related-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--lib-space-2);
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Panel title icon alignment + color reset
+.mat-expansion-panel-header-title {
+  color: var(--mat-sys-on-surface);
+  align-items: center;
+}
+
+.mat-expansion-panel-header mat-icon {
+  margin-right: var(--lib-space-sm);
+  font-size: var(--lib-icon-sm);
+  width: var(--lib-icon-sm);
+  height: var(--lib-icon-sm);
+}
+
+// Accordion inside tab: add horizontal padding
+.detail-tabs mat-accordion {
+  display: block;  
+  padding: var(--lib-space-3) var(--lib-space-1) var(--lib-space-1) var(--lib-space-1);
+}
+
+.detail-tabs {
+  min-height: 0;
+}

@@ -2,6 +2,7 @@
 // Layout provided by global _list-page.scss via .list-container, .list-table-container, etc.
 // Only component-specific overrides go here.
 
+// 64px toolbar + 32px card padding + 72px filters row + 16px gap + 48px paginator
 :host {
   --list-offset: 232px;
 }

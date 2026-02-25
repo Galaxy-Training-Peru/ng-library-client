@@ -5,7 +5,7 @@
   <mat-progress-bar mode="indeterminate" [class.invisible]="!vm.isLoading()"></mat-progress-bar>
 
   <div class="list-filters">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="w-full">
       <mat-label>Search authors</mat-label>
       <input #searchInput matInput placeholder="Type a name, genre, etc."
              [value]="vm.searchText() ?? ''"
@@ -17,7 +17,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="genre-field">
+    <mat-form-field appearance="outline" class="w-full">
       <mat-label>Literary Genre</mat-label>
       <mat-select [ngModel]="vm.selectedLiteraryGenreId()"
                   (ngModelChange)="onLiteraryGenreChange($event)">
@@ -79,7 +79,7 @@
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let row" class="actions-cell">
           <div class="row-actions">
-            <button mat-icon-button matTooltip="View detail">
+            <button mat-icon-button matTooltip="View detail" (click)="onViewDetail(row.authorId)">
               <mat-icon>visibility</mat-icon>
             </button>
             <button mat-icon-button matTooltip="Edit">
@@ -107,7 +107,7 @@
             <mat-panel-description class="panel-actions">
               {{ a.literaryGenreName }}
               <span class="spacer"></span>
-              <button mat-icon-button aria-label="View detail" (click)="$event.stopPropagation()">
+              <button mat-icon-button aria-label="View detail" (click)="onViewDetail(a.authorId); $event.stopPropagation()">
                 <mat-icon>visibility</mat-icon>
               </button>
               <button mat-icon-button aria-label="Edit" (click)="$event.stopPropagation()">
