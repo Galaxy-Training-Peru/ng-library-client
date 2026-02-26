@@ -11,3 +11,11 @@ export type {
   CheckPaperTitleUniquenessOfAuthorHttpResponse,
   CheckPaperTitleUniquenessOfAuthorHttpData,
 } from './queries';
+export type {
+  AddPaperToAuthorHttpRequest,
+  AddPaperToAuthorHttpResponse,
+  UpsertPaperOfAuthorHttpRequest,
+  UpsertPaperOfAuthorHttpResponse,
+  UpdatePartialPaperOfAuthorHttpRequest,
+  RemovePaperFromAuthorHttpRequest,
+} from './commands';

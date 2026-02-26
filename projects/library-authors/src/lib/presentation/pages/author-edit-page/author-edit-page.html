@@ -1,0 +1,134 @@
+<div class="detail-page flex flex-col">
+
+  <!-- Header -->
+  <div class="flex items-center gap-1">
+    <button mat-icon-button (click)="goBack()" matTooltip="Back to author">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h3 class="m-0">Edit Author</h3>
+  </div>
+
+  <!-- Not found -->
+  @if (!author()) {
+    <div class="empty-state flex flex-col items-center text-center">
+      <mat-icon>person_off</mat-icon>
+      <p>Author not found or the service is unavailable.</p>
+      <button mat-stroked-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Back to list
+      </button>
+    </div>
+  }
+
+  @if (author()) {
+    <!-- Scrollable form area -->
+    <form [formGroup]="vm.form" class="edit-form-body">
+
+      <div class="detail-grid">
+
+        <!-- ID: readonly -->
+        <div class="col-span-full">
+          <mat-form-field class="w-full" appearance="outline">
+            <mat-label>ID</mat-label>
+            <mat-icon matPrefix>fingerprint</mat-icon>
+            <input matInput formControlName="authorId" />
+          </mat-form-field>
+        </div>
+
+        <!-- First name -->
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>First name</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <input matInput formControlName="firstName" />
+          @if (vm.form.controls.firstName.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Last name -->
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>Last name</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <input matInput formControlName="lastName" />
+          @if (vm.form.controls.lastName.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Full name: computed readonly -->
+        <div class="col-span-full">
+          <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Full name</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput formControlName="fullName" />
+          </mat-form-field>
+        </div>
+
+        <!-- Date of birth -->
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>Date of birth</mat-label>
+          <mat-icon matPrefix>cake</mat-icon>
+          <input matInput formControlName="dateOfBirth" placeholder="YYYY-MM-DD" />
+          @if (vm.form.controls.dateOfBirth.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Date of death -->
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>Date of death</mat-label>
+          <mat-icon matPrefix>event_busy</mat-icon>
+          <input matInput formControlName="dateOfDeath" placeholder="YYYY-MM-DD" />          
+        </mat-form-field>
+
+        <!-- Literary genre -->
+        <mat-form-field class="w-full" appearance="fill" floatLabel="always">
+          <mat-label>Literary genre</mat-label>
+          <mat-icon matPrefix>category</mat-icon>
+          <mat-select formControlName="literaryGenreId">
+            @for (genre of vm.genres(); track genre.literaryGenreId) {
+              <mat-option [value]="genre.literaryGenreId">{{ genre.name }}</mat-option>
+            }
+          </mat-select>
+          @if (vm.form.controls.literaryGenreId.hasError('required')) {
+            <mat-error>Required</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Age: computed readonly -->
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Age</mat-label>
+          <mat-icon matPrefix>timelapse</mat-icon>
+          <input matInput formControlName="age" />
+        </mat-form-field>
+
+        <!-- Is deceased: toggle -->
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Is deceased</mat-label>
+          @if (vm.form.controls.isDeceased.value) {
+            <mat-icon matPrefix>church</mat-icon>
+          } @else {
+            <mat-icon matPrefix>sentiment_very_satisfied</mat-icon>
+          }
+          <input matInput [value]="vm.form.controls.isDeceased.value ? 'Deceased' : 'Alive'" disabled />          
+        </mat-form-field>
+
+      </div>
+    </form>
+
+    <mat-divider></mat-divider>
+
+    <!-- Sticky actions -->
+    <div class="flex justify-end gap-1">
+      <button mat-stroked-button type="button" (click)="goBack()">
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+      <button mat-flat-button type="button" (click)="save()" [disabled]="vm.form.invalid">
+        <mat-icon>save</mat-icon>
+        Save
+      </button>
+    </div>
+  }
+
+</div>

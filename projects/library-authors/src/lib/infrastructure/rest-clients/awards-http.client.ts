@@ -12,6 +12,12 @@ import type {
   ExistsAwardOfAuthorHttpResponse,
   CheckAwardTitleUniquenessOfAuthorHttpRequest,
   CheckAwardTitleUniquenessOfAuthorHttpResponse,
+  AddAwardToAuthorHttpRequest,
+  AddAwardToAuthorHttpResponse,
+  UpsertAwardOfAuthorHttpRequest,
+  UpsertAwardOfAuthorHttpResponse,
+  UpdatePartialAwardOfAuthorHttpRequest,
+  RemoveAwardFromAuthorHttpRequest,
 } from './contracts';
 import type { AwardDto } from './dtos';
 
@@ -75,6 +81,41 @@ export class AwardsHttpClient {
         `${this.awardsUrl(request.authorId)}/check-uniqueness`,
         request,
       ),
+    );
+  }
+
+  async addAwardToAuthor(request: AddAwardToAuthorHttpRequest): Promise<AddAwardToAuthorHttpResponse> {
+    const response = await firstValueFrom(
+      this.http.post<{ data: AddAwardToAuthorHttpResponse }>(this.awardsUrl(request.authorId), request),
+    );
+    return response.data;
+  }
+
+  async upsertAwardOfAuthor(request: UpsertAwardOfAuthorHttpRequest): Promise<UpsertAwardOfAuthorHttpResponse> {
+    const { authorId, awardId, ...body } = request;
+    const response = await firstValueFrom(
+      this.http.put<{ data: NonNullable<UpsertAwardOfAuthorHttpResponse> } | null>(
+        `${this.awardsUrl(authorId)}/${awardId}`,
+        body,
+        { observe: 'response' },
+      ),
+    );
+    return response.status === 201 ? response.body!.data : null;
+  }
+
+  async updatePartialAwardOfAuthor(request: UpdatePartialAwardOfAuthorHttpRequest): Promise<void> {
+    await firstValueFrom(
+      this.http.patch(
+        `${this.awardsUrl(request.authorId)}/${request.awardId}`,
+        request.operations,
+        { headers: { 'Content-Type': 'application/json-patch+json' } },
+      ),
+    );
+  }
+
+  async removeAwardFromAuthor(request: RemoveAwardFromAuthorHttpRequest): Promise<void> {
+    await firstValueFrom(
+      this.http.delete(`${this.awardsUrl(request.authorId)}/${request.awardId}`),
     );
   }
 }

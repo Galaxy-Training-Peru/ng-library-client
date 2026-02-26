@@ -50,6 +50,10 @@ export class AuthorListPage {
     this.router.navigate([authorId], { relativeTo: this.route });
   }
 
+  protected onEditAuthor(authorId: string): void {
+    this.router.navigate([authorId, 'edit'], { relativeTo: this.route });
+  }
+
   protected onSearchInput(value: string): void {
     this.vm.searchText.set(value);
     this.vm.currentPage.set(0);

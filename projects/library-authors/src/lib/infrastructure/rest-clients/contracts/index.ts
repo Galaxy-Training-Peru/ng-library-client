@@ -1,4 +1,4 @@
-export type { PaginationMeta, PaginationHeader, ResponseMetadata } from './common';
+export type { PaginationMeta, PaginationHeader, ResponseMetadata, JsonPatchOperation } from './common';
 export type {
   AuthorDto,
   GetAllAuthorsHttpRequest,
@@ -11,6 +11,12 @@ export type {
   CheckAuthorNameUniquenessHttpRequest,
   CheckAuthorNameUniquenessHttpResponse,
   CheckAuthorNameUniquenessHttpData,
+  CreateAuthorHttpRequest,
+  CreateAuthorHttpResponse,
+  UpsertAuthorHttpRequest,
+  UpsertAuthorHttpResponse,
+  UpdatePartialAuthorHttpRequest,
+  DeleteAuthorHttpRequest,
 } from './author';
 export type {
   PaperDto,
@@ -24,6 +30,12 @@ export type {
   CheckPaperTitleUniquenessOfAuthorHttpRequest,
   CheckPaperTitleUniquenessOfAuthorHttpResponse,
   CheckPaperTitleUniquenessOfAuthorHttpData,
+  AddPaperToAuthorHttpRequest,
+  AddPaperToAuthorHttpResponse,
+  UpsertPaperOfAuthorHttpRequest,
+  UpsertPaperOfAuthorHttpResponse,
+  UpdatePartialPaperOfAuthorHttpRequest,
+  RemovePaperFromAuthorHttpRequest,
 } from './paper';
 export type {
   AwardDto,
@@ -37,6 +49,12 @@ export type {
   CheckAwardTitleUniquenessOfAuthorHttpRequest,
   CheckAwardTitleUniquenessOfAuthorHttpResponse,
   CheckAwardTitleUniquenessOfAuthorHttpData,
+  AddAwardToAuthorHttpRequest,
+  AddAwardToAuthorHttpResponse,
+  UpsertAwardOfAuthorHttpRequest,
+  UpsertAwardOfAuthorHttpResponse,
+  UpdatePartialAwardOfAuthorHttpRequest,
+  RemoveAwardFromAuthorHttpRequest,
 } from './award';
 export type {
   AffiliationDto,
@@ -50,4 +68,10 @@ export type {
   CheckAffiliationNameUniquenessOfAuthorHttpRequest,
   CheckAffiliationNameUniquenessOfAuthorHttpResponse,
   CheckAffiliationNameUniquenessOfAuthorHttpData,
+  AddAffiliationToAuthorHttpRequest,
+  AddAffiliationToAuthorHttpResponse,
+  UpsertAffiliationOfAuthorHttpRequest,
+  UpsertAffiliationOfAuthorHttpResponse,
+  UpdatePartialAffiliationOfAuthorHttpRequest,
+  RemoveAffiliationFromAuthorHttpRequest,
 } from './affiliation';

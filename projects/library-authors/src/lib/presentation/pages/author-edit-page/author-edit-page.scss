@@ -1,0 +1,10 @@
+// Author edit page
+// Layout provided by .detail-page (flex column, overflow hidden) from _detail-page.scss
+// Scrollable form + sticky actions bar at bottom.
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
-import { AFFILIATION_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
+import { AFFILIATION_QUERY_SERVICE } from '../../../../contracts/queries';
 import type { CheckAffiliationNameUniquenessOfAuthorQuery } from './check-affiliation-name-uniqueness-of-author.query';
 import type { CheckAffiliationNameUniquenessOfAuthorResult } from './check-affiliation-name-uniqueness-of-author.result';
 

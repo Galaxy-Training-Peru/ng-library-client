@@ -7,6 +7,7 @@
 .detail-grid,
 .related-grid {
   display: grid;
+  padding: var(--lib-space-2) 0;
   grid-template-columns: 1fr 1fr;
   column-gap: var(--lib-space-2);
 
@@ -30,8 +31,9 @@
 
 // Accordion inside tab: add horizontal padding
 .detail-tabs mat-accordion {
-  display: block;  
+  display: block;
   padding: var(--lib-space-3) var(--lib-space-1) var(--lib-space-1) var(--lib-space-1);
+  --mat-expansion-container-background-color: var(--mat-sys-surface);
 }
 
 .detail-tabs {

@@ -12,6 +12,12 @@ import type {
   ExistsAffiliationOfAuthorHttpResponse,
   CheckAffiliationNameUniquenessOfAuthorHttpRequest,
   CheckAffiliationNameUniquenessOfAuthorHttpResponse,
+  AddAffiliationToAuthorHttpRequest,
+  AddAffiliationToAuthorHttpResponse,
+  UpsertAffiliationOfAuthorHttpRequest,
+  UpsertAffiliationOfAuthorHttpResponse,
+  UpdatePartialAffiliationOfAuthorHttpRequest,
+  RemoveAffiliationFromAuthorHttpRequest,
 } from './contracts';
 import type { AffiliationDto } from './dtos';
 
@@ -75,6 +81,41 @@ export class AffiliationsHttpClient {
         `${this.affiliationsUrl(request.authorId)}/check-uniqueness`,
         request,
       ),
+    );
+  }
+
+  async addAffiliationToAuthor(request: AddAffiliationToAuthorHttpRequest): Promise<AddAffiliationToAuthorHttpResponse> {
+    const response = await firstValueFrom(
+      this.http.post<{ data: AddAffiliationToAuthorHttpResponse }>(this.affiliationsUrl(request.authorId), request),
+    );
+    return response.data;
+  }
+
+  async upsertAffiliationOfAuthor(request: UpsertAffiliationOfAuthorHttpRequest): Promise<UpsertAffiliationOfAuthorHttpResponse> {
+    const { authorId, affiliationId, ...body } = request;
+    const response = await firstValueFrom(
+      this.http.put<{ data: NonNullable<UpsertAffiliationOfAuthorHttpResponse> } | null>(
+        `${this.affiliationsUrl(authorId)}/${affiliationId}`,
+        body,
+        { observe: 'response' },
+      ),
+    );
+    return response.status === 201 ? response.body!.data : null;
+  }
+
+  async updatePartialAffiliationOfAuthor(request: UpdatePartialAffiliationOfAuthorHttpRequest): Promise<void> {
+    await firstValueFrom(
+      this.http.patch(
+        `${this.affiliationsUrl(request.authorId)}/${request.affiliationId}`,
+        request.operations,
+        { headers: { 'Content-Type': 'application/json-patch+json' } },
+      ),
+    );
+  }
+
+  async removeAffiliationFromAuthor(request: RemoveAffiliationFromAuthorHttpRequest): Promise<void> {
+    await firstValueFrom(
+      this.http.delete(`${this.affiliationsUrl(request.authorId)}/${request.affiliationId}`),
     );
   }
 }

@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
 import { QuerySpecificationBuilder } from '@eac-arch/shared-kernel';
-import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
-import { AFFILIATION_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
+import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/queries';
+import { AFFILIATION_QUERY_SERVICE } from '../../../../contracts/queries';
 import type { AffiliationModel } from '../../../../models';
 import { AffiliationByNameSpec, AffiliationByActivePeriodSpec, AffiliationSearchSpec } from '../../../../../domain/specifications';
 import type { GetAllAffiliationsOfAuthorQuery } from './get-all-affiliations-of-author.query';

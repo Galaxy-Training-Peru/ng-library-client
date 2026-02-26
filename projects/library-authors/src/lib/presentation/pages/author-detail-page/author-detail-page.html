@@ -5,17 +5,22 @@
     <button mat-icon-button (click)="goBack()" matTooltip="Back to authors">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h3 class="m-0">
-      @if (vm.author(); as author) {
+    <h3 class="m-0 flex-1 leading-none">
+      @if (authorDetail()?.author; as author) {
         {{ author.fullName }}
-      } @else if (vm.notFound()) {
+      } @else {
         Author not found
       }
     </h3>
+    @if (authorDetail()?.author) {
+      <button mat-icon-button (click)="goEdit()" matTooltip="Edit author">
+        <mat-icon>edit</mat-icon>
+      </button>
+    }
   </div>
 
   <!-- Not found -->
-  @if (vm.notFound()) {
+  @if (!authorDetail()?.author) {
     <div class="empty-state flex flex-col items-center text-center">
       <mat-icon>person_off</mat-icon>
       <p>Author not found or the service is unavailable.</p>
@@ -27,7 +32,7 @@
   }
 
   <!-- Content -->
-  @if (vm.author(); as author) {
+  @if (authorDetail()?.author; as author) {
 
     <!-- Profile fields -->
     <div class="detail-grid">
@@ -69,13 +74,15 @@
       <mat-form-field class="w-full" appearance="fill">
         <mat-label>Date of death</mat-label>
         <mat-icon matPrefix>event_busy</mat-icon>
-        <input matInput [value]="author.dateOfDeath ? (author.dateOfDeath | date:'mediumDate') : '—'" disabled />
+        <input matInput [value]="author.dateOfDeath ? (author.dateOfDeath | date:'mediumDate') : '\u2014'" disabled />
       </mat-form-field>
 
-      <mat-form-field class="w-full" appearance="fill">
+      <mat-form-field class="w-full" appearance="fill" floatLabel="always">
         <mat-label>Literary genre</mat-label>
         <mat-icon matPrefix>category</mat-icon>
-        <input matInput [value]="author.literaryGenreName" disabled />
+        <mat-select [ngModel]="author.literaryGenreId" disabled>
+          <mat-option [value]="author.literaryGenreId">{{ author.literaryGenreName }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field class="w-full" appearance="outline">
@@ -85,7 +92,7 @@
       </mat-form-field>
 
       <mat-form-field class="w-full" appearance="outline">
-        <mat-label>Status</mat-label>
+        <mat-label>Is deceased</mat-label>
         @if (author.isDeceased) {
           <mat-icon matPrefix>church</mat-icon>
         } @else {
@@ -106,16 +113,16 @@
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">emoji_events</mat-icon>
           Awards
-          @if (vm.awards().length) {
-            <span class="tab-badge">{{ vm.awards().length }}</span>
+          @if (authorDetail()!.awards.length) {
+            <span class="tab-badge">{{ authorDetail()!.awards.length }}</span>
           }
         </ng-template>
 
         <mat-accordion multi>
-          @if (!vm.awards().length) {
+          @if (!authorDetail()!.awards.length) {
             <p class="text-center">No awards registered.</p>
           }
-          @for (award of vm.awards(); track award.awardId) {
+          @for (award of authorDetail()!.awards; track award.awardId) {
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -150,16 +157,16 @@
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">article</mat-icon>
           Papers
-          @if (vm.papers().length) {
-            <span class="tab-badge">{{ vm.papers().length }}</span>
+          @if (authorDetail()!.papers.length) {
+            <span class="tab-badge">{{ authorDetail()!.papers.length }}</span>
           }
         </ng-template>
 
         <mat-accordion multi>
-          @if (!vm.papers().length) {
+          @if (!authorDetail()!.papers.length) {
             <p class="text-center">No papers registered.</p>
           }
-          @for (paper of vm.papers(); track paper.paperId) {
+          @for (paper of authorDetail()!.papers; track paper.paperId) {
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -204,16 +211,16 @@
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">business</mat-icon>
           Affiliations
-          @if (vm.affiliations().length) {
-            <span class="tab-badge">{{ vm.affiliations().length }}</span>
+          @if (authorDetail()!.affiliations.length) {
+            <span class="tab-badge">{{ authorDetail()!.affiliations.length }}</span>
           }
         </ng-template>
 
         <mat-accordion multi>
-          @if (!vm.affiliations().length) {
+          @if (!authorDetail()!.affiliations.length) {
             <p class="text-center">No affiliations registered.</p>
           }
-          @for (aff of vm.affiliations(); track aff.affiliationId) {
+          @for (aff of authorDetail()!.affiliations; track aff.affiliationId) {
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
-import { AWARD_QUERY_SERVICE, type AwardQueryService } from '../../../../contracts/persistence/queries';
+import { AWARD_QUERY_SERVICE, type AwardQueryService } from '../../../../contracts/queries';
 import type { ExistsAwardOfAuthorQuery } from './exists-award-of-author.query';
 import type { ExistsAwardOfAuthorResult } from './exists-award-of-author.result';
 

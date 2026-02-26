@@ -11,3 +11,11 @@ export type {
   CheckAuthorNameUniquenessHttpResponse,
   CheckAuthorNameUniquenessHttpData,
 } from './queries';
+export type {
+  CreateAuthorHttpRequest,
+  CreateAuthorHttpResponse,
+  UpsertAuthorHttpRequest,
+  UpsertAuthorHttpResponse,
+  UpdatePartialAuthorHttpRequest,
+  DeleteAuthorHttpRequest,
+} from './commands';

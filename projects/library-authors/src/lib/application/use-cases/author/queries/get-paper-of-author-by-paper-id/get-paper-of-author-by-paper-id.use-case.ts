@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
-import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
-import { PAPER_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
+import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/queries';
+import { PAPER_QUERY_SERVICE } from '../../../../contracts/queries';
 import type { GetPaperOfAuthorByPaperIdQuery } from './get-paper-of-author-by-paper-id.query';
 import type { GetPaperOfAuthorByPaperIdResult } from './get-paper-of-author-by-paper-id.result';
 

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
-import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
-import { AWARD_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
+import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/queries';
+import { AWARD_QUERY_SERVICE } from '../../../../contracts/queries';
 import type { GetAwardOfAuthorByAwardIdQuery } from './get-award-of-author-by-award-id.query';
 import type { GetAwardOfAuthorByAwardIdResult } from './get-award-of-author-by-award-id.result';
 

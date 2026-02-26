@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
-import { PAPER_QUERY_SERVICE, type PaperQueryService } from '../../../../contracts/persistence/queries';
+import { PAPER_QUERY_SERVICE, type PaperQueryService } from '../../../../contracts/queries';
 import type { ExistsPaperOfAuthorQuery } from './exists-paper-of-author.query';
 import type { ExistsPaperOfAuthorResult } from './exists-paper-of-author.result';
 

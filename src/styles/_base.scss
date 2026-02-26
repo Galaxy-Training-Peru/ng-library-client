@@ -88,7 +88,8 @@ body {
 .mdc-text-field--disabled .mdc-text-field__input,
 .mdc-text-field--disabled .mdc-floating-label,
 .mat-form-field-disabled .mat-mdc-form-field-icon-prefix mat-icon,
-.mat-form-field-disabled .mat-mdc-form-field-icon-suffix mat-icon {
+.mat-form-field-disabled .mat-mdc-form-field-icon-suffix mat-icon,
+.mat-mdc-select-disabled {
   color: var(--mat-sys-on-surface) !important;
   -webkit-text-fill-color: var(--mat-sys-on-surface) !important;
   opacity: 1 !important;

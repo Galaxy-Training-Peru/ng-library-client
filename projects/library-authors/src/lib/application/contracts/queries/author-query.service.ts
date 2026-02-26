@@ -1,8 +1,8 @@
 import { InjectionToken } from '@angular/core';
-import type { PagedList, QueryService, Specification, SortField } from '@eac-arch/shared-kernel';
-import type { AuthorModel } from '../../../models';
+import type { PagedList, IQueryService, Specification, SortField } from '@eac-arch/shared-kernel';
+import type { AuthorModel } from '../../models';
 
-export interface AuthorQueryService extends QueryService<AuthorModel> {
+export interface AuthorQueryService extends IQueryService<AuthorModel> {
   getAllAuthors(
     pageNumber: number,
     pageSize: number,

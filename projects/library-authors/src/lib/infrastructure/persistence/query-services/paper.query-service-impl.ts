@@ -3,17 +3,18 @@ import {
   type PagedList,
   type Specification,
   type SortField,
-  QuerySpecification,
-  createPagedList,
-  formatSortFields,
 } from '@eac-arch/shared-kernel';
+import { HttpQueryService } from '@eac-arch/infrastructure-persistence';
 import type { PaperQueryService } from '../../../application/contracts';
 import type { PaperModel } from '../../../application/models';
 import { PapersHttpAgent } from '../../http-agents';
 import type { PaperQueryOptions } from '../../http-agents';
 
 @Injectable({ providedIn: 'root' })
-export class PaperQueryServiceImpl implements PaperQueryService {
+export class PaperQueryServiceImpl
+  extends HttpQueryService<PaperModel, PaperQueryOptions>
+  implements PaperQueryService {
+
   private readonly agent = inject(PapersHttpAgent);
 
   async getAllPapersOfAuthor(
@@ -39,25 +40,5 @@ export class PaperQueryServiceImpl implements PaperQueryService {
 
   checkPaperTitleUniquenessOfAuthor(authorId: string, title: string, excludePaperId?: string): Promise<boolean> {
     return this.agent.checkPaperTitleUniquenessOfAuthor(authorId, title, excludePaperId);
-  }
-
-  private buildOptions(
-    spec?: Specification<PaperModel>,
-    sortFields?: SortField[],
-    fields?: string[],
-  ): PaperQueryOptions {
-    const options: PaperQueryOptions = {};
-
-    if (spec instanceof QuerySpecification) {
-      Object.assign(options, spec.toQueryParams());
-    }
-    if (sortFields?.length) options.sort = formatSortFields(sortFields);
-    if (fields?.length) options.fields = fields.join(',');
-
-    return options;
-  }
-
-  private toPagedList(source: { items: readonly PaperModel[]; totalCount: number; currentPage: number; pageSize: number }): PagedList<PaperModel> {
-    return createPagedList([...source.items], source.totalCount, source.currentPage, source.pageSize);
   }
 }

@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import type { PagedList, Specification, SortField } from '@eac-arch/shared-kernel';
-import type { AwardModel } from '../../../models';
+import type { AwardModel } from '../../models';
 
 export interface AwardQueryService {
   getAllAwardsOfAuthor(

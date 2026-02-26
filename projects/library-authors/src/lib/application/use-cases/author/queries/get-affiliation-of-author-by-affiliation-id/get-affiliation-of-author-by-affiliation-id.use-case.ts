@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
-import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
-import { AFFILIATION_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
+import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/queries';
+import { AFFILIATION_QUERY_SERVICE } from '../../../../contracts/queries';
 import type { GetAffiliationOfAuthorByAffiliationIdQuery } from './get-affiliation-of-author-by-affiliation-id.query';
 import type { GetAffiliationOfAuthorByAffiliationIdResult } from './get-affiliation-of-author-by-affiliation-id.result';
 

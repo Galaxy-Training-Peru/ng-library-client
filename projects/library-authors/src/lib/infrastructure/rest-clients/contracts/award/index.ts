@@ -11,3 +11,11 @@ export type {
   CheckAwardTitleUniquenessOfAuthorHttpResponse,
   CheckAwardTitleUniquenessOfAuthorHttpData,
 } from './queries';
+export type {
+  AddAwardToAuthorHttpRequest,
+  AddAwardToAuthorHttpResponse,
+  UpsertAwardOfAuthorHttpRequest,
+  UpsertAwardOfAuthorHttpResponse,
+  UpdatePartialAwardOfAuthorHttpRequest,
+  RemoveAwardFromAuthorHttpRequest,
+} from './commands';

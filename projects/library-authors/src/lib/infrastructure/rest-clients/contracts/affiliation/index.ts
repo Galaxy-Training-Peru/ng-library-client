@@ -11,3 +11,11 @@ export type {
   CheckAffiliationNameUniquenessOfAuthorHttpResponse,
   CheckAffiliationNameUniquenessOfAuthorHttpData,
 } from './queries';
+export type {
+  AddAffiliationToAuthorHttpRequest,
+  AddAffiliationToAuthorHttpResponse,
+  UpsertAffiliationOfAuthorHttpRequest,
+  UpsertAffiliationOfAuthorHttpResponse,
+  UpdatePartialAffiliationOfAuthorHttpRequest,
+  RemoveAffiliationFromAuthorHttpRequest,
+} from './commands';

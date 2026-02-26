@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
-import { AWARD_QUERY_SERVICE } from '../../../../contracts/persistence/queries';
+import { AWARD_QUERY_SERVICE } from '../../../../contracts/queries';
 import type { CheckAwardTitleUniquenessOfAuthorQuery } from './check-award-title-uniqueness-of-author.query';
 import type { CheckAwardTitleUniquenessOfAuthorResult } from './check-award-title-uniqueness-of-author.result';
 

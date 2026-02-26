@@ -2,8 +2,6 @@
 
 <div class="list-container">
 
-  <mat-progress-bar mode="indeterminate" [class.invisible]="!vm.isLoading()"></mat-progress-bar>
-
   <div class="list-filters">
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Search authors</mat-label>
@@ -82,7 +80,7 @@
             <button mat-icon-button matTooltip="View detail" (click)="onViewDetail(row.authorId)">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button matTooltip="Edit">
+            <button mat-icon-button matTooltip="Edit" (click)="onEditAuthor(row.authorId)">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" matTooltip="Delete">
@@ -110,7 +108,7 @@
               <button mat-icon-button aria-label="View detail" (click)="onViewDetail(a.authorId); $event.stopPropagation()">
                 <mat-icon>visibility</mat-icon>
               </button>
-              <button mat-icon-button aria-label="Edit" (click)="$event.stopPropagation()">
+              <button mat-icon-button aria-label="Edit" (click)="onEditAuthor(a.authorId); $event.stopPropagation()">
                 <mat-icon>edit</mat-icon>
               </button>
               <button mat-icon-button aria-label="Delete" (click)="$event.stopPropagation()">
@@ -128,11 +126,11 @@
           </div>
 
           <mat-action-row>
-            <button mat-stroked-button>
+            <button mat-stroked-button (click)="onViewDetail(a.authorId)">
               <mat-icon>visibility</mat-icon>
               View
             </button>
-            <button mat-stroked-button>
+            <button mat-stroked-button (click)="onEditAuthor(a.authorId)">
               <mat-icon>edit</mat-icon>
               Edit
             </button>

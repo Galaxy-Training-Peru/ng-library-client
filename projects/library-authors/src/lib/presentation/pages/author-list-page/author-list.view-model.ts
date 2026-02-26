@@ -34,7 +34,6 @@ export class AuthorListViewModel {
 
   readonly authors        = signal<readonly AuthorModel[]>([]);
   readonly totalCount     = signal(0);
-  readonly isLoading      = signal(false);
   readonly literaryGenres = signal<readonly LiteraryGenreDto[]>([]);
 
   private readonly queryParams = computed(() => ({
@@ -63,7 +62,6 @@ export class AuthorListViewModel {
   }
 
   private async doLoadAuthors(params: ReturnType<typeof this.queryParams>): Promise<void> {
-    this.isLoading.set(true);
     try {
       const request: GetAllAuthorsRequest = {
         pageNumber: params.pageIndex + 1,
@@ -78,8 +76,6 @@ export class AuthorListViewModel {
     } catch {
       this.authors.set([]);
       this.totalCount.set(0);
-    } finally {
-      this.isLoading.set(false);
     }
   }
 }

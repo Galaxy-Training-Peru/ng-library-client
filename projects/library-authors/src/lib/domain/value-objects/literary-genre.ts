@@ -1,10 +1,9 @@
 import { ValueObject } from '@eac-arch/shared-kernel';
 import { InvalidLiteraryGenreException } from '../exceptions/invalid-literary-genre.exception';
 
-// Reference to a literary genre catalog entry.
-// Carries both the id and display name.
+// Carries the id and display name of a literary genre catalog entry.
 // Immutable. Equality is by id only.
-export class LiteraryGenreRef extends ValueObject {
+export class LiteraryGenre extends ValueObject {
   readonly id: string;
   readonly name: string;
 
@@ -16,8 +15,8 @@ export class LiteraryGenreRef extends ValueObject {
     Object.freeze(this);
   }
 
-  static create(id: string, name: string): LiteraryGenreRef {
-    return new LiteraryGenreRef(id, name);
+  static create(id: string, name: string): LiteraryGenre {
+    return new LiteraryGenre(id, name);
   }
 
   override toString(): string {

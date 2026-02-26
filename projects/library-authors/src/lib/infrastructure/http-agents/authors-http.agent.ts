@@ -1,17 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { PagedList } from '@eac-arch/infrastructure-http';
+import { PagedList, type JsonPatchOperation } from '@eac-arch/infrastructure-http';
 import type { AuthorModel } from '../../application/models';
-import { AuthorsHttpClient, type GetAllAuthorsHttpRequest } from '../rest-clients';
-
-export interface AuthorQueryOptions {
-  sort?: string;
-  search?: string;
-  firstName?: string;
-  lastName?: string;
-  literaryGenreId?: string;
-  fields?: string;
-}
+import {
+  AuthorsHttpClient,
+  type GetAllAuthorsHttpRequest,
+  type CreateAuthorHttpRequest,
+  type UpsertAuthorHttpRequest,
+} from '../rest-clients';
+import type { AuthorQueryOptions, CreateAuthorData, UpsertAuthorData } from './contracts';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorsHttpAgent {
@@ -49,5 +46,25 @@ export class AuthorsHttpAgent {
   async checkAuthorNameUniqueness(firstName: string, lastName: string, excludeAuthorId?: string): Promise<boolean> {
     const response = await this.httpClient.checkAuthorNameUniqueness({ firstName, lastName, excludeAuthorId });
     return response.data.isUnique;
+  }
+
+  async createAuthor(data: CreateAuthorData): Promise<AuthorModel> {
+    const request: CreateAuthorHttpRequest = { ...data };
+    const dto = await this.httpClient.createAuthor(request);
+    return { ...dto };
+  }
+
+  async upsertAuthor(authorId: string, data: UpsertAuthorData): Promise<AuthorModel | null> {
+    const request: UpsertAuthorHttpRequest = { authorId, ...data };
+    const dto = await this.httpClient.upsertAuthor(request);
+    return dto ? { ...dto } : null;
+  }
+
+  async updatePartialAuthor(authorId: string, operations: JsonPatchOperation[]): Promise<void> {
+    await this.httpClient.updatePartialAuthor({ authorId, operations });
+  }
+
+  async deleteAuthor(authorId: string): Promise<void> {
+    await this.httpClient.deleteAuthor({ authorId });
   }
 }

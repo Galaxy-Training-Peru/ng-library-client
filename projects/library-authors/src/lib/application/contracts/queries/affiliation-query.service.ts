@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import type { PagedList, Specification, SortField } from '@eac-arch/shared-kernel';
-import type { AffiliationModel } from '../../../models';
+import type { AffiliationModel } from '../../models';
 
 export interface AffiliationQueryService {
   getAllAffiliationsOfAuthor(

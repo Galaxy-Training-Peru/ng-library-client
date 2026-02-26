@@ -1,3 +1,13 @@
 export { InvalidFullNameException } from './invalid-full-name.exception';
 export { InvalidLifeSpanException } from './invalid-life-span.exception';
 export { InvalidLiteraryGenreException } from './invalid-literary-genre.exception';
+export { InvalidAffiliationNameException } from './invalid-affiliation-name.exception';
+export { InvalidAffiliationPeriodException } from './invalid-affiliation-period.exception';
+export { InvalidAffiliationDateException } from './invalid-affiliation-date.exception';
+export { InvalidAwardTitleException } from './invalid-award-title.exception';
+export { InvalidAwardDateException } from './invalid-award-date.exception';
+export { InvalidPaperTitleException } from './invalid-paper-title.exception';
+export { InvalidPaperDateException } from './invalid-paper-date.exception';
+export { DuplicateAwardTitleException } from './duplicate-award-title.exception';
+export { DuplicatePaperTitleException } from './duplicate-paper-title.exception';
+export { DuplicateAffiliationNameException } from './duplicate-affiliation-name.exception';

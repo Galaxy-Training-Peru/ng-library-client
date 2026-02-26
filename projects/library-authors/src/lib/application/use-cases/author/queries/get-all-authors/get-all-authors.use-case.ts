@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
 import { QuerySpecificationBuilder } from '@eac-arch/shared-kernel';
-import { AUTHOR_QUERY_SERVICE, type AuthorQueryService } from '../../../../contracts/persistence/queries';
+import { AUTHOR_QUERY_SERVICE, type AuthorQueryService } from '../../../../contracts/queries';
 import type { AuthorModel } from '../../../../models';
 import { AuthorByNameSpec, AuthorByLiteraryGenreIdSpec, AuthorSearchSpec } from '../../../../../domain/specifications';
 import type { GetAllAuthorsQuery } from './get-all-authors.query';

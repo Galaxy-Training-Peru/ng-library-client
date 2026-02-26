@@ -12,6 +12,12 @@ import type {
   ExistsAuthorHttpResponse,
   CheckAuthorNameUniquenessHttpRequest,
   CheckAuthorNameUniquenessHttpResponse,
+  CreateAuthorHttpRequest,
+  CreateAuthorHttpResponse,
+  UpsertAuthorHttpRequest,
+  UpsertAuthorHttpResponse,
+  UpdatePartialAuthorHttpRequest,
+  DeleteAuthorHttpRequest,
 } from './contracts';
 import type { AuthorDto } from './dtos';
 
@@ -69,6 +75,41 @@ export class AuthorsHttpClient {
   async checkAuthorNameUniqueness(request: CheckAuthorNameUniquenessHttpRequest): Promise<CheckAuthorNameUniquenessHttpResponse> {
     return firstValueFrom(
       this.http.post<CheckAuthorNameUniquenessHttpResponse>(`${this.baseUrl}/check-uniqueness`, request),
+    );
+  }
+
+  async createAuthor(request: CreateAuthorHttpRequest): Promise<CreateAuthorHttpResponse> {
+    const response = await firstValueFrom(
+      this.http.post<{ data: CreateAuthorHttpResponse }>(this.baseUrl, request),
+    );
+    return response.data;
+  }
+
+  async upsertAuthor(request: UpsertAuthorHttpRequest): Promise<UpsertAuthorHttpResponse> {
+    const { authorId, ...body } = request;
+    const response = await firstValueFrom(
+      this.http.put<{ data: UpsertAuthorHttpResponse } | null>(
+        `${this.baseUrl}/${authorId}`,
+        body,
+        { observe: 'response' },
+      ),
+    );
+    return response.status === 201 ? response.body!.data : null;
+  }
+
+  async updatePartialAuthor(request: UpdatePartialAuthorHttpRequest): Promise<void> {
+    await firstValueFrom(
+      this.http.patch(
+        `${this.baseUrl}/${request.authorId}`,
+        request.operations,
+        { headers: { 'Content-Type': 'application/json-patch+json' } },
+      ),
+    );
+  }
+
+  async deleteAuthor(request: DeleteAuthorHttpRequest): Promise<void> {
+    await firstValueFrom(
+      this.http.delete(`${this.baseUrl}/${request.authorId}`),
     );
   }
 }

@@ -12,6 +12,12 @@ import type {
   ExistsPaperOfAuthorHttpResponse,
   CheckPaperTitleUniquenessOfAuthorHttpRequest,
   CheckPaperTitleUniquenessOfAuthorHttpResponse,
+  AddPaperToAuthorHttpRequest,
+  AddPaperToAuthorHttpResponse,
+  UpsertPaperOfAuthorHttpRequest,
+  UpsertPaperOfAuthorHttpResponse,
+  UpdatePartialPaperOfAuthorHttpRequest,
+  RemovePaperFromAuthorHttpRequest,
 } from './contracts';
 import type { PaperDto } from './dtos';
 
@@ -75,6 +81,41 @@ export class PapersHttpClient {
         `${this.papersUrl(request.authorId)}/check-uniqueness`,
         request,
       ),
+    );
+  }
+
+  async addPaperToAuthor(request: AddPaperToAuthorHttpRequest): Promise<AddPaperToAuthorHttpResponse> {
+    const response = await firstValueFrom(
+      this.http.post<{ data: AddPaperToAuthorHttpResponse }>(this.papersUrl(request.authorId), request),
+    );
+    return response.data;
+  }
+
+  async upsertPaperOfAuthor(request: UpsertPaperOfAuthorHttpRequest): Promise<UpsertPaperOfAuthorHttpResponse> {
+    const { authorId, paperId, ...body } = request;
+    const response = await firstValueFrom(
+      this.http.put<{ data: NonNullable<UpsertPaperOfAuthorHttpResponse> } | null>(
+        `${this.papersUrl(authorId)}/${paperId}`,
+        body,
+        { observe: 'response' },
+      ),
+    );
+    return response.status === 201 ? response.body!.data : null;
+  }
+
+  async updatePartialPaperOfAuthor(request: UpdatePartialPaperOfAuthorHttpRequest): Promise<void> {
+    await firstValueFrom(
+      this.http.patch(
+        `${this.papersUrl(request.authorId)}/${request.paperId}`,
+        request.operations,
+        { headers: { 'Content-Type': 'application/json-patch+json' } },
+      ),
+    );
+  }
+
+  async removePaperFromAuthor(request: RemovePaperFromAuthorHttpRequest): Promise<void> {
+    await firstValueFrom(
+      this.http.delete(`${this.papersUrl(request.authorId)}/${request.paperId}`),
     );
   }
 }

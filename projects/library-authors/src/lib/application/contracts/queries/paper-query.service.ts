@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import type { PagedList, Specification, SortField } from '@eac-arch/shared-kernel';
-import type { PaperModel } from '../../../models';
+import type { PaperModel } from '../../models';
 
 export interface PaperQueryService {
   getAllPapersOfAuthor(

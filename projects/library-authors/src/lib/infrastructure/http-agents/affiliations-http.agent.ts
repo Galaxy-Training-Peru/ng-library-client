@@ -1,16 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { PagedList } from '@eac-arch/infrastructure-http';
+import { PagedList, type JsonPatchOperation } from '@eac-arch/infrastructure-http';
 import type { AffiliationModel } from '../../application/models';
-import { AffiliationsHttpClient, type GetAllAffiliationsOfAuthorHttpRequest } from '../rest-clients';
-
-export interface AffiliationQueryOptions {
-  sort?: string;
-  search?: string;
-  institutionName?: string;
-  activeOn?: string;
-  fields?: string;
-}
+import {
+  AffiliationsHttpClient,
+  type GetAllAffiliationsOfAuthorHttpRequest,
+  type AddAffiliationToAuthorHttpRequest,
+  type UpsertAffiliationOfAuthorHttpRequest,
+} from '../rest-clients';
+import type { AffiliationQueryOptions, AddAffiliationData, UpsertAffiliationData } from './contracts';
 
 @Injectable({ providedIn: 'root' })
 export class AffiliationsHttpAgent {
@@ -48,5 +46,25 @@ export class AffiliationsHttpAgent {
   async checkAffiliationNameUniquenessOfAuthor(authorId: string, institutionName: string, excludeAffiliationId?: string): Promise<boolean> {
     const response = await this.httpClient.checkAffiliationNameUniquenessOfAuthor({ authorId, institutionName, excludeAffiliationId });
     return response.data.isUnique;
+  }
+
+  async addAffiliationToAuthor(authorId: string, data: AddAffiliationData): Promise<AffiliationModel> {
+    const request: AddAffiliationToAuthorHttpRequest = { authorId, ...data };
+    const dto = await this.httpClient.addAffiliationToAuthor(request);
+    return { ...dto };
+  }
+
+  async upsertAffiliationOfAuthor(authorId: string, affiliationId: string, data: UpsertAffiliationData): Promise<AffiliationModel | null> {
+    const request: UpsertAffiliationOfAuthorHttpRequest = { authorId, affiliationId, ...data };
+    const dto = await this.httpClient.upsertAffiliationOfAuthor(request);
+    return dto ? { ...dto } : null;
+  }
+
+  async updatePartialAffiliationOfAuthor(authorId: string, affiliationId: string, operations: JsonPatchOperation[]): Promise<void> {
+    await this.httpClient.updatePartialAffiliationOfAuthor({ authorId, affiliationId, operations });
+  }
+
+  async removeAffiliationFromAuthor(authorId: string, affiliationId: string): Promise<void> {
+    await this.httpClient.removeAffiliationFromAuthor({ authorId, affiliationId });
   }
 }
