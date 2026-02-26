@@ -1,81 +1,49 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  type PagedList,
-  type Specification,
-  type SortField,
-  createPagedList,
-  formatSortFields,
-  QuerySpecification,
-} from '@eac-arch/shared-kernel';
+import { type PagedList, type Specification, type SortField } from '@eac-arch/shared-kernel';
+import { HttpQueryService } from '@eac-arch/infrastructure-persistence';
 import type { PublisherQueryService } from '../../../application/contracts';
 import type { PublisherModel } from '../../../application/models';
 import { PublishersHttpAgent } from '../../http-agents';
 import type { PublisherQueryOptions } from '../../http-agents';
 
 @Injectable({ providedIn: 'root' })
-export class PublisherQueryServiceImpl implements PublisherQueryService {
-  private readonly agent = inject(PublishersHttpAgent);
+export class PublisherQueryServiceImpl
+  extends HttpQueryService<PublisherModel, PublisherQueryOptions>
+  implements PublisherQueryService {
 
-  async getAll(): Promise<PublisherModel[]> {
-    const result = await this.agent.getAllPublishers(1, Number.MAX_SAFE_INTEGER);
-    return [...result.items];
+  private readonly httpAgent = inject(PublishersHttpAgent);
+
+  // -- HttpQueryService delegates --
+
+  protected override doGetAll(pageNumber: number, pageSize: number, options?: PublisherQueryOptions): Promise<PagedList<PublisherModel>> {
+    return this.httpAgent.getAllPublishers(pageNumber, pageSize, options);
   }
 
-  getById(id: string): Promise<PublisherModel | null> {
-    return this.agent.getPublisherById(id);
+  protected override doGetById(id: string): Promise<PublisherModel | null> {
+    return this.httpAgent.getPublisherById(id);
   }
 
-  async getPagedList(
+  // -- PublisherQueryService-specific methods --
+
+  getAllPublishers(
     pageNumber: number,
     pageSize: number,
     spec?: Specification<PublisherModel>,
     sortFields?: SortField[],
     fields?: string[],
   ): Promise<PagedList<PublisherModel>> {
-    const options = this.buildOptions(spec, sortFields, fields);
-    const result = await this.agent.getAllPublishers(pageNumber, pageSize, options);
-    return this.toPagedList(result);
-  }
-
-  async getAllPublishers(
-    pageNumber: number,
-    pageSize: number,
-    spec?: Specification<PublisherModel>,
-    sortFields?: SortField[],
-    fields?: string[],
-  ): Promise<PagedList<PublisherModel>> {
-    const options = this.buildOptions(spec, sortFields, fields);
-    const result = await this.agent.getAllPublishers(pageNumber, pageSize, options);
-    return this.toPagedList(result);
+    return this.getPagedList(pageNumber, pageSize, spec, sortFields, fields);
   }
 
   getPublisherById(publisherId: string, fields?: string[]): Promise<PublisherModel | null> {
-    return this.agent.getPublisherById(publisherId, fields?.join(','));
+    return this.httpAgent.getPublisherById(publisherId, fields?.join(','));
   }
 
   existsPublisher(publisherId: string): Promise<boolean> {
-    return this.agent.existsPublisher(publisherId);
+    return this.httpAgent.existsPublisher(publisherId);
   }
 
   checkPublisherNameUniqueness(name: string, excludePublisherId?: string): Promise<boolean> {
-    return this.agent.checkPublisherNameUniqueness(name, excludePublisherId);
-  }
-
-  private buildOptions(
-    spec?: Specification<PublisherModel>,
-    sortFields?: SortField[],
-    fields?: string[],
-  ): PublisherQueryOptions {
-    const options: PublisherQueryOptions = {};
-    if (spec instanceof QuerySpecification) {
-      Object.assign(options, spec.toQueryParams());
-    }
-    if (sortFields?.length) options.sort = formatSortFields(sortFields);
-    if (fields?.length) options.fields = fields.join(',');
-    return options;
-  }
-
-  private toPagedList(source: { items: readonly PublisherModel[]; totalCount: number; currentPage: number; pageSize: number }): PagedList<PublisherModel> {
-    return createPagedList([...source.items], source.totalCount, source.currentPage, source.pageSize);
+    return this.httpAgent.checkPublisherNameUniqueness(name, excludePublisherId);
   }
 }
