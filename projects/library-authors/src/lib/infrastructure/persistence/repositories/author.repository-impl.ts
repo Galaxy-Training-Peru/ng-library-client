@@ -19,10 +19,10 @@ export class AuthorRepositoryImpl
   extends HttpRepository<Author, AuthorModel, CreateAuthorData, UpsertAuthorData, AuthorQueryOptions, JsonPatchOperation>
   implements IAuthorRepository {
 
-  private readonly authorsAgent = inject(AuthorsHttpAgent);
-  private readonly awardsAgent = inject(AwardsHttpAgent);
-  private readonly papersAgent = inject(PapersHttpAgent);
-  private readonly affiliationsAgent = inject(AffiliationsHttpAgent);
+  private readonly authorsHttpAgent = inject(AuthorsHttpAgent);
+  private readonly awardsHttpAgent = inject(AwardsHttpAgent);
+  private readonly papersHttpAgent = inject(PapersHttpAgent);
+  private readonly affiliationsHttpAgent = inject(AffiliationsHttpAgent);
 
   // -- Mapping --
 
@@ -33,9 +33,9 @@ export class AuthorRepositoryImpl
   // Overrides the default rehydrate to load all child collections in parallel.
   protected override async rehydrate(authorId: string, model: AuthorModel): Promise<Author> {
     const [awardsPage, papersPage, affiliationsPage] = await Promise.all([
-      this.awardsAgent.getAllAwardsOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
-      this.papersAgent.getAllPapersOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
-      this.affiliationsAgent.getAllAffiliationsOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
+      this.awardsHttpAgent.getAllAwardsOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
+      this.papersHttpAgent.getAllPapersOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
+      this.affiliationsHttpAgent.getAllAffiliationsOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
     ]);
     return AuthorMapper.rehydrate(model, awardsPage.items, papersPage.items, affiliationsPage.items);
   }
@@ -43,37 +43,37 @@ export class AuthorRepositoryImpl
   // -- Agent delegates --
 
   protected override doGetAll(pageNumber: number, pageSize: number, options?: AuthorQueryOptions): Promise<PagedList<AuthorModel>> {
-    return this.authorsAgent.getAllAuthors(pageNumber, pageSize, options);
+    return this.authorsHttpAgent.getAllAuthors(pageNumber, pageSize, options);
   }
 
   protected override doGetById(authorId: string): Promise<AuthorModel | null> {
-    return this.authorsAgent.getAuthorById(authorId);
+    return this.authorsHttpAgent.getAuthorById(authorId);
   }
 
   protected override doExists(authorId: string): Promise<boolean> {
-    return this.authorsAgent.existsAuthor(authorId);
+    return this.authorsHttpAgent.existsAuthor(authorId);
   }
 
   protected override doCreate(data: CreateAuthorData): Promise<AuthorModel> {
-    return this.authorsAgent.createAuthor(data);
+    return this.authorsHttpAgent.createAuthor(data);
   }
 
   protected override doUpsert(authorId: string, data: UpsertAuthorData): Promise<AuthorModel | null> {
-    return this.authorsAgent.upsertAuthor(authorId, data);
+    return this.authorsHttpAgent.upsertAuthor(authorId, data);
   }
 
   protected override doUpdatePartial(authorId: string, operations: JsonPatchOperation[]): Promise<void> {
-    return this.authorsAgent.updatePartialAuthor(authorId, operations);
+    return this.authorsHttpAgent.updatePartialAuthor(authorId, operations);
   }
 
   protected override doDelete(authorId: string): Promise<void> {
-    return this.authorsAgent.deleteAuthor(authorId);
+    return this.authorsHttpAgent.deleteAuthor(authorId);
   }
 
   // -- Author-specific --
 
   existsByFullName(firstName: string, lastName: string, excludeAuthorId?: string): Promise<boolean> {
-    return this.authorsAgent.checkAuthorNameUniqueness(firstName, lastName, excludeAuthorId)
+    return this.authorsHttpAgent.checkAuthorNameUniqueness(firstName, lastName, excludeAuthorId)
       .then(isUnique => !isUnique);
   }
 }

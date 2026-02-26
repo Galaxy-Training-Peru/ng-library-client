@@ -15,7 +15,7 @@ export class AffiliationQueryServiceImpl
   extends HttpQueryService<AffiliationModel, AffiliationQueryOptions>
   implements AffiliationQueryService {
 
-  private readonly agent = inject(AffiliationsHttpAgent);
+  private readonly httpAgent = inject(AffiliationsHttpAgent);
 
   async getAllAffiliationsOfAuthor(
     authorId: string,
@@ -26,19 +26,19 @@ export class AffiliationQueryServiceImpl
     fields?: string[],
   ): Promise<PagedList<AffiliationModel>> {
     const options = this.buildOptions(spec, sortFields, fields);
-    const result = await this.agent.getAllAffiliationsOfAuthor(authorId, pageNumber, pageSize, options);
+    const result = await this.httpAgent.getAllAffiliationsOfAuthor(authorId, pageNumber, pageSize, options);
     return this.toPagedList(result);
   }
 
   getAffiliationOfAuthorByAffiliationId(authorId: string, affiliationId: string, fields?: string[]): Promise<AffiliationModel | null> {
-    return this.agent.getAffiliationOfAuthorByAffiliationId(authorId, affiliationId, fields?.join(','));
+    return this.httpAgent.getAffiliationOfAuthorByAffiliationId(authorId, affiliationId, fields?.join(','));
   }
 
   existsAffiliationOfAuthor(authorId: string, affiliationId: string): Promise<boolean> {
-    return this.agent.existsAffiliationOfAuthor(authorId, affiliationId);
+    return this.httpAgent.existsAffiliationOfAuthor(authorId, affiliationId);
   }
 
   checkAffiliationNameUniquenessOfAuthor(authorId: string, institutionName: string, excludeAffiliationId?: string): Promise<boolean> {
-    return this.agent.checkAffiliationNameUniquenessOfAuthor(authorId, institutionName, excludeAffiliationId);
+    return this.httpAgent.checkAffiliationNameUniquenessOfAuthor(authorId, institutionName, excludeAffiliationId);
   }
 }

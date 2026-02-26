@@ -15,17 +15,17 @@ export class AuthorQueryServiceImpl
   extends HttpQueryService<AuthorModel, AuthorQueryOptions>
   implements AuthorQueryService {
 
-  private readonly agent = inject(AuthorsHttpAgent);
+  private readonly httpAgent = inject(AuthorsHttpAgent);
 
   // -- Base class hooks (root resource) --
   // Enables the inherited getAll(), getById() and getPagedList() methods.
 
   protected override doGetAll(pageNumber: number, pageSize: number, options?: AuthorQueryOptions) {
-    return this.agent.getAllAuthors(pageNumber, pageSize, options);
+    return this.httpAgent.getAllAuthors(pageNumber, pageSize, options);
   }
 
   protected override doGetById(id: string) {
-    return this.agent.getAuthorById(id);
+    return this.httpAgent.getAuthorById(id);
   }
 
   // -- AuthorQueryService-specific methods --
@@ -41,14 +41,14 @@ export class AuthorQueryServiceImpl
   }
 
   getAuthorById(authorId: string, fields?: string[]): Promise<AuthorModel | null> {
-    return this.agent.getAuthorById(authorId, fields?.join(','));
+    return this.httpAgent.getAuthorById(authorId, fields?.join(','));
   }
 
   existsAuthor(authorId: string): Promise<boolean> {
-    return this.agent.existsAuthor(authorId);
+    return this.httpAgent.existsAuthor(authorId);
   }
 
   checkAuthorNameUniqueness(firstName: string, lastName: string, excludeAuthorId?: string): Promise<boolean> {
-    return this.agent.checkAuthorNameUniqueness(firstName, lastName, excludeAuthorId);
+    return this.httpAgent.checkAuthorNameUniqueness(firstName, lastName, excludeAuthorId);
   }
 }

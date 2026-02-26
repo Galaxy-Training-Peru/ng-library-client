@@ -15,7 +15,7 @@ export class AwardQueryServiceImpl
   extends HttpQueryService<AwardModel, AwardQueryOptions>
   implements AwardQueryService {
 
-  private readonly agent = inject(AwardsHttpAgent);
+  private readonly httpAgent = inject(AwardsHttpAgent);
 
   // Sub-resource: no doGetAll/doGetById override — parent ID is required.
   // Uses inherited buildOptions() and toPagedList() helpers.
@@ -29,19 +29,19 @@ export class AwardQueryServiceImpl
     fields?: string[],
   ): Promise<PagedList<AwardModel>> {
     const options = this.buildOptions(spec, sortFields, fields);
-    const result = await this.agent.getAllAwardsOfAuthor(authorId, pageNumber, pageSize, options);
+    const result = await this.httpAgent.getAllAwardsOfAuthor(authorId, pageNumber, pageSize, options);
     return this.toPagedList(result);
   }
 
   getAwardOfAuthorByAwardId(authorId: string, awardId: string, fields?: string[]): Promise<AwardModel | null> {
-    return this.agent.getAwardOfAuthorByAwardId(authorId, awardId, fields?.join(','));
+    return this.httpAgent.getAwardOfAuthorByAwardId(authorId, awardId, fields?.join(','));
   }
 
   existsAwardOfAuthor(authorId: string, awardId: string): Promise<boolean> {
-    return this.agent.existsAwardOfAuthor(authorId, awardId);
+    return this.httpAgent.existsAwardOfAuthor(authorId, awardId);
   }
 
   checkAwardTitleUniquenessOfAuthor(authorId: string, title: string, excludeAwardId?: string): Promise<boolean> {
-    return this.agent.checkAwardTitleUniquenessOfAuthor(authorId, title, excludeAwardId);
+    return this.httpAgent.checkAwardTitleUniquenessOfAuthor(authorId, title, excludeAwardId);
   }
 }

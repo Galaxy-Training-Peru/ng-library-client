@@ -15,7 +15,7 @@ export class PaperQueryServiceImpl
   extends HttpQueryService<PaperModel, PaperQueryOptions>
   implements PaperQueryService {
 
-  private readonly agent = inject(PapersHttpAgent);
+  private readonly httpAgent = inject(PapersHttpAgent);
 
   async getAllPapersOfAuthor(
     authorId: string,
@@ -26,19 +26,19 @@ export class PaperQueryServiceImpl
     fields?: string[],
   ): Promise<PagedList<PaperModel>> {
     const options = this.buildOptions(spec, sortFields, fields);
-    const result = await this.agent.getAllPapersOfAuthor(authorId, pageNumber, pageSize, options);
+    const result = await this.httpAgent.getAllPapersOfAuthor(authorId, pageNumber, pageSize, options);
     return this.toPagedList(result);
   }
 
   getPaperOfAuthorByPaperId(authorId: string, paperId: string, fields?: string[]): Promise<PaperModel | null> {
-    return this.agent.getPaperOfAuthorByPaperId(authorId, paperId, fields?.join(','));
+    return this.httpAgent.getPaperOfAuthorByPaperId(authorId, paperId, fields?.join(','));
   }
 
   existsPaperOfAuthor(authorId: string, paperId: string): Promise<boolean> {
-    return this.agent.existsPaperOfAuthor(authorId, paperId);
+    return this.httpAgent.existsPaperOfAuthor(authorId, paperId);
   }
 
   checkPaperTitleUniquenessOfAuthor(authorId: string, title: string, excludePaperId?: string): Promise<boolean> {
-    return this.agent.checkPaperTitleUniquenessOfAuthor(authorId, title, excludePaperId);
+    return this.httpAgent.checkPaperTitleUniquenessOfAuthor(authorId, title, excludePaperId);
   }
 }
