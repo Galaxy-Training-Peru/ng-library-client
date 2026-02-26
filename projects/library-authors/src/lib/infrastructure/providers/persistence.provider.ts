@@ -11,7 +11,7 @@ import {
   PaperQueryServiceImpl,
   AwardQueryServiceImpl,
   AffiliationQueryServiceImpl,
-} from '../persistence/query-services';
+} from '../persistence/queries';
 import { AuthorRepositoryImpl } from '../persistence/repositories';
 
 export function providePersistence(): Provider[] {
