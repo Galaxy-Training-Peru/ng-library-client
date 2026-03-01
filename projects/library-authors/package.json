@@ -9,6 +9,7 @@
     "@eac-arch/infrastructure-persistence": "^1.0.0",
     "@eac-arch/infrastructure-state": "^1.0.0",
     "@eac-arch/shared-kernel": "^1.0.0",
+    "@eac-arch/ui-kit": "^1.0.0",
     "library-integration": "*"
   },
   "dependencies": {

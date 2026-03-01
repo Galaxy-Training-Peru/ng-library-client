@@ -17,6 +17,8 @@ export class AuthorEditViewModel {
 
   readonly genres = signal<readonly LiteraryGenreDto[]>([]);
 
+  private initialSnapshot = '';
+
   private readonly authorId    = new FormControl({ value: '', disabled: true }, { nonNullable: true });
   private readonly firstName   = new FormControl('', { nonNullable: true, validators: Validators.required });
   private readonly lastName    = new FormControl('', { nonNullable: true, validators: Validators.required });
@@ -99,6 +101,23 @@ export class AuthorEditViewModel {
     }
   }
 
+  private snapshot(): string {
+    const { firstName, lastName } = this.nameGroup.getRawValue();
+    const { dateOfBirth, dateOfDeath } = this.lifeSpanGroup.getRawValue();
+    const literaryGenreId = this.form.controls['literaryGenreId'].value;
+    return JSON.stringify({
+      firstName,
+      lastName,
+      dateOfBirth: dateOfBirth?.toISOString() ?? null,
+      dateOfDeath: dateOfDeath?.toISOString() ?? null,
+      literaryGenreId,
+    });
+  }
+
+  hasChanges(): boolean {
+    return this.snapshot() !== this.initialSnapshot;
+  }
+
   async init({ author, genres }: AuthorEditResolvedData): Promise<void> {
     if (!author) return;
     this.genres.set(genres);
@@ -117,6 +136,7 @@ export class AuthorEditViewModel {
       },
       literaryGenreId: author.literaryGenreId,
     }, { emitEvent: false });
+    this.initialSnapshot = this.snapshot();
   }
 
   async save(): Promise<UpsertAuthorResponse> {
@@ -133,6 +153,8 @@ export class AuthorEditViewModel {
       literaryGenreId: this.form.controls['literaryGenreId'].value,
     };
 
-    return this.api.upsertAuthor(request);
+    const response = await this.api.upsertAuthor(request);
+    this.initialSnapshot = this.snapshot();
+    return response;
   }
 }

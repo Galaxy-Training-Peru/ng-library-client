@@ -12,6 +12,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthorEditViewModel } from './author-edit.view-model';
 import type { AuthorEditResolvedData } from '../../routes/resolvers/author-edit.resolver';
+import type { UnsavedChanges } from '@eac-arch/ui-kit';
+import { NotificationService } from '@eac-arch/ui-kit';
 
 @Component({
   selector: 'lib-author-edit-page',
@@ -34,16 +36,21 @@ import type { AuthorEditResolvedData } from '../../routes/resolvers/author-edit.
   styleUrl:    './author-edit-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthorEditPage implements OnInit {
+export class AuthorEditPage implements OnInit, UnsavedChanges {
   protected readonly authorEdit = input<AuthorEditResolvedData>();
 
-  protected readonly vm     = inject(AuthorEditViewModel);
-  private   readonly router = inject(Router);
-  private   readonly route  = inject(ActivatedRoute);
+  protected readonly vm           = inject(AuthorEditViewModel);
+  private   readonly router        = inject(Router);
+  private   readonly route         = inject(ActivatedRoute);
+  private   readonly notifications = inject(NotificationService);
 
   async ngOnInit(): Promise<void> {
     const data = this.authorEdit();
     if (data?.author) await this.vm.init(data);
+  }
+
+  hasUnsavedChanges(): boolean {
+    return this.vm.hasChanges();
   }
 
   protected goBack(): void {
@@ -54,9 +61,10 @@ export class AuthorEditPage implements OnInit {
     if (this.vm.form.invalid) return;
     try {
       await this.vm.save();
+      this.notifications.showSuccess('Author saved successfully');
       this.goBack();
     } catch {
-      // TODO: show error notification
+      this.notifications.showError('Could not save the author');
     }
   }
 }
