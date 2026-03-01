@@ -2,6 +2,7 @@
  * Public API Surface of library-catalog
  */
 
+export { CATALOG_ROUTES } from './lib/presentation/routes/catalog.routes';
 export { provideCatalogModule, provideLiteraryGenreAgent, providePublisherAgent } from './lib/infrastructure/providers';
 
 export { CATALOG_PUBLIC_API } from './lib/application/public-api';

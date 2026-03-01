@@ -17,6 +17,10 @@ export const routes: Routes = [
         path: 'authors',
         loadChildren: () => import('library-authors').then(m => m.AUTHORS_ROUTES),
       },
+      {
+        path: 'catalog',
+        loadChildren: () => import('library-catalog').then(m => m.CATALOG_ROUTES),
+      },
     ]
   },
   // OAuth callback: OidcCallback exchanges the authorization code for tokens
