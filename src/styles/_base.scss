@@ -211,8 +211,14 @@ button {
   font-family: inherit;
 }
 
-// Angular Material: align outline field text vertically to match fill fields.
+// Vertically center text in outlined form fields.
 .mdc-text-field--outlined .mat-mdc-form-field-infix,
 .mdc-text-field--no-label .mat-mdc-form-field-infix {
   padding-top: 20px !important;
+}
+
+// Restore original padding for the paginator page-size selector.
+.mat-mdc-paginator .mdc-text-field--outlined .mat-mdc-form-field-infix,
+.mat-mdc-paginator .mdc-text-field--no-label .mat-mdc-form-field-infix {
+  padding-top: var(--mat-form-field-container-vertical-padding, 16px) !important;
 }

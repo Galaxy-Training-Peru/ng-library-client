@@ -46,7 +46,7 @@ export class AuthorEditPage implements OnInit, UnsavedChanges {
 
   async ngOnInit(): Promise<void> {
     const data = this.authorEdit();
-    if (data?.author) await this.vm.init(data);
+    if (data) await this.vm.init(data);
   }
 
   hasUnsavedChanges(): boolean {
@@ -59,10 +59,15 @@ export class AuthorEditPage implements OnInit, UnsavedChanges {
 
   protected async save(): Promise<void> {
     if (this.vm.form.invalid) return;
+    const wasNew = this.vm.isNew();
     try {
-      await this.vm.save();
-      this.notifications.showSuccess('Author saved successfully');
-      this.goBack();
+      const { authorId } = await this.vm.save();
+      this.notifications.showSuccess(wasNew ? 'Author created successfully' : 'Author saved successfully');
+      if (wasNew) {
+        await this.router.navigate(['..', authorId], { relativeTo: this.route, replaceUrl: true });
+      } else {
+        this.goBack();
+      }
     } catch {
       this.notifications.showError('Could not save the author');
     }

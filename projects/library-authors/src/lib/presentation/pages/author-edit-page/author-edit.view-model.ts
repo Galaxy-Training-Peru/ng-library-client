@@ -5,9 +5,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { LiteraryGenreDto } from 'library-integration';
 import { AUTHORS_PUBLIC_API } from '../../../application/public-api';
 import { AUTHORS_COMPUTATIONS_API } from '../../../application/computations-api';
-import type { UpsertAuthorRequest, UpsertAuthorResponse } from '../../../application/public-api/contracts/author';
+import type { CreateAuthorRequest, UpsertAuthorRequest, UpsertAuthorResponse } from '../../../application/public-api/contracts/author';
 import type { AuthorEditResolvedData } from '../../routes/resolvers/author-edit.resolver';
 import { fullNameValidator, lifeSpanValidator, uniqueAuthorNameValidator, FieldGroupErrorMatcher } from '../../validators';
+import { parseLocalDate, toLocalDateStr } from '@eac-arch/ui-kit';
 
 @Injectable()
 export class AuthorEditViewModel {
@@ -16,6 +17,7 @@ export class AuthorEditViewModel {
   private readonly computations = inject(AUTHORS_COMPUTATIONS_API);
 
   readonly genres = signal<readonly LiteraryGenreDto[]>([]);
+  readonly isNew  = signal(false);
 
   private initialSnapshot = '';
 
@@ -108,8 +110,8 @@ export class AuthorEditViewModel {
     return JSON.stringify({
       firstName,
       lastName,
-      dateOfBirth: dateOfBirth?.toISOString() ?? null,
-      dateOfDeath: dateOfDeath?.toISOString() ?? null,
+      dateOfBirth: toLocalDateStr(dateOfBirth),
+      dateOfDeath: toLocalDateStr(dateOfDeath),
       literaryGenreId,
     });
   }
@@ -119,8 +121,13 @@ export class AuthorEditViewModel {
   }
 
   async init({ author, genres }: AuthorEditResolvedData): Promise<void> {
-    if (!author) return;
     this.genres.set(genres);
+    if (!author) {
+      this.isNew.set(true);
+      this.initialSnapshot = this.snapshot();
+      return;
+    }
+    this.isNew.set(false);
     this.form.patchValue({
       authorId: author.authorId,
       fullName:  author.fullName,
@@ -129,8 +136,8 @@ export class AuthorEditViewModel {
         lastName:  author.lastName,
       },
       lifeSpan: {
-        dateOfBirth: new Date(author.dateOfBirth),
-        dateOfDeath: author.dateOfDeath ? new Date(author.dateOfDeath) : null,
+        dateOfBirth: parseLocalDate(author.dateOfBirth),
+        dateOfDeath: parseLocalDate(author.dateOfDeath),
         age:         author.age,
         isDeceased:  author.isDeceased,
       },
@@ -139,22 +146,36 @@ export class AuthorEditViewModel {
     this.initialSnapshot = this.snapshot();
   }
 
-  async save(): Promise<UpsertAuthorResponse> {
-    const toDateStr = (d: Date | null) => d ? d.toISOString().substring(0, 10) : null;
+  async save(): Promise<{ authorId: string }> {
     const { firstName, lastName } = this.nameGroup.getRawValue();
     const { dateOfBirth, dateOfDeath, isDeceased } = this.lifeSpanGroup.getRawValue();
+    const literaryGenreId = this.form.controls['literaryGenreId'].value;
+
+    if (this.isNew()) {
+      const request: CreateAuthorRequest = {
+        firstName,
+        lastName,
+        dateOfBirth:     toLocalDateStr(dateOfBirth)!,
+        dateOfDeath:     isDeceased ? toLocalDateStr(dateOfDeath) : null,
+        literaryGenreId,
+      };
+      const response = await this.api.createAuthor(request);
+      this.isNew.set(false);
+      this.initialSnapshot = this.snapshot();
+      return { authorId: response.authorId };
+    }
 
     const request: UpsertAuthorRequest = {
       authorId:        this.authorId.value,
       firstName,
       lastName,
-      dateOfBirth:     toDateStr(dateOfBirth)!,
-      dateOfDeath:     isDeceased ? toDateStr(dateOfDeath) : null,
-      literaryGenreId: this.form.controls['literaryGenreId'].value,
+      dateOfBirth:     toLocalDateStr(dateOfBirth)!,
+      dateOfDeath:     isDeceased ? toLocalDateStr(dateOfDeath) : null,
+      literaryGenreId,
     };
 
-    const response = await this.api.upsertAuthor(request);
+    await this.api.upsertAuthor(request);
     this.initialSnapshot = this.snapshot();
-    return response;
+    return { authorId: this.authorId.value };
   }
 }

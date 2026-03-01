@@ -5,11 +5,11 @@
     <button mat-icon-button (click)="goBack()" matTooltip="Back to author">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h3 class="m-0">Edit Author</h3>
+    <h3 class="m-0">{{ vm.isNew() ? 'New Author' : 'Edit Author' }}</h3>
   </div>
 
   <!-- Not found -->
-  @if (!authorEdit()?.author) {
+  @if (!vm.isNew() && !authorEdit()?.author) {
     <div class="empty-state flex flex-col items-center text-center">
       <mat-icon>person_off</mat-icon>
       <p>Author not found or the service is unavailable.</p>
@@ -20,7 +20,7 @@
     </div>
   }
 
-  @if (authorEdit()?.author) {
+  @if (vm.isNew() || authorEdit()?.author) {
     <!-- Scrollable form area -->
     <form [formGroup]="vm.form" class="edit-form-body">
 
