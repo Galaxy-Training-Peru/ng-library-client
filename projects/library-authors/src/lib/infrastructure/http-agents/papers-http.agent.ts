@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PagedList, type JsonPatchOperation } from '@eac-arch/infrastructure-http';
-import type { PaperModel } from '../../application/models';
+import type { PaperDto } from '../rest-clients/dtos';
 import {
   PapersHttpClient,
   type GetAllPapersOfAuthorHttpRequest,
@@ -14,11 +14,11 @@ import type { PaperQueryOptions, AddPaperData, UpsertPaperData } from './contrac
 export class PapersHttpAgent {
   private readonly httpClient = inject(PapersHttpClient);
 
-  async getAllPapersOfAuthor(authorId: string, pageNumber: number, pageSize: number, options?: PaperQueryOptions): Promise<PagedList<PaperModel>> {
+  async getAllPapersOfAuthor(authorId: string, pageNumber: number, pageSize: number, options?: PaperQueryOptions): Promise<PagedList<PaperDto>> {
     const request: GetAllPapersOfAuthorHttpRequest = { authorId, pageNumber, pageSize, ...options };
     const result = await this.httpClient.getAllPapersOfAuthor(request);
 
-    return PagedList.create<PaperModel>(
+    return PagedList.create<PaperDto>(
       result.items.map(dto => ({ ...dto })),
       result.totalCount,
       result.currentPage,
@@ -26,7 +26,7 @@ export class PapersHttpAgent {
     );
   }
 
-  async getPaperOfAuthorByPaperId(authorId: string, paperId: string, fields?: string): Promise<PaperModel | null> {
+  async getPaperOfAuthorByPaperId(authorId: string, paperId: string, fields?: string): Promise<PaperDto | null> {
     try {
       const response = await this.httpClient.getPaperOfAuthorByPaperId({ authorId, paperId, fields });
       return { ...response.data };
@@ -48,13 +48,13 @@ export class PapersHttpAgent {
     return response.data.isUnique;
   }
 
-  async addPaperToAuthor(authorId: string, data: AddPaperData): Promise<PaperModel> {
+  async addPaperToAuthor(authorId: string, data: AddPaperData): Promise<PaperDto> {
     const request: AddPaperToAuthorHttpRequest = { authorId, ...data };
     const dto = await this.httpClient.addPaperToAuthor(request);
     return { ...dto };
   }
 
-  async upsertPaperOfAuthor(authorId: string, paperId: string, data: UpsertPaperData): Promise<PaperModel | null> {
+  async upsertPaperOfAuthor(authorId: string, paperId: string, data: UpsertPaperData): Promise<PaperDto | null> {
     const request: UpsertPaperOfAuthorHttpRequest = { authorId, paperId, ...data };
     const dto = await this.httpClient.upsertPaperOfAuthor(request);
     return dto ? { ...dto } : null;

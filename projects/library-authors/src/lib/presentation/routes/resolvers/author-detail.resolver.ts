@@ -1,13 +1,16 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { AUTHORS_PUBLIC_API } from '../../../application/public-api';
-import type { AuthorModel, AwardModel, PaperModel, AffiliationModel } from '../../../application/models';
+import type { GetAuthorByIdResponse } from '../../../application/public-api/contracts/author';
+import type { GetAwardOfAuthorByAwardIdResponse } from '../../../application/public-api/contracts/award';
+import type { GetPaperOfAuthorByPaperIdResponse } from '../../../application/public-api/contracts/paper';
+import type { GetAffiliationOfAuthorByAffiliationIdResponse } from '../../../application/public-api/contracts/affiliation';
 
 export interface AuthorDetailResolvedData {
-  author:       AuthorModel | null;
-  awards:       readonly AwardModel[];
-  papers:       readonly PaperModel[];
-  affiliations: readonly AffiliationModel[];
+  author:       GetAuthorByIdResponse | null;
+  awards:       readonly GetAwardOfAuthorByAwardIdResponse[];
+  papers:       readonly GetPaperOfAuthorByPaperIdResponse[];
+  affiliations: readonly GetAffiliationOfAuthorByAffiliationIdResponse[];
 }
 
 export const authorDetailResolver: ResolveFn<AuthorDetailResolvedData> = async (route) => {

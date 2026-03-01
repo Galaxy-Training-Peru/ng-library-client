@@ -9,7 +9,7 @@
   </div>
 
   <!-- Not found -->
-  @if (!author()) {
+  @if (!authorEdit()?.author) {
     <div class="empty-state flex flex-col items-center text-center">
       <mat-icon>person_off</mat-icon>
       <p>Author not found or the service is unavailable.</p>
@@ -20,7 +20,7 @@
     </div>
   }
 
-  @if (author()) {
+  @if (authorEdit()?.author) {
     <!-- Scrollable form area -->
     <form [formGroup]="vm.form" class="edit-form-body">
 
@@ -35,54 +35,101 @@
           </mat-form-field>
         </div>
 
-        <!-- First name -->
-        <mat-form-field class="w-full" appearance="fill">
-          <mat-label>First name</mat-label>
-          <mat-icon matPrefix>badge</mat-icon>
-          <input matInput formControlName="firstName" />
-          @if (vm.form.controls.firstName.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
+        <ng-container formGroupName="name">
 
-        <!-- Last name -->
-        <mat-form-field class="w-full" appearance="fill">
-          <mat-label>Last name</mat-label>
-          <mat-icon matPrefix>badge</mat-icon>
-          <input matInput formControlName="lastName" />
-          @if (vm.form.controls.lastName.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
+          <!-- First name -->
+          <mat-form-field class="w-full field-editable" appearance="fill" subscriptSizing="dynamic">
+            <mat-label>First name</mat-label>
+            <mat-icon matPrefix>badge</mat-icon>
+            <input matInput formControlName="firstName" />
+            @if (vm.nameGroup.controls.firstName.value) {
+              <button matSuffix mat-icon-button (click)="vm.nameGroup.controls.firstName.reset()" matTooltip="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+            @if (vm.nameGroup.controls.firstName.hasError('required')) {
+              <mat-error>{{ vm.nameGroup.errors?.['fullNameInvalid']?.firstName?.[0] ?? 'First name is required.' }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Last name -->
+          <mat-form-field class="w-full field-editable" appearance="fill" subscriptSizing="dynamic">
+            <mat-label>Last name</mat-label>
+            <mat-icon matPrefix>badge</mat-icon>
+            <input matInput formControlName="lastName" />
+            @if (vm.nameGroup.controls.lastName.value) {
+              <button matSuffix mat-icon-button (click)="vm.nameGroup.controls.lastName.reset()" matTooltip="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+            @if (vm.nameGroup.controls.lastName.hasError('required')) {
+              <mat-error>{{ vm.nameGroup.errors?.['fullNameInvalid']?.lastName?.[0] ?? 'Last name is required.' }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Name group errors -->
+
+        </ng-container>
 
         <!-- Full name: computed readonly -->
         <div class="col-span-full">
-          <mat-form-field class="w-full" appearance="outline">
+          <mat-form-field class="w-full field-readonly" appearance="outline" subscriptSizing="dynamic">
             <mat-label>Full name</mat-label>
             <mat-icon matPrefix>person</mat-icon>
-            <input matInput formControlName="fullName" />
+            <input matInput formControlName="fullName" [errorStateMatcher]="vm.fullNameNotUniqueMatcher" />
+            @if (vm.nameGroup.hasError('fullNameNotUnique')) {
+              <mat-error>{{ vm.nameGroup.errors!['fullNameNotUnique'].firstName[0] }}</mat-error>
+            }
           </mat-form-field>
         </div>
 
-        <!-- Date of birth -->
-        <mat-form-field class="w-full" appearance="fill">
-          <mat-label>Date of birth</mat-label>
-          <mat-icon matPrefix>cake</mat-icon>
-          <input matInput formControlName="dateOfBirth" placeholder="YYYY-MM-DD" />
-          @if (vm.form.controls.dateOfBirth.hasError('required')) {
-            <mat-error>Required</mat-error>
-          }
-        </mat-form-field>
+        <ng-container formGroupName="lifeSpan">
 
-        <!-- Date of death -->
-        <mat-form-field class="w-full" appearance="fill">
-          <mat-label>Date of death</mat-label>
-          <mat-icon matPrefix>event_busy</mat-icon>
-          <input matInput formControlName="dateOfDeath" placeholder="YYYY-MM-DD" />          
-        </mat-form-field>
+          <!-- Date of birth -->
+          <mat-form-field class="w-full field-editable" appearance="fill" subscriptSizing="dynamic">
+            <mat-label>Date of birth</mat-label>
+            <mat-icon matPrefix>cake</mat-icon>
+            <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth" />
+            @if (vm.lifeSpanGroup.controls.dateOfBirth.value) {
+              <button matSuffix mat-icon-button (click)="vm.lifeSpanGroup.controls.dateOfBirth.reset()" matTooltip="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+            <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker [startAt]="vm.lifeSpanGroup.controls.dateOfBirth.value"></mat-datepicker>
+            @if (vm.lifeSpanGroup.controls.dateOfBirth.hasError('required')) {
+              <mat-error>{{ vm.lifeSpanGroup.errors?.['lifeSpanInvalid']?.dateOfBirth?.[0] ?? 'Date of birth is required.' }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Date of death -->
+          <mat-form-field class="w-full field-editable" appearance="fill" subscriptSizing="dynamic">
+            <mat-label>Date of death</mat-label>
+            <mat-icon matPrefix>event_busy</mat-icon>
+            <input matInput [matDatepicker]="dodPicker" formControlName="dateOfDeath" />
+            @if (vm.lifeSpanGroup.controls.dateOfDeath.value) {
+              <button matSuffix mat-icon-button (click)="vm.lifeSpanGroup.controls.dateOfDeath.reset()" matTooltip="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+            <mat-datepicker-toggle matSuffix [for]="dodPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dodPicker [startAt]="vm.lifeSpanGroup.controls.dateOfDeath.value"></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Life span group errors -->
+          @if (vm.lifeSpanGroup.hasError('lifeSpanInvalid') && vm.lifeSpanGroup.touched) {
+            @for (msg of vm.lifeSpanGroup.errors!['lifeSpanInvalid'].dateOfBirth; track msg) {
+              <div class="col-span-full field-error">{{ msg }}</div>
+            }
+            @for (msg of vm.lifeSpanGroup.errors!['lifeSpanInvalid'].dateOfDeath; track msg) {
+              <div class="col-span-full field-error">{{ msg }}</div>
+            }
+          }
+
+        </ng-container>
 
         <!-- Literary genre -->
-        <mat-form-field class="w-full" appearance="fill" floatLabel="always">
+        <mat-form-field class="w-full field-editable" appearance="fill" floatLabel="always" subscriptSizing="dynamic">
           <mat-label>Literary genre</mat-label>
           <mat-icon matPrefix>category</mat-icon>
           <mat-select formControlName="literaryGenreId">
@@ -90,28 +137,33 @@
               <mat-option [value]="genre.literaryGenreId">{{ genre.name }}</mat-option>
             }
           </mat-select>
-          @if (vm.form.controls.literaryGenreId.hasError('required')) {
-            <mat-error>Required</mat-error>
+          @if (vm.form.get('literaryGenreId')?.value) {
+            <button matSuffix mat-icon-button (click)="vm.form.get('literaryGenreId')?.reset()" matTooltip="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+          @if (vm.form.get('literaryGenreId')?.hasError('required')) {
+            <mat-error>Literary genre is required.</mat-error>
           }
         </mat-form-field>
 
-        <!-- Age: computed readonly -->
-        <mat-form-field class="w-full" appearance="outline">
-          <mat-label>Age</mat-label>
-          <mat-icon matPrefix>timelapse</mat-icon>
-          <input matInput formControlName="age" />
-        </mat-form-field>
+          <!-- Age: computed readonly -->
+          <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Age</mat-label>
+            <mat-icon matPrefix>timelapse</mat-icon>
+            <input matInput [formControl]="vm.lifeSpanGroup.controls.age" />
+          </mat-form-field>
 
-        <!-- Is deceased: toggle -->
-        <mat-form-field class="w-full" appearance="outline">
-          <mat-label>Is deceased</mat-label>
-          @if (vm.form.controls.isDeceased.value) {
-            <mat-icon matPrefix>church</mat-icon>
-          } @else {
-            <mat-icon matPrefix>sentiment_very_satisfied</mat-icon>
-          }
-          <input matInput [value]="vm.form.controls.isDeceased.value ? 'Deceased' : 'Alive'" disabled />          
-        </mat-form-field>
+          <!-- Is deceased: toggle -->
+          <mat-form-field class="w-full " appearance="outline">
+            <mat-label>Is deceased</mat-label>
+            @if (vm.lifeSpanGroup.controls.isDeceased.value) {
+              <mat-icon matPrefix>church</mat-icon>
+            } @else {
+              <mat-icon matPrefix>sentiment_very_satisfied</mat-icon>
+            }
+            <input matInput [value]="vm.lifeSpanGroup.controls.isDeceased.value ? 'Deceased' : 'Alive'" disabled />
+          </mat-form-field>
 
       </div>
     </form>
@@ -119,7 +171,7 @@
     <mat-divider></mat-divider>
 
     <!-- Sticky actions -->
-    <div class="flex justify-end gap-1">
+    <div class="actions-bar">
       <button mat-stroked-button type="button" (click)="goBack()">
         <mat-icon>close</mat-icon>
         Cancel

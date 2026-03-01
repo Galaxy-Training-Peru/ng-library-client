@@ -23,6 +23,15 @@ export type {
   GetAuthorByIdResponse,
   ExistsAuthorResponse,
   CheckAuthorNameUniquenessResponse,
+  CreateAuthorRequest,
+  CreateAuthorResponse,
+  UpsertAuthorRequest,
+  UpsertAuthorResponse,
+  DeleteAuthorRequest,
+  DeleteAuthorResponse,
+  UpdatePartialAuthorRequest,
+  UpdatePartialAuthorResponse,
+  AuthorChanges,
 } from './lib/application/public-api';
 
 // Public API Contracts - Paper

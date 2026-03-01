@@ -1,8 +1,6 @@
 import type { Entity } from '@eac-arch/shared-kernel';
-import { AwardTitle } from '../value-objects/award-title';
+import type { AwardTitle } from '../value-objects/award-title';
 
-// Author child entity: academic or literary award received.
-// Lifetime is managed by the Author aggregate.
 export class Award implements Entity<string> {
   readonly id: string;
 
@@ -15,22 +13,18 @@ export class Award implements Entity<string> {
     this._awardedOn = awardedOn;
   }
 
-  // -- Accessors --
-
-  get titleValue(): string { return this._title.value; }
+  get awardId(): string { return this.id; }
+  get titleVo(): AwardTitle { return this._title; }
+  get title(): string { return this._title.value; }
   get awardedOn(): Date { return this._awardedOn; }
   get awardedYear(): number { return this._awardedOn.getUTCFullYear(); }
 
-  // -- Factory --
-
-  static create(id: string, title: string, awardedOn: Date): Award {
-    return new Award(id, AwardTitle.create(title), awardedOn);
+  static create(id: string, title: AwardTitle, awardedOn: Date): Award {
+    return new Award(id, title, awardedOn);
   }
 
-  // -- Mutations --
-
-  update(title: string, awardedOn: Date): void {
-    this._title = AwardTitle.create(title);
+  update(title: AwardTitle, awardedOn: Date): void {
+    this._title = title;
     this._awardedOn = awardedOn;
   }
 }

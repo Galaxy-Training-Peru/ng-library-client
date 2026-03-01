@@ -1,6 +1,6 @@
 // Author edit page
-// Layout provided by .detail-page (flex column, overflow hidden) from _detail-page.scss
-// Scrollable form + sticky actions bar at bottom.
+// Layout: .detail-page (flex column, overflow hidden) from _detail-page.scss
+// Edit-specific classes (.edit-form-body, .field-error) from _edit-page.scss
 
 :host {
   display: flex;

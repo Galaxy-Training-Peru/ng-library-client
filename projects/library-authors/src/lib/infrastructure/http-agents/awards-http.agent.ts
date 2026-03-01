@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PagedList, type JsonPatchOperation } from '@eac-arch/infrastructure-http';
-import type { AwardModel } from '../../application/models';
+import type { AwardDto } from '../rest-clients/dtos';
 import {
   AwardsHttpClient,
   type GetAllAwardsOfAuthorHttpRequest,
@@ -14,11 +14,11 @@ import type { AwardQueryOptions, AddAwardData, UpsertAwardData } from './contrac
 export class AwardsHttpAgent {
   private readonly httpClient = inject(AwardsHttpClient);
 
-  async getAllAwardsOfAuthor(authorId: string, pageNumber: number, pageSize: number, options?: AwardQueryOptions): Promise<PagedList<AwardModel>> {
+  async getAllAwardsOfAuthor(authorId: string, pageNumber: number, pageSize: number, options?: AwardQueryOptions): Promise<PagedList<AwardDto>> {
     const request: GetAllAwardsOfAuthorHttpRequest = { authorId, pageNumber, pageSize, ...options };
     const result = await this.httpClient.getAllAwardsOfAuthor(request);
 
-    return PagedList.create<AwardModel>(
+    return PagedList.create<AwardDto>(
       result.items.map(dto => ({ ...dto })),
       result.totalCount,
       result.currentPage,
@@ -26,7 +26,7 @@ export class AwardsHttpAgent {
     );
   }
 
-  async getAwardOfAuthorByAwardId(authorId: string, awardId: string, fields?: string): Promise<AwardModel | null> {
+  async getAwardOfAuthorByAwardId(authorId: string, awardId: string, fields?: string): Promise<AwardDto | null> {
     try {
       const response = await this.httpClient.getAwardOfAuthorByAwardId({ authorId, awardId, fields });
       return { ...response.data };
@@ -48,13 +48,13 @@ export class AwardsHttpAgent {
     return response.data.isUnique;
   }
 
-  async addAwardToAuthor(authorId: string, data: AddAwardData): Promise<AwardModel> {
+  async addAwardToAuthor(authorId: string, data: AddAwardData): Promise<AwardDto> {
     const request: AddAwardToAuthorHttpRequest = { authorId, ...data };
     const dto = await this.httpClient.addAwardToAuthor(request);
     return { ...dto };
   }
 
-  async upsertAwardOfAuthor(authorId: string, awardId: string, data: UpsertAwardData): Promise<AwardModel | null> {
+  async upsertAwardOfAuthor(authorId: string, awardId: string, data: UpsertAwardData): Promise<AwardDto | null> {
     const request: UpsertAwardOfAuthorHttpRequest = { authorId, awardId, ...data };
     const dto = await this.httpClient.upsertAwardOfAuthor(request);
     return dto ? { ...dto } : null;

@@ -9,7 +9,7 @@
   display: grid;
   padding: var(--lib-space-2) 0;
   grid-template-columns: 1fr 1fr;
-  column-gap: var(--lib-space-2);
+  column-gap: var(--lib-space-2);  
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;

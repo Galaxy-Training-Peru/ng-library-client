@@ -2,6 +2,10 @@ import { BaseAggregateRoot, NotFoundException } from '@eac-arch/shared-kernel';
 import { FullName } from '../value-objects/full-name';
 import { LifeSpan } from '../value-objects/life-span';
 import { LiteraryGenre } from '../value-objects/literary-genre';
+import { AwardTitle } from '../value-objects/award-title';
+import { PaperTitle } from '../value-objects/paper-title';
+import { AffiliationName } from '../value-objects/affiliation-name';
+import { AffiliationPeriod } from '../value-objects/affiliation-period';
 import { Affiliation } from '../entities/affiliation';
 import { Award } from '../entities/award';
 import { Paper } from '../entities/paper';
@@ -75,35 +79,24 @@ export class Author extends BaseAggregateRoot<string> {
   // -- Factory --
 
   static create(
-    id: string,
-    firstName: string,
-    lastName: string,
-    dateOfBirth: Date,
-    literaryGenreId: string,
-    literaryGenreName: string,
-    dateOfDeath?: Date | null,
+    id: string | undefined,
+    name: FullName,
+    lifeSpan: LifeSpan,
+    literaryGenre: LiteraryGenre,
   ): Author {
-    return new Author(
-      id,
-      FullName.create(firstName, lastName),
-      LifeSpan.create(dateOfBirth, dateOfDeath),
-      LiteraryGenre.create(literaryGenreId, literaryGenreName),
-    );
+    return new Author(id?.trim() || crypto.randomUUID(), name, lifeSpan, literaryGenre);
   }
 
   // -- Author mutations --
 
   updateProfile(
-    firstName: string,
-    lastName: string,
-    dateOfBirth: Date,
-    literaryGenreId: string,
-    literaryGenreName: string,
-    dateOfDeath?: Date | null,
+    name: FullName,
+    lifeSpan: LifeSpan,
+    literaryGenre: LiteraryGenre,
   ): void {
-    this._name = FullName.create(firstName, lastName);
-    this._lifeSpan = LifeSpan.create(dateOfBirth, dateOfDeath);
-    this._literaryGenre = LiteraryGenre.create(literaryGenreId, literaryGenreName);
+    this._name = name;
+    this._lifeSpan = lifeSpan;
+    this._literaryGenre = literaryGenre;
     this.ensureChildrenAreWithinLifeSpan();
   }
 
@@ -137,7 +130,7 @@ export class Author extends BaseAggregateRoot<string> {
 
   // -- Award management --
 
-  addAward(id: string, title: string, awardedOn: Date): Award {
+  addAward(id: string, title: AwardTitle, awardedOn: Date): Award {
     this.ensureAwardDateWithinLifeSpan(awardedOn);
     this.ensureAwardTitleIsUnique(title);
     const award = Award.create(id, title, awardedOn);
@@ -145,7 +138,7 @@ export class Author extends BaseAggregateRoot<string> {
     return award;
   }
 
-  updateAward(id: string, title: string, awardedOn: Date): void {
+  updateAward(id: string, title: AwardTitle, awardedOn: Date): void {
     const award = this.requireAward(id);
     this.ensureAwardDateWithinLifeSpan(awardedOn);
     this.ensureAwardTitleIsUnique(title, id);
@@ -163,7 +156,7 @@ export class Author extends BaseAggregateRoot<string> {
 
   // -- Paper management --
 
-  addPaper(id: string, title: string, publishedOn: Date, url?: string | null): Paper {
+  addPaper(id: string, title: PaperTitle, publishedOn: Date, url?: string | null): Paper {
     this.ensurePaperDateWithinLifeSpan(publishedOn);
     this.ensurePaperTitleIsUnique(title);
     const paper = Paper.create(id, title, publishedOn, url);
@@ -171,7 +164,7 @@ export class Author extends BaseAggregateRoot<string> {
     return paper;
   }
 
-  updatePaper(id: string, title: string, publishedOn: Date, url?: string | null): void {
+  updatePaper(id: string, title: PaperTitle, publishedOn: Date, url?: string | null): void {
     const paper = this.requirePaper(id);
     this.ensurePaperDateWithinLifeSpan(publishedOn);
     this.ensurePaperTitleIsUnique(title, id);
@@ -189,19 +182,19 @@ export class Author extends BaseAggregateRoot<string> {
 
   // -- Affiliation management --
 
-  addAffiliation(id: string, name: string, startDate: Date, endDate?: Date | null): Affiliation {
-    this.ensureAffiliationPeriodWithinLifeSpan(startDate, endDate);
+  addAffiliation(id: string, name: AffiliationName, period: AffiliationPeriod): Affiliation {
+    this.ensureAffiliationPeriodWithinLifeSpan(period);
     this.ensureAffiliationNameIsUnique(name);
-    const affiliation = Affiliation.create(id, name, startDate, endDate);
+    const affiliation = Affiliation.create(id, name, period);
     this._affiliations.push(affiliation);
     return affiliation;
   }
 
-  updateAffiliation(id: string, name: string, startDate: Date, endDate?: Date | null): void {
+  updateAffiliation(id: string, name: AffiliationName, period: AffiliationPeriod): void {
     const affiliation = this.requireAffiliation(id);
-    this.ensureAffiliationPeriodWithinLifeSpan(startDate, endDate);
+    this.ensureAffiliationPeriodWithinLifeSpan(period);
     this.ensureAffiliationNameIsUnique(name, id);
-    affiliation.update(name, startDate, endDate);
+    affiliation.update(name, period);
   }
 
   removeAffiliation(id: string): void {
@@ -260,7 +253,7 @@ export class Author extends BaseAggregateRoot<string> {
     }
 
     for (const affiliation of this._affiliations) {
-      this.ensureAffiliationPeriodWithinLifeSpan(affiliation.startDate, affiliation.endDate);
+      this.ensureAffiliationPeriodWithinLifeSpan(affiliation.period);
     }
   }
 
@@ -272,11 +265,11 @@ export class Author extends BaseAggregateRoot<string> {
     }
   }
 
-  private ensureAwardTitleIsUnique(title: string, ignoreId?: string): void {
+  private ensureAwardTitleIsUnique(title: AwardTitle, ignoreId?: string): void {
     const exists = this._awards.some(
-      a => a.titleValue.toLowerCase() === title.toLowerCase() && a.id !== ignoreId,
+      a => a.title.toLowerCase() === title.value.toLowerCase() && a.id !== ignoreId,
     );
-    if (exists) throw new DuplicateAwardTitleException(title);
+    if (exists) throw new DuplicateAwardTitleException(title.value);
   }
 
   private ensurePaperDateWithinLifeSpan(publishedOn: Date): void {
@@ -287,29 +280,29 @@ export class Author extends BaseAggregateRoot<string> {
     }
   }
 
-  private ensurePaperTitleIsUnique(title: string, ignoreId?: string): void {
+  private ensurePaperTitleIsUnique(title: PaperTitle, ignoreId?: string): void {
     const exists = this._papers.some(
-      p => p.titleValue.toLowerCase() === title.toLowerCase() && p.id !== ignoreId,
+      p => p.title.toLowerCase() === title.value.toLowerCase() && p.id !== ignoreId,
     );
-    if (exists) throw new DuplicatePaperTitleException(title);
+    if (exists) throw new DuplicatePaperTitleException(title.value);
   }
 
-  private ensureAffiliationPeriodWithinLifeSpan(startDate: Date, endDate?: Date | null): void {
+  private ensureAffiliationPeriodWithinLifeSpan(period: AffiliationPeriod): void {
     const dob = this._lifeSpan.dateOfBirth;
     const dod = this._lifeSpan.dateOfDeath;
 
-    if (startDate < dob || (dod && startDate > dod)) {
-      throw InvalidAffiliationDateException.forStartDate(startDate, dob, dod);
+    if (period.startDate < dob || (dod && period.startDate > dod)) {
+      throw InvalidAffiliationDateException.forStartDate(period.startDate, dob, dod);
     }
-    if (endDate && (endDate < dob || (dod && endDate > dod))) {
-      throw InvalidAffiliationDateException.forEndDate(endDate, dob, dod);
+    if (period.endDate && (period.endDate < dob || (dod && period.endDate > dod))) {
+      throw InvalidAffiliationDateException.forEndDate(period.endDate, dob, dod);
     }
   }
 
-  private ensureAffiliationNameIsUnique(name: string, ignoreId?: string): void {
+  private ensureAffiliationNameIsUnique(name: AffiliationName, ignoreId?: string): void {
     const exists = this._affiliations.some(
-      a => a.nameValue.toLowerCase() === name.toLowerCase() && a.id !== ignoreId,
+      a => a.institutionName.toLowerCase() === name.value.toLowerCase() && a.id !== ignoreId,
     );
-    if (exists) throw new DuplicateAffiliationNameException(name);
+    if (exists) throw new DuplicateAffiliationNameException(name.value);
   }
 }

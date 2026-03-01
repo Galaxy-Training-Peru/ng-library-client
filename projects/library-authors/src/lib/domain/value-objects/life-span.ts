@@ -20,6 +20,25 @@ export class LifeSpan extends ValueObject {
     return new LifeSpan(dateOfBirth, dateOfDeath);
   }
 
+  static validate(dateOfBirth: Date, dateOfDeath?: Date | null): { dateOfBirth: string[]; dateOfDeath: string[] } | null {
+    const errors = InvalidLifeSpanException.collect(dateOfBirth, dateOfDeath);
+    if (!errors.length) return null;
+    return {
+      dateOfBirth: errors.filter(e => e.field === 'dateOfBirth').map(e => e.message),
+      dateOfDeath: errors.filter(e => e.field === 'dateOfDeath').map(e => e.message),
+    };
+  }
+
+  static computeAge(dateOfBirth: Date, dateOfDeath?: Date | null): number | null {
+    if (InvalidLifeSpanException.collect(dateOfBirth, dateOfDeath).length) return null;
+    return new LifeSpan(dateOfBirth, dateOfDeath).age;
+  }
+
+  static computeIsDeceased(dateOfBirth: Date, dateOfDeath: Date | null): boolean | null {
+    if (InvalidLifeSpanException.collect(dateOfBirth, dateOfDeath).length) return null;
+    return new LifeSpan(dateOfBirth, dateOfDeath).isDeceased;
+  }
+
   get isDeceased(): boolean {
     return this.dateOfDeath !== null;
   }

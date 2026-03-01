@@ -1,14 +1,15 @@
 import { inject, Injectable } from '@angular/core';
-import { type JsonPatchOperation, type PagedList } from '@eac-arch/infrastructure-http';
-import type { IAuthorRepository } from '../../../application/contracts';
+import { type PagedList, toJsonPatchOperations } from '@eac-arch/infrastructure-http';
+import type { IAuthorRepository, AuthorChanges } from '../../../application/contracts';
 import type { Author } from '../../../domain/aggregates/author';
-import type { AuthorModel } from '../../../application/models';
+import type { AuthorDto } from '../../rest-clients/dtos';
+import { buildReplacePatches } from '@eac-arch/shared-kernel';
 import { AffiliationsHttpAgent } from '../../http-agents/affiliations-http.agent';
 import { AuthorsHttpAgent } from '../../http-agents/authors-http.agent';
 import { AwardsHttpAgent } from '../../http-agents/awards-http.agent';
 import { PapersHttpAgent } from '../../http-agents/papers-http.agent';
-import type { AuthorQueryOptions, CreateAuthorData, UpsertAuthorData } from '../../http-agents/contracts';
-import { AuthorMapper } from './author.mapper';
+import type { AuthorQueryOptions } from '../../http-agents/contracts';
+import { AuthorDtoMapper } from '../../mappings';
 import { HttpRepository } from '@eac-arch/infrastructure-persistence';
 
 // Large page size for loading all child collections of a single author in one request.
@@ -16,7 +17,7 @@ const MAX_COLLECTION_PAGE_SIZE = 1000;
 
 @Injectable({ providedIn: 'root' })
 export class AuthorRepositoryImpl
-  extends HttpRepository<Author, AuthorModel, CreateAuthorData, UpsertAuthorData, AuthorQueryOptions, JsonPatchOperation>
+  extends HttpRepository<Author, AuthorDto, Author, Author, AuthorQueryOptions, AuthorChanges>
   implements IAuthorRepository {
 
   private readonly authorsHttpAgent = inject(AuthorsHttpAgent);
@@ -26,27 +27,30 @@ export class AuthorRepositoryImpl
 
   // -- Mapping --
 
-  protected override mapToEntity(model: AuthorModel): Author {
-    return AuthorMapper.fromModel(model);
+  protected override extractId(dto: AuthorDto): string {
+    return dto.authorId;
   }
 
-  // Overrides the default rehydrate to load all child collections in parallel.
-  protected override async rehydrate(authorId: string, model: AuthorModel): Promise<Author> {
+  protected override mapToEntity(dto: AuthorDto): Author {
+    return AuthorDtoMapper.fromDto(dto);
+  }
+
+  protected override async rehydrate(authorId: string, dto: AuthorDto): Promise<Author> {
     const [awardsPage, papersPage, affiliationsPage] = await Promise.all([
       this.awardsHttpAgent.getAllAwardsOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
       this.papersHttpAgent.getAllPapersOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
       this.affiliationsHttpAgent.getAllAffiliationsOfAuthor(authorId, 1, MAX_COLLECTION_PAGE_SIZE),
     ]);
-    return AuthorMapper.rehydrate(model, awardsPage.items, papersPage.items, affiliationsPage.items);
+    return AuthorDtoMapper.rehydrate(dto, awardsPage.items, papersPage.items, affiliationsPage.items);
   }
 
   // -- Agent delegates --
 
-  protected override doGetAll(pageNumber: number, pageSize: number, options?: AuthorQueryOptions): Promise<PagedList<AuthorModel>> {
+  protected override doGetAll(pageNumber: number, pageSize: number, options?: AuthorQueryOptions): Promise<PagedList<AuthorDto>> {
     return this.authorsHttpAgent.getAllAuthors(pageNumber, pageSize, options);
   }
 
-  protected override doGetById(authorId: string): Promise<AuthorModel | null> {
+  protected override doGetById(authorId: string): Promise<AuthorDto | null> {
     return this.authorsHttpAgent.getAuthorById(authorId);
   }
 
@@ -54,16 +58,29 @@ export class AuthorRepositoryImpl
     return this.authorsHttpAgent.existsAuthor(authorId);
   }
 
-  protected override doCreate(data: CreateAuthorData): Promise<AuthorModel> {
-    return this.authorsHttpAgent.createAuthor(data);
+  protected override doCreate(author: Author): Promise<AuthorDto> {
+    return this.authorsHttpAgent.createAuthor({
+      authorId:        author.authorId || undefined,
+      firstName:       author.firstName,
+      lastName:        author.lastName,
+      dateOfBirth:     author.dateOfBirth.toISOString(),
+      dateOfDeath:     author.dateOfDeath?.toISOString(),
+      literaryGenreId: author.literaryGenreId,
+    });
   }
 
-  protected override doUpsert(authorId: string, data: UpsertAuthorData): Promise<AuthorModel | null> {
-    return this.authorsHttpAgent.upsertAuthor(authorId, data);
+  protected override doUpsert(authorId: string, author: Author): Promise<AuthorDto | null> {
+    return this.authorsHttpAgent.upsertAuthor(authorId, {
+      firstName:       author.firstName,
+      lastName:        author.lastName,
+      dateOfBirth:     author.dateOfBirth.toISOString(),
+      dateOfDeath:     author.dateOfDeath?.toISOString(),
+      literaryGenreId: author.literaryGenreId,
+    });
   }
 
-  protected override doUpdatePartial(authorId: string, operations: JsonPatchOperation[]): Promise<void> {
-    return this.authorsHttpAgent.updatePartialAuthor(authorId, operations);
+  protected override doUpdatePartial(authorId: string, changes: AuthorChanges): Promise<void> {
+    return this.authorsHttpAgent.updatePartialAuthor(authorId, toJsonPatchOperations(buildReplacePatches<AuthorChanges>(changes)));
   }
 
   protected override doDelete(authorId: string): Promise<void> {

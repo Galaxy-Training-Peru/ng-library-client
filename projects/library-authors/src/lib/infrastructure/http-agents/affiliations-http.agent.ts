@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PagedList, type JsonPatchOperation } from '@eac-arch/infrastructure-http';
-import type { AffiliationModel } from '../../application/models';
+import type { AffiliationDto } from '../rest-clients/dtos';
 import {
   AffiliationsHttpClient,
   type GetAllAffiliationsOfAuthorHttpRequest,
@@ -14,11 +14,11 @@ import type { AffiliationQueryOptions, AddAffiliationData, UpsertAffiliationData
 export class AffiliationsHttpAgent {
   private readonly httpClient = inject(AffiliationsHttpClient);
 
-  async getAllAffiliationsOfAuthor(authorId: string, pageNumber: number, pageSize: number, options?: AffiliationQueryOptions): Promise<PagedList<AffiliationModel>> {
+  async getAllAffiliationsOfAuthor(authorId: string, pageNumber: number, pageSize: number, options?: AffiliationQueryOptions): Promise<PagedList<AffiliationDto>> {
     const request: GetAllAffiliationsOfAuthorHttpRequest = { authorId, pageNumber, pageSize, ...options };
     const result = await this.httpClient.getAllAffiliationsOfAuthor(request);
 
-    return PagedList.create<AffiliationModel>(
+    return PagedList.create<AffiliationDto>(
       result.items.map(dto => ({ ...dto })),
       result.totalCount,
       result.currentPage,
@@ -26,7 +26,7 @@ export class AffiliationsHttpAgent {
     );
   }
 
-  async getAffiliationOfAuthorByAffiliationId(authorId: string, affiliationId: string, fields?: string): Promise<AffiliationModel | null> {
+  async getAffiliationOfAuthorByAffiliationId(authorId: string, affiliationId: string, fields?: string): Promise<AffiliationDto | null> {
     try {
       const response = await this.httpClient.getAffiliationOfAuthorByAffiliationId({ authorId, affiliationId, fields });
       return { ...response.data };
@@ -48,13 +48,13 @@ export class AffiliationsHttpAgent {
     return response.data.isUnique;
   }
 
-  async addAffiliationToAuthor(authorId: string, data: AddAffiliationData): Promise<AffiliationModel> {
+  async addAffiliationToAuthor(authorId: string, data: AddAffiliationData): Promise<AffiliationDto> {
     const request: AddAffiliationToAuthorHttpRequest = { authorId, ...data };
     const dto = await this.httpClient.addAffiliationToAuthor(request);
     return { ...dto };
   }
 
-  async upsertAffiliationOfAuthor(authorId: string, affiliationId: string, data: UpsertAffiliationData): Promise<AffiliationModel | null> {
+  async upsertAffiliationOfAuthor(authorId: string, affiliationId: string, data: UpsertAffiliationData): Promise<AffiliationDto | null> {
     const request: UpsertAffiliationOfAuthorHttpRequest = { authorId, affiliationId, ...data };
     const dto = await this.httpClient.upsertAffiliationOfAuthor(request);
     return dto ? { ...dto } : null;

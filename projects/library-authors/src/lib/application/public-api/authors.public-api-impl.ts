@@ -7,6 +7,10 @@ import type {
   GetAuthorByIdRequest, GetAuthorByIdResponse,
   ExistsAuthorRequest, ExistsAuthorResponse,
   CheckAuthorNameUniquenessRequest, CheckAuthorNameUniquenessResponse,
+  CreateAuthorRequest, CreateAuthorResponse,
+  UpsertAuthorRequest, UpsertAuthorResponse,
+  DeleteAuthorRequest, DeleteAuthorResponse,
+  UpdatePartialAuthorRequest, UpdatePartialAuthorResponse,
 } from './contracts/author';
 import type {
   GetAllPapersOfAuthorRequest, GetAllPapersOfAuthorResponse,
@@ -33,6 +37,10 @@ import {
   GetAuthorByIdUseCase,
   ExistsAuthorUseCase,
   CheckAuthorNameUniquenessUseCase,
+  CreateAuthorUseCase,
+  UpsertAuthorUseCase,
+  DeleteAuthorUseCase,
+  UpdatePartialAuthorUseCase,
   GetAllPapersOfAuthorUseCase,
   GetPaperOfAuthorByPaperIdUseCase,
   ExistsPaperOfAuthorUseCase,
@@ -51,10 +59,14 @@ import {
 export class AuthorsPublicApiImpl implements AuthorsPublicApi {
 
   // Author
-  private readonly getAllAuthorsUseCase = inject(GetAllAuthorsUseCase);
+  private readonly getAllAuthorsUseCase  = inject(GetAllAuthorsUseCase);
   private readonly getAuthorByIdUseCase = inject(GetAuthorByIdUseCase);
   private readonly existsAuthorUseCase = inject(ExistsAuthorUseCase);
   private readonly checkAuthorNameUniquenessUseCase = inject(CheckAuthorNameUniquenessUseCase);
+  private readonly createAuthorUseCase = inject(CreateAuthorUseCase);
+  private readonly upsertAuthorUseCase = inject(UpsertAuthorUseCase);
+  private readonly deleteAuthorUseCase = inject(DeleteAuthorUseCase);
+  private readonly updatePartialAuthorUseCase = inject(UpdatePartialAuthorUseCase);
 
   // Paper
   private readonly getAllPapersOfAuthorUseCase = inject(GetAllPapersOfAuthorUseCase);
@@ -90,6 +102,23 @@ export class AuthorsPublicApiImpl implements AuthorsPublicApi {
 
   async checkAuthorNameUniqueness(request: CheckAuthorNameUniquenessRequest): Promise<CheckAuthorNameUniquenessResponse> {
     return this.checkAuthorNameUniquenessUseCase.execute(request);
+  }
+
+  async createAuthor(request: CreateAuthorRequest): Promise<CreateAuthorResponse> {
+    return this.createAuthorUseCase.execute(request);
+  }
+
+  async upsertAuthor(request: UpsertAuthorRequest): Promise<UpsertAuthorResponse> {
+    const result = await this.upsertAuthorUseCase.execute(request);
+    return result.author;
+  }
+
+  async deleteAuthor(request: DeleteAuthorRequest): Promise<DeleteAuthorResponse> {
+    return this.deleteAuthorUseCase.execute(request);
+  }
+
+  async updatePartialAuthor(request: UpdatePartialAuthorRequest): Promise<UpdatePartialAuthorResponse> {
+    return this.updatePartialAuthorUseCase.execute(request);
   }
 
   // #endregion

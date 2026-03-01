@@ -1,0 +1,24 @@
+
+.edit-form-body {
+  
+  .detail-grid {
+    align-items: start;
+  }
+
+  // Editable fields reserve room for mat-error via subscriptSizing="dynamic" + margin.
+  .field-editable {
+    margin-bottom: var(--lib-form-subscript);
+ }
+
+  .field-readonly {
+    margin-bottom: var(--lib-form-subscript);
+ }
+
+}
+
+.field-error {
+   padding: 0 var(--lib-space-2);
+   margin-top: -20px;
+   margin-bottom: 20px;
+   color: var(--mat-form-field-error-text-color);
+}

@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthorEditViewModel } from './author-edit.view-model';
-import type { AuthorModel } from '../../../application/models';
+import type { AuthorEditResolvedData } from '../../routes/resolvers/author-edit.resolver';
 
 @Component({
   selector: 'lib-author-edit-page',
@@ -27,30 +27,37 @@ import type { AuthorModel } from '../../../application/models';
     MatSlideToggleModule,
     MatTooltipModule,
   ],
-  providers: [AuthorEditViewModel],
+  providers: [
+    AuthorEditViewModel,
+  ],
   templateUrl: './author-edit-page.html',
   styleUrl:    './author-edit-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthorEditPage implements OnInit {
-  protected readonly author = input<AuthorModel | null>();
+  protected readonly authorEdit = input<AuthorEditResolvedData>();
 
   protected readonly vm     = inject(AuthorEditViewModel);
   private   readonly router = inject(Router);
   private   readonly route  = inject(ActivatedRoute);
 
-  ngOnInit(): void {
-    const author = this.author();
-    if (author) this.vm.init(author);
+  async ngOnInit(): Promise<void> {
+    const data = this.authorEdit();
+    if (data?.author) await this.vm.init(data);
   }
 
   protected goBack(): void {
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  protected save(): void {
+  protected async save(): Promise<void> {
     if (this.vm.form.invalid) return;
-    // TODO: call vm.save() when UpdateAuthor use-case is ready
+    try {
+      await this.vm.save();
+      this.goBack();
+    } catch {
+      // TODO: show error notification
+    }
   }
 }
 

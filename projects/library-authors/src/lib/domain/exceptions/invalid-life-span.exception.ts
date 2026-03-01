@@ -9,7 +9,7 @@ export class InvalidLifeSpanException extends ValidationException {
     super(errors);
   }
 
-  static validate(dateOfBirth: Date, dateOfDeath?: Date | null): void {
+  static collect(dateOfBirth: Date, dateOfDeath?: Date | null): ExceptionError[] {
     const errors: ExceptionError[] = [];
 
     if (!dateOfBirth || Number.isNaN(dateOfBirth.getTime())) {
@@ -25,6 +25,11 @@ export class InvalidLifeSpanException extends ValidationException {
       errors.push({ field: 'dateOfDeath', value: dateOfDeath, message: 'Date of death cannot be earlier than date of birth.' });
     }
 
+    return errors;
+  }
+
+  static validate(dateOfBirth: Date, dateOfDeath?: Date | null): void {
+    const errors = InvalidLifeSpanException.collect(dateOfBirth, dateOfDeath);
     if (errors.length) throw new InvalidLifeSpanException(errors);
   }
 }

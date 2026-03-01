@@ -1,9 +1,6 @@
 import type { Entity } from '@eac-arch/shared-kernel';
-import { PaperTitle } from '../value-objects/paper-title';
+import type { PaperTitle } from '../value-objects/paper-title';
 
-// Author child entity: academic or literary paper.
-// Url is optional.
-// Lifetime is managed by the Author aggregate.
 export class Paper implements Entity<string> {
   readonly id: string;
 
@@ -18,23 +15,19 @@ export class Paper implements Entity<string> {
     this._url = url;
   }
 
-  // -- Accessors --
-
-  get titleValue(): string { return this._title.value; }
+  get paperId(): string { return this.id; }
+  get titleVo(): PaperTitle { return this._title; }
+  get title(): string { return this._title.value; }
   get publishedOn(): Date { return this._publishedOn; }
   get url(): string | null { return this._url; }
   get publishedYear(): number { return this._publishedOn.getUTCFullYear(); }
 
-  // -- Factory --
-
-  static create(id: string, title: string, publishedOn: Date, url?: string | null): Paper {
-    return new Paper(id, PaperTitle.create(title), publishedOn, url?.trim() ?? null);
+  static create(id: string, title: PaperTitle, publishedOn: Date, url?: string | null): Paper {
+    return new Paper(id, title, publishedOn, url?.trim() ?? null);
   }
 
-  // -- Mutations --
-
-  update(title: string, publishedOn: Date, url?: string | null): void {
-    this._title = PaperTitle.create(title);
+  update(title: PaperTitle, publishedOn: Date, url?: string | null): void {
+    this._title = title;
     this._publishedOn = publishedOn;
     this._url = url?.trim() ?? null;
   }

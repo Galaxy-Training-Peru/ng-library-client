@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PagedList, type JsonPatchOperation } from '@eac-arch/infrastructure-http';
-import type { AuthorModel } from '../../application/models';
+import type { AuthorDto } from '../rest-clients/dtos';
 import {
   AuthorsHttpClient,
   type GetAllAuthorsHttpRequest,
@@ -14,11 +14,11 @@ import type { AuthorQueryOptions, CreateAuthorData, UpsertAuthorData } from './c
 export class AuthorsHttpAgent {
   private readonly httpClient = inject(AuthorsHttpClient);
 
-  async getAllAuthors(pageNumber: number, pageSize: number, options?: AuthorQueryOptions): Promise<PagedList<AuthorModel>> {
+  async getAllAuthors(pageNumber: number, pageSize: number, options?: AuthorQueryOptions): Promise<PagedList<AuthorDto>> {
     const request: GetAllAuthorsHttpRequest = { pageNumber, pageSize, ...options };
     const result = await this.httpClient.getAllAuthors(request);
 
-    return PagedList.create<AuthorModel>(
+    return PagedList.create<AuthorDto>(
       result.items.map(dto => ({ ...dto })),
       result.totalCount,
       result.currentPage,
@@ -26,7 +26,7 @@ export class AuthorsHttpAgent {
     );
   }
 
-  async getAuthorById(authorId: string, fields?: string): Promise<AuthorModel | null> {
+  async getAuthorById(authorId: string, fields?: string): Promise<AuthorDto | null> {
     try {
       const response = await this.httpClient.getAuthorById({ authorId, fields });
       return { ...response.data };
@@ -48,13 +48,13 @@ export class AuthorsHttpAgent {
     return response.data.isUnique;
   }
 
-  async createAuthor(data: CreateAuthorData): Promise<AuthorModel> {
+  async createAuthor(data: CreateAuthorData): Promise<AuthorDto> {
     const request: CreateAuthorHttpRequest = { ...data };
     const dto = await this.httpClient.createAuthor(request);
     return { ...dto };
   }
 
-  async upsertAuthor(authorId: string, data: UpsertAuthorData): Promise<AuthorModel | null> {
+  async upsertAuthor(authorId: string, data: UpsertAuthorData): Promise<AuthorDto | null> {
     const request: UpsertAuthorHttpRequest = { authorId, ...data };
     const dto = await this.httpClient.upsertAuthor(request);
     return dto ? { ...dto } : null;

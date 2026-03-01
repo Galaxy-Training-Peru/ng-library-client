@@ -2,8 +2,9 @@ import { computed, effect, inject, Injectable, signal, untracked } from '@angula
 import type { SortField } from '@eac-arch/shared-kernel';
 import { LITERARY_GENRE_AGENT } from 'library-integration';
 import type { LiteraryGenreDto } from 'library-integration';
-import { AUTHORS_PUBLIC_API, type GetAllAuthorsRequest } from '../../../application/public-api';
-import type { AuthorModel } from '../../../application/models';
+import { AUTHORS_PUBLIC_API, type GetAllAuthorsRequest, type GetAllAuthorsResponse } from '../../../application/public-api';
+
+type AuthorListItemDto = GetAllAuthorsResponse['items'][number];
 import { ListQueryParamsSyncer } from '@eac-arch/infrastructure-state';
 
 @Injectable()
@@ -32,7 +33,7 @@ export class AuthorListViewModel {
   readonly activeSortField     = computed(() => (this.url.params.sort()[0] as SortField | undefined)?.field ?? '');
   readonly activeSortDirection = computed(() => (this.url.params.sort()[0] as SortField | undefined)?.direction ?? '');
 
-  readonly authors        = signal<readonly AuthorModel[]>([]);
+  readonly authors        = signal<readonly AuthorListItemDto[]>([]);
   readonly totalCount     = signal(0);
   readonly literaryGenres = signal<readonly LiteraryGenreDto[]>([]);
 

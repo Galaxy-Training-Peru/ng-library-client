@@ -10,7 +10,7 @@ export class InvalidFullNameException extends ValidationException {
     super(errors);
   }
 
-  static validate(firstName: string, lastName: string): void {
+  static collect(firstName: string, lastName: string): ExceptionError[] {
     const errors: ExceptionError[] = [];
 
     if (!firstName?.trim()) {
@@ -20,6 +20,11 @@ export class InvalidFullNameException extends ValidationException {
       errors.push({ field: 'lastName', value: lastName, message: 'Last name is required.' });
     }
 
+    return errors;
+  }
+
+  static validate(firstName: string, lastName: string): void {
+    const errors = InvalidFullNameException.collect(firstName, lastName);
     if (errors.length) throw new InvalidFullNameException(errors);
   }
 }

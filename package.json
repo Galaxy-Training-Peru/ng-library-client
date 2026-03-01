@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build library-authors && ng build library-books && ng build library-catalog && ng build library-integration && ng build",
+    "build": "ng build library-integration && ng build library-catalog && ng build library-authors && ng build library-books && ng build",
     "build:app": "ng build",
-    "build:libs": "ng build library-authors && ng build library-books && ng build library-catalog && ng build library-integration",
+    "build:libs": "ng build library-integration && ng build library-catalog && ng build library-authors && ng build library-books",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:ng-library-client": "node dist/ng-library-client/server/server.mjs"
@@ -40,6 +40,7 @@
     "@automapper/core": "^8.8.1",
     "@eac-arch/infrastructure-config": "file:../eac-arch-infrastructure-config/dist/eac-arch-infrastructure-config",
     "@eac-arch/infrastructure-http": "file:../eac-arch-infrastructure-http/dist/eac-arch-infrastructure-http",
+    "@eac-arch/infrastructure-persistence": "file:../eac-arch-infrastructure-persistence/dist/eac-arch-infrastructure-persistence",
     "@eac-arch/infrastructure-security": "file:../eac-arch-infrastructure-security/dist/eac-arch-infrastructure-security",
     "@eac-arch/infrastructure-state": "file:../eac-arch-infrastructure-state/dist/eac-arch-infrastructure-state",
     "@eac-arch/shared-kernel": "file:../eac-arch-shared-kernel/dist/eac-arch-shared-kernel",

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { authGuard } from '@eac-arch/infrastructure-security';
-import { provideCatalogModule, provideLiteraryGenreAgent } from 'library-catalog';
 import { Layout } from '../shell/layout/layout';
 import { Home } from '../pages/home/home';
 import { PageNotFound } from '@shared/pages/page-not-found';
@@ -12,12 +11,10 @@ export const routes: Routes = [
     component: Layout,
     canActivate: [authGuard],
     canActivateChild: [authGuard],
-    providers: [provideCatalogModule()],
     children: [
       { path: '', redirectTo: 'authors', pathMatch: 'full' },
       {
         path: 'authors',
-        providers: [provideLiteraryGenreAgent()],
         loadChildren: () => import('library-authors').then(m => m.AUTHORS_ROUTES),
       },
     ]
