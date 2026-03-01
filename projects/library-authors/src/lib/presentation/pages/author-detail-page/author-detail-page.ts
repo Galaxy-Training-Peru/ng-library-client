@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import type { AuthorDetailResolvedData } from '../../routes/resolvers/author-detail.resolver';
+import { AuthorDeleteButton } from '../../components/author-delete-button/author-delete-button';
 
 @Component({
   selector: 'lib-author-detail-page',
@@ -20,6 +21,7 @@ import type { AuthorDetailResolvedData } from '../../routes/resolvers/author-det
     FormsModule,
     MatButtonModule,
     MatExpansionModule,
+    AuthorDeleteButton,
     MatIconModule,
     MatTabsModule,
     MatTooltipModule,

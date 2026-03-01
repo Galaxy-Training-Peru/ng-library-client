@@ -83,9 +83,11 @@
             <button mat-icon-button matTooltip="Edit" (click)="onEditAuthor(row.authorId)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" matTooltip="Delete">
-              <mat-icon>delete</mat-icon>
-            </button>
+            <lib-author-delete-button
+              [authorId]="row.authorId"
+              [fullName]="row.fullName"
+              [iconOnly]="true"
+              (deleted)="onAuthorDeleted()" />
           </div>
         </td>
       </ng-container>
@@ -111,9 +113,12 @@
               <button mat-icon-button aria-label="Edit" (click)="onEditAuthor(a.authorId); $event.stopPropagation()">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button aria-label="Delete" (click)="$event.stopPropagation()">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <lib-author-delete-button
+                [authorId]="a.authorId"
+                [fullName]="a.fullName"
+                [iconOnly]="true"
+                (deleted)="onAuthorDeleted()"
+                (click)="$event.stopPropagation()" />
             </mat-panel-description>
           </mat-expansion-panel-header>
 
@@ -134,10 +139,10 @@
               <mat-icon>edit</mat-icon>
               Edit
             </button>
-            <button mat-stroked-button color="warn">
-              <mat-icon>delete</mat-icon>
-              Delete
-            </button>
+            <lib-author-delete-button
+                    [authorId]="a.authorId"
+                    [fullName]="a.fullName"
+                    (deleted)="onAuthorDeleted()" />
           </mat-action-row>
         </mat-expansion-panel>
       }

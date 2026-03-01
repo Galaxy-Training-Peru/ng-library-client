@@ -14,6 +14,7 @@ import { AuthorEditViewModel } from './author-edit.view-model';
 import type { AuthorEditResolvedData } from '../../routes/resolvers/author-edit.resolver';
 import type { UnsavedChanges } from '@eac-arch/ui-kit';
 import { NotificationService } from '@eac-arch/ui-kit';
+import { AuthorDeleteButton } from '../../components/author-delete-button/author-delete-button';
 
 @Component({
   selector: 'lib-author-edit-page',
@@ -28,6 +29,7 @@ import { NotificationService } from '@eac-arch/ui-kit';
     MatSelectModule,
     MatSlideToggleModule,
     MatTooltipModule,
+    AuthorDeleteButton,
   ],
   providers: [
     AuthorEditViewModel,
@@ -55,6 +57,10 @@ export class AuthorEditPage implements OnInit, UnsavedChanges {
 
   protected goBack(): void {
     this.router.navigate(['..'], { relativeTo: this.route });
+  }
+
+  protected goToList(): void {
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
   protected async save(): Promise<void> {

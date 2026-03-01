@@ -37,12 +37,15 @@ export class AuthorListViewModel {
   readonly totalCount     = signal(0);
   readonly literaryGenres = signal<readonly LiteraryGenreDto[]>([]);
 
+  private readonly reloadTrigger = signal(0);
+
   private readonly queryParams = computed(() => ({
     pageIndex:       this.currentPage() ?? 0,
     pageSize:        this.pageSize()    ?? 10,
     sortFields:      this.url.params.sort() as SortField[],
     searchText:      this.url.debounced.search() ?? '',
     literaryGenreId: this.selectedLiteraryGenreId() ?? undefined,
+    _reload:         this.reloadTrigger(),
   }));
 
   constructor() {
@@ -77,6 +80,18 @@ export class AuthorListViewModel {
     } catch {
       this.authors.set([]);
       this.totalCount.set(0);
+    }
+  }
+
+  adjustAfterDelete(): void {
+    const currentPage = this.currentPage() ?? 0;
+    const pageSize    = this.pageSize() ?? 10;
+    const totalNext   = Math.max(0, this.totalCount() - 1);
+    const maxPage     = Math.max(0, Math.ceil(totalNext / pageSize) - 1);
+    if (currentPage > maxPage) {
+      this.currentPage.set(maxPage); // page change already triggers reload via effect
+    } else {
+      this.reloadTrigger.update(n => n + 1);
     }
   }
 }

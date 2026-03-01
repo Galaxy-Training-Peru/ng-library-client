@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import type { SortField } from '@eac-arch/shared-kernel';
+import { AuthorDeleteButton } from '../../components/author-delete-button/author-delete-button';
 import { AuthorListViewModel } from './author-list.view-model';
 
 @Component({
@@ -32,6 +33,7 @@ import { AuthorListViewModel } from './author-list.view-model';
     MatSelectModule,
     MatExpansionModule,
     MatTooltipModule,
+    AuthorDeleteButton,
   ],
   providers: [AuthorListViewModel],
   templateUrl: './author-list-page.html',
@@ -82,5 +84,9 @@ export class AuthorListPage {
   protected onLiteraryGenreChange(genreId: string | null): void {
     this.vm.selectedLiteraryGenreId.set(genreId ?? undefined);
     this.vm.currentPage.set(0);
+  }
+
+  protected onAuthorDeleted(): void {
+    this.vm.adjustAfterDelete();
   }
 }

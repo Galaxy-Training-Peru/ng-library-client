@@ -12,10 +12,15 @@
         Author not found
       }
     </h3>
-    @if (authorDetail()?.author) {
+    @if (authorDetail()?.author; as author) {
       <button mat-icon-button (click)="goEdit()" matTooltip="Edit author">
         <mat-icon>edit</mat-icon>
       </button>
+      <lib-author-delete-button
+        [authorId]="author.authorId"
+        [fullName]="author.fullName"
+        [iconOnly]="true"
+        (deleted)="goBack()" />
     }
   </div>
 

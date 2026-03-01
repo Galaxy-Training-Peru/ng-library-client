@@ -6,6 +6,13 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h3 class="m-0">{{ vm.isNew() ? 'New Author' : 'Edit Author' }}</h3>
+    @if (!vm.isNew() && authorEdit()?.author; as author) {
+      <lib-author-delete-button
+        [authorId]="author.authorId"
+        [fullName]="author.fullName"
+        [iconOnly]="true"
+        (deleted)="goToList()" />
+    }
   </div>
 
   <!-- Not found -->
