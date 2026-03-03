@@ -5,11 +5,30 @@ import { AUTHORS_VALIDATIONS_API } from '../../application/validations-api';
 import { AuthorsPublicApiImpl } from '../../application/public-api/authors.public-api-impl';
 import { AuthorsComputationsApiImpl } from '../../application/computations-api/authors.computations-api-impl';
 import { AuthorsValidationsApiImpl } from '../../application/validations-api/authors.validations-api-impl';
+import { provideTracedClass } from '@eac-arch/infrastructure-telemetry';
 
 export function providePublicApi(): Provider[] {
+  const implementations = [
+    AuthorsPublicApiImpl,
+    AuthorsComputationsApiImpl,
+    AuthorsValidationsApiImpl,
+  ];
+
   return [
-    { provide: AUTHORS_PUBLIC_API,       useClass: AuthorsPublicApiImpl },
-    { provide: AUTHORS_COMPUTATIONS_API, useClass: AuthorsComputationsApiImpl },
-    { provide: AUTHORS_VALIDATIONS_API,  useClass: AuthorsValidationsApiImpl },
+    ...implementations.flatMap((implementation) =>
+      provideTracedClass(implementation, 'application.public-api-impl.authors'),
+    ),
+    {
+      provide: AUTHORS_PUBLIC_API,
+      useExisting: AuthorsPublicApiImpl,
+    },
+    {
+      provide: AUTHORS_COMPUTATIONS_API,
+      useExisting: AuthorsComputationsApiImpl,
+    },
+    {
+      provide: AUTHORS_VALIDATIONS_API,
+      useExisting: AuthorsValidationsApiImpl,
+    },
   ];
 }

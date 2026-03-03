@@ -58,31 +58,22 @@ export class AuthorListViewModel {
   }
 
   private async loadLiteraryGenres(): Promise<void> {
-    try {
-      const response = await this.literaryGenreAgent.getAllLiteraryGenres({ pageNumber: 1, pageSize: 100 });
-      this.literaryGenres.set(response.items);
-    } catch {
-      this.literaryGenres.set([]);
-    }
+    const response = await this.literaryGenreAgent.getAllLiteraryGenres({ pageNumber: 1, pageSize: 100 });
+    this.literaryGenres.set(response.items);
   }
 
   private async doLoadAuthors(params: ReturnType<typeof this.queryParams>): Promise<void> {
-    try {
-      const request: GetAllAuthorsRequest = {
-        pageNumber: params.pageIndex + 1,
-        pageSize:   params.pageSize,
-        search:     params.searchText || undefined,
-        literaryGenreId: params.literaryGenreId ?? undefined,
-        sortFields: params.sortFields.length ? params.sortFields : undefined,
-      };
-      const response = await this.publicApi.getAllAuthors(request);
-      this.authors.set(response.items);
-      this.totalCount.set(response.totalCount);
-      this.status.set(response.items.length > 0 ? 'success' : 'empty');
-    } catch {
-      this.authors.set([]);
-      this.totalCount.set(0);
-    }
+    const request: GetAllAuthorsRequest = {
+      pageNumber: params.pageIndex + 1,
+      pageSize:   params.pageSize,
+      search:     params.searchText || undefined,
+      literaryGenreId: params.literaryGenreId ?? undefined,
+      sortFields: params.sortFields.length ? params.sortFields : undefined,
+    };
+    const response = await this.publicApi.getAllAuthors(request);
+    this.authors.set(response.items);
+    this.totalCount.set(response.totalCount);
+    this.status.set(response.items.length > 0 ? 'success' : 'empty');
   }
 
   adjustAfterDelete(): void {

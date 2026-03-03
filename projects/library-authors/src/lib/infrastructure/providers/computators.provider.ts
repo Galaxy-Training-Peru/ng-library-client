@@ -4,12 +4,17 @@ import {
   CalculateAgeComputator,
   IsDeceasedComputator,
 } from '../../application/computators/author';
+import { provideTracedClass } from '@eac-arch/infrastructure-telemetry';
 
 export function provideComputators(): Provider[] {
-  return [
+  const computators = [
     // Author
     BuildFullNameComputator,
     CalculateAgeComputator,
     IsDeceasedComputator,
   ];
+
+  return computators.flatMap((computator) =>
+    provideTracedClass(computator, 'application.computator.authors'),
+  );
 }

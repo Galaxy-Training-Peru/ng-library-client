@@ -9,9 +9,10 @@ import {
   ExistsPublisherUseCase,
   CheckPublisherNameUniquenessUseCase,
 } from '../../application/use-cases';
+import { provideTracedClass } from '@eac-arch/infrastructure-telemetry';
 
 export function provideUseCases(): Provider[] {
-  return [
+  const useCases = [
     GetAllLiteraryGenresUseCase,
     GetLiteraryGenreByIdUseCase,
     ExistsLiteraryGenreUseCase,
@@ -21,4 +22,8 @@ export function provideUseCases(): Provider[] {
     ExistsPublisherUseCase,
     CheckPublisherNameUniquenessUseCase,
   ];
+
+  return useCases.flatMap((useCase) =>
+    provideTracedClass(useCase, 'application.use-case.catalog'),
+  );
 }

@@ -13,13 +13,34 @@ import {
   AffiliationQueryServiceImpl,
 } from '../persistence/queries';
 import { AuthorRepositoryImpl } from '../persistence/repositories';
+import { provideTracedClass } from '@eac-arch/infrastructure-telemetry';
 
 export function providePersistence(): Provider[] {
   return [
-    { provide: AUTHOR_QUERY_SERVICE, useClass: AuthorQueryServiceImpl },
-    { provide: PAPER_QUERY_SERVICE, useClass: PaperQueryServiceImpl },
-    { provide: AWARD_QUERY_SERVICE, useClass: AwardQueryServiceImpl },
-    { provide: AFFILIATION_QUERY_SERVICE, useClass: AffiliationQueryServiceImpl },
-    { provide: AUTHOR_REPOSITORY, useClass: AuthorRepositoryImpl },
+    ...provideTracedClass(AuthorQueryServiceImpl, 'infrastructure.query-service.author'),
+    ...provideTracedClass(PaperQueryServiceImpl, 'infrastructure.query-service.paper'),
+    ...provideTracedClass(AwardQueryServiceImpl, 'infrastructure.query-service.award'),
+    ...provideTracedClass(AffiliationQueryServiceImpl, 'infrastructure.query-service.affiliation'),
+    ...provideTracedClass(AuthorRepositoryImpl, 'infrastructure.repository.author'),
+    {
+      provide: AUTHOR_QUERY_SERVICE,
+      useExisting: AuthorQueryServiceImpl,
+    },
+    {
+      provide: PAPER_QUERY_SERVICE,
+      useExisting: PaperQueryServiceImpl,
+    },
+    {
+      provide: AWARD_QUERY_SERVICE,
+      useExisting: AwardQueryServiceImpl,
+    },
+    {
+      provide: AFFILIATION_QUERY_SERVICE,
+      useExisting: AffiliationQueryServiceImpl,
+    },
+    {
+      provide: AUTHOR_REPOSITORY,
+      useExisting: AuthorRepositoryImpl,
+    },
   ];
 }

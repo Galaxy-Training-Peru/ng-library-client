@@ -1,6 +1,11 @@
 {
   "LIBRARY_URL": "http://localhost:8082/api/v1",
   "OTEL_COLLECTOR_ENDPOINT": "http://localhost:4318/v1/traces",
+  "TELEMETRY": {
+    "HTTP_CAPTURE_DETAILS": true,
+    "HTTP_MAX_ATTRIBUTE_LENGTH": 4000,
+    "HTTP_RESPONSE_BODY_MAX_LENGTH": 2000
+  },
   "SECURITY": {
     "SECURE_API_KEYS": ["LIBRARY_URL"]
   },

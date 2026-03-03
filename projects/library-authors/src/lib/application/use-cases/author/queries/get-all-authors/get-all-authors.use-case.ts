@@ -22,6 +22,8 @@ export class GetAllAuthorsUseCase implements QueryUseCase<GetAllAuthorsQuery, Ge
 
     const spec = builder.build();
 
+    // throw new Error('Not implemented: GetAllAuthorsUseCase');
+
     return this.authorQueryService.getAllAuthors(
       query.pageNumber,
       query.pageSize,

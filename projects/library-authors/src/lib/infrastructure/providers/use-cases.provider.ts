@@ -21,9 +21,10 @@ import {
   ExistsAffiliationOfAuthorUseCase,
   CheckAffiliationNameUniquenessOfAuthorUseCase,
 } from '../../application/use-cases';
+import { provideTracedClass } from '@eac-arch/infrastructure-telemetry';
 
 export function provideUseCases(): Provider[] {
-  return [
+  const useCases = [
     // Author queries
     GetAllAuthorsUseCase,
     GetAuthorByIdUseCase,
@@ -50,4 +51,8 @@ export function provideUseCases(): Provider[] {
     ExistsAffiliationOfAuthorUseCase,
     CheckAffiliationNameUniquenessOfAuthorUseCase,
   ];
+
+  return useCases.flatMap((useCase) =>
+    provideTracedClass(useCase, 'application.use-case.authors'),
+  );
 }

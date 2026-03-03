@@ -5,6 +5,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideConfig } from '@eac-arch/infrastructure-config';
 import { provideSecurity, authInterceptor } from '@eac-arch/infrastructure-security';
 import { httpErrorInterceptor, provideErrorHandling } from '@eac-arch/infrastructure-http';
+import { provideTelemetry, telemetryHttpInterceptor } from '@eac-arch/infrastructure-telemetry';
 import { provideGlobalDateFormat, loadingInterceptor, provideNotifications } from '@eac-arch/ui-kit';
 import { provideModules, provideAgents } from '../providers';
 
@@ -17,8 +18,14 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(withEventReplay()),
     provideConfig(),
+    provideTelemetry(),
     provideSecurity(),
-    provideHttpClient(withFetch(), withInterceptors([httpErrorInterceptor, loadingInterceptor, authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([
+      telemetryHttpInterceptor,
+      httpErrorInterceptor,
+      loadingInterceptor,
+      authInterceptor,
+    ])),
     provideModules(),
     provideAgents(),
     provideGlobalDateFormat(),
