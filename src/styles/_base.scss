@@ -211,13 +211,17 @@ button {
   font-family: inherit;
 }
 
-// Vertically center text in outlined form fields.
+// Vertically center text in outlined/no-label text inputs.
 .mdc-text-field--outlined .mat-mdc-form-field-infix,
 .mdc-text-field--no-label .mat-mdc-form-field-infix {
   padding-top: 20px !important;
 }
 
-// Keep mat-select height aligned with text inputs outside paginator.
-.mat-mdc-form-field.mat-mdc-form-field-type-mat-select .mat-mdc-form-field-infix {
-  padding-top: var(--mat-form-field-container-vertical-padding, 16px) !important;
+// mat-mdc-form-field-type-mat-select is on the outer mat-form-field,
+// mdc-text-field--outlined is on the inner div — must use descendant combinator.
+.mat-mdc-form-field-type-mat-select .mdc-text-field--outlined .mat-mdc-form-field-infix,
+.mat-mdc-form-field-type-mat-select .mdc-text-field--no-label .mat-mdc-form-field-infix {
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
 }

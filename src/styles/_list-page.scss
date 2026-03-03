@@ -44,14 +44,14 @@
   margin-bottom: var(--list-filters-bottom-gap, var(--lib-space-2));
 }
 
-.list-search-action {
+.list-filter-action {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-.list-search-action > button {
-  min-width: var(--list-search-button-min-width, calc(var(--lib-space-4) * 4));
+.list-filter-action > button {
+  min-width: var(--list-filter-button-min-width, calc(var(--lib-space-4) * 4));
 }
 
 // --- Empty / no-data row ---
@@ -139,12 +139,12 @@ td.no-data-row, div.no-data-row {
     margin-bottom: var(--list-filters-bottom-gap-mobile, var(--lib-space-1));
   }
 
-  .list-search-action {
+  .list-filter-action {
     justify-content: stretch;
-    margin-bottom: var(--list-search-action-mobile-margin, var(--lib-space-2));
+    margin-bottom: var(--list-filter-action-mobile-margin, var(--lib-space-2));
   }
 
-  .list-search-action > button {
+  .list-filter-action > button {
     width: 100%;
     min-width: 0;
   }
