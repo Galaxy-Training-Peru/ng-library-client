@@ -94,6 +94,9 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr *matNoDataRow>
+        <td class="no-data-row" [attr.colspan]="displayedColumns.length">No authors found.</td>
+      </tr>
 
     </table>
   </div>
@@ -101,6 +104,7 @@
   <div class="list-accordion-container">
     <mat-accordion class="list-accordion" multi>
       @for (a of vm.authors(); track a.authorId) {
+        <!-- rendered when there are results -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>{{ a.fullName }}</mat-panel-title>
@@ -145,6 +149,8 @@
                     (deleted)="onAuthorDeleted()" />
           </mat-action-row>
         </mat-expansion-panel>
+      } @empty {
+        <div class="no-data-row">No authors found.</div>
       }
     </mat-accordion>
   </div>

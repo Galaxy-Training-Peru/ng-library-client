@@ -37,6 +37,14 @@
   grid-template-columns: 1fr;
 }
 
+// --- Empty / no-data row ---
+td.no-data-row, div.no-data-row {
+  padding: var(--lib-space-3);
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+  font-style: italic;
+}
+
 // --- Row actions ---
 .actions-cell .row-actions {
   display: inline-flex;

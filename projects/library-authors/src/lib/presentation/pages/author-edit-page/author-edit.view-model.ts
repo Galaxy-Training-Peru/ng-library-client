@@ -74,6 +74,7 @@ export class AuthorEditViewModel {
   readonly lifeSpanDateOfDeathMatcher    = new FieldGroupErrorMatcher('lifeSpanInvalid', 'dateOfDeath');
 
   constructor() {
+    // throw new Error('Test global error handler');
     this.firstName.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => this.syncFullName());
     this.lastName.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => this.syncFullName());
     this.dateOfBirth.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => this.syncLifeSpanDerived());

@@ -75,7 +75,7 @@ export class AuthorEditPage implements OnInit, UnsavedChanges {
         this.goBack();
       }
     } catch {
-      this.notifications.showError('Could not save the author');
+      // HTTP errors are handled globally by httpErrorInterceptor
     }
   }
 }

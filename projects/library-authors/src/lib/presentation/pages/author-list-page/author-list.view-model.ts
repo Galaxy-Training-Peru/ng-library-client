@@ -36,6 +36,7 @@ export class AuthorListViewModel {
   readonly authors        = signal<readonly AuthorListItemDto[]>([]);
   readonly totalCount     = signal(0);
   readonly literaryGenres = signal<readonly LiteraryGenreDto[]>([]);
+  readonly status         = signal<'success' | 'empty'>('empty');
 
   private readonly reloadTrigger = signal(0);
 
@@ -77,6 +78,7 @@ export class AuthorListViewModel {
       const response = await this.publicApi.getAllAuthors(request);
       this.authors.set(response.items);
       this.totalCount.set(response.totalCount);
+      this.status.set(response.items.length > 0 ? 'success' : 'empty');
     } catch {
       this.authors.set([]);
       this.totalCount.set(0);

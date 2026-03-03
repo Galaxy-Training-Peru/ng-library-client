@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import type { QueryUseCase } from '@eac-arch/shared-kernel';
 import { QuerySpecificationBuilder } from '@eac-arch/shared-kernel';
-import { AUTHOR_QUERY_SERVICE } from '../../../../contracts/queries';
 import { PAPER_QUERY_SERVICE } from '../../../../contracts/queries';
 import type { PaperModel } from '../../../../models';
 import { PaperByTitleSpec, PaperByYearSpec, PaperSearchSpec } from '../../../../../domain/specifications';
@@ -11,15 +10,9 @@ import type { GetAllPapersOfAuthorResult } from './get-all-papers-of-author.resu
 @Injectable()
 export class GetAllPapersOfAuthorUseCase implements QueryUseCase<GetAllPapersOfAuthorQuery, GetAllPapersOfAuthorResult> {
 
-  private readonly authorQueryService = inject(AUTHOR_QUERY_SERVICE);
   private readonly paperQueryService = inject(PAPER_QUERY_SERVICE);
 
   async execute(query: GetAllPapersOfAuthorQuery): Promise<GetAllPapersOfAuthorResult> {
-    const exists = await this.authorQueryService.existsAuthor(query.authorId);
-    if (!exists) {
-      throw new Error(`Author with id '${query.authorId}' was not found`);
-    }
-
     const builder = new QuerySpecificationBuilder<PaperModel>();
 
     builder
