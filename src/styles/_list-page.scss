@@ -37,6 +37,23 @@
   grid-template-columns: 1fr;
 }
 
+.list-filters--with-action {
+  grid-template-columns: minmax(260px, 1fr) minmax(220px, 320px) auto;
+  gap: var(--list-filters-gap, var(--lib-space-2));
+  align-items: start;
+  margin-bottom: var(--list-filters-bottom-gap, var(--lib-space-2));
+}
+
+.list-search-action {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.list-search-action > button {
+  min-width: var(--list-search-button-min-width, calc(var(--lib-space-4) * 4));
+}
+
 // --- Empty / no-data row ---
 td.no-data-row, div.no-data-row {
   padding: var(--lib-space-3);
@@ -106,7 +123,7 @@ td.no-data-row, div.no-data-row {
 
   .list-table-container {
     overflow: visible;
-    min-height: auto;
+    min-height: 0;
   }
 
   mat-paginator {
@@ -115,5 +132,20 @@ td.no-data-row, div.no-data-row {
 
   .list-filters {
     grid-template-columns: 1fr;
+  }
+
+  .list-filters--with-action {
+    gap: var(--list-filters-gap-mobile, var(--list-filters-gap, var(--lib-space-2)));
+    margin-bottom: var(--list-filters-bottom-gap-mobile, var(--lib-space-1));
+  }
+
+  .list-search-action {
+    justify-content: stretch;
+    margin-bottom: var(--list-search-action-mobile-margin, var(--lib-space-2));
+  }
+
+  .list-search-action > button {
+    width: 100%;
+    min-width: 0;
   }
 }

@@ -76,6 +76,10 @@ export class AuthorListViewModel {
     this.status.set(response.items.length > 0 ? 'success' : 'empty');
   }
 
+  refresh(): void {
+    this.reloadTrigger.update(n => n + 1);
+  }
+
   adjustAfterDelete(): void {
     const currentPage = this.currentPage() ?? 0;
     const pageSize    = this.pageSize() ?? 10;

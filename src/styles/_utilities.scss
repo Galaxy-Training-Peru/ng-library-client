@@ -218,6 +218,17 @@
   font-size: var(--mat-sys-display-medium-size);
 }
 
+.lib-fab-primary,
+.lib-fab-primary.mat-mdc-fab,
+.lib-fab-primary.mat-mdc-extended-fab,
+.lib-fab-primary.mdc-fab,
+.lib-fab-primary.mdc-fab--extended {
+  --mdc-fab-container-color: var(--mat-sys-primary);
+  --mdc-fab-icon-color: var(--mat-sys-on-primary);
+  background-color: var(--mat-sys-primary) !important;
+  color: var(--mat-sys-on-primary) !important;
+}
+
 .font-medium {
   font-weight: var(--lib-font-weight-medium);
 }
