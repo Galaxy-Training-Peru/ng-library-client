@@ -56,23 +56,16 @@ export class AuthorListPage {
     this.router.navigate([authorId, 'edit'], { relativeTo: this.route });
   }
 
-  protected onSearch(value: string): void {
-    const normalizedValue = value.trim();
-    const previousSearch = this.vm.searchText() ?? '';
-    const previousPage = this.vm.currentPage() ?? 0;
-
-    this.vm.searchText.set(normalizedValue);
+  protected onSearchInput(value: string): void {
+    this.vm.searchText.set(value);
     this.vm.currentPage.set(0);
-
-    if (previousSearch === normalizedValue && previousPage === 0) {
-      this.vm.refresh();
-    }
   }
 
   protected onSearchClear(input: HTMLInputElement): void {
     input.value = '';
     input.focus();
-    this.onSearch('');
+    this.vm.searchText.set('');
+    this.vm.currentPage.set(0);
   }
 
   protected onPageChange(event: PageEvent): void {

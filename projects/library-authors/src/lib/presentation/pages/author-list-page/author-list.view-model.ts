@@ -39,18 +39,28 @@ export class AuthorListViewModel {
   readonly status         = signal<'success' | 'empty'>('empty');
 
   private readonly reloadTrigger = signal(0);
+  // Set by the search button to bypass the 350ms debounce.
+  // Cleared after the first load triggered by it.
+  private readonly immediateSearch = signal<string | undefined>(undefined);
 
   private readonly queryParams = computed(() => ({
     pageIndex:       this.currentPage() ?? 0,
     pageSize:        this.pageSize()    ?? 10,
     sortFields:      this.url.params.sort() as SortField[],
-    searchText:      this.url.debounced.search() ?? '',
+    searchText:      this.immediateSearch() ?? this.url.debounced.search() ?? '',
     literaryGenreId: this.selectedLiteraryGenreId() ?? undefined,
     _reload:         this.reloadTrigger(),
   }));
 
   constructor() {
     this.loadLiteraryGenres();
+    // Clear immediateSearch only when debounced has caught up to the same value.
+    // At that point queryParams.searchText doesn't change, so no extra reload fires.
+    effect(() => {
+      if (this.immediateSearch() !== undefined && this.url.debounced.search() === this.immediateSearch()) {
+        untracked(() => this.immediateSearch.set(undefined));
+      }
+    });
     effect(() => {
       const params = this.queryParams();
       untracked(() => this.doLoadAuthors(params));
@@ -58,26 +68,37 @@ export class AuthorListViewModel {
   }
 
   private async loadLiteraryGenres(): Promise<void> {
-    const response = await this.literaryGenreAgent.getAllLiteraryGenres({ pageNumber: 1, pageSize: 100 });
-    this.literaryGenres.set(response.items);
+    try {
+      const response = await this.literaryGenreAgent.getAllLiteraryGenres({ pageNumber: 1, pageSize: 100 });
+      this.literaryGenres.set(response.items);
+    } catch {
+      this.literaryGenres.set([]);
+    }
+  }
+
+  search(value: string): void {
+    this.searchText.set(value);
+    this.currentPage.set(0);
+    this.immediateSearch.set(value);
   }
 
   private async doLoadAuthors(params: ReturnType<typeof this.queryParams>): Promise<void> {
-    const request: GetAllAuthorsRequest = {
-      pageNumber: params.pageIndex + 1,
-      pageSize:   params.pageSize,
-      search:     params.searchText || undefined,
-      literaryGenreId: params.literaryGenreId ?? undefined,
-      sortFields: params.sortFields.length ? params.sortFields : undefined,
-    };
-    const response = await this.publicApi.getAllAuthors(request);
-    this.authors.set(response.items);
-    this.totalCount.set(response.totalCount);
-    this.status.set(response.items.length > 0 ? 'success' : 'empty');
-  }
-
-  refresh(): void {
-    this.reloadTrigger.update(n => n + 1);
+    try {
+      const request: GetAllAuthorsRequest = {
+        pageNumber: params.pageIndex + 1,
+        pageSize:   params.pageSize,
+        search:     params.searchText || undefined,
+        literaryGenreId: params.literaryGenreId ?? undefined,
+        sortFields: params.sortFields.length ? params.sortFields : undefined,
+      };
+      const response = await this.publicApi.getAllAuthors(request);
+      this.authors.set(response.items);
+      this.totalCount.set(response.totalCount);
+      this.status.set(response.items.length > 0 ? 'success' : 'empty');
+    } catch {
+      this.authors.set([]);
+      this.totalCount.set(0);
+    }
   }
 
   adjustAfterDelete(): void {

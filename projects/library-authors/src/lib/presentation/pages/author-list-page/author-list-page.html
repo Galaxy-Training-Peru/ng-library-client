@@ -7,7 +7,8 @@
       <mat-label>Search authors</mat-label>
       <input #searchInput matInput placeholder="Type a name, genre, etc."
              [value]="vm.searchText() ?? ''"
-             (keyup.enter)="onSearch(searchInput.value)" />
+             (input)="onSearchInput(searchInput.value)"
+             (keyup.enter)="vm.search(searchInput.value)" />
       @if (searchInput.value.length) {
         <button mat-icon-button matSuffix (click)="onSearchClear(searchInput)" aria-label="Clear">
           <mat-icon>close</mat-icon>
@@ -32,7 +33,7 @@
         mat-fab
         extended
         type="button"
-        (click)="onSearch(searchInput.value)">
+        (click)="vm.search(searchInput.value)">
         <mat-icon>search</mat-icon>
         Search
       </button>
